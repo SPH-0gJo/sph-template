@@ -1,12 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-const AppPage = styled.div``;
+import { GeolabSample } from 'app/containers/pages/Geolab.sample';
+
+const AppPage = styled.main`
+  width: 100vw;
+  height: 100vh;
+`;
 
 export const App = () => {
   return (
     <AppPage>
-      <p>This is a geolab</p>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Navigate to='/main' />} />
+          <Route path='/main' element={<GeolabSample />} />
+        </Routes>
+      </BrowserRouter>
     </AppPage>
   );
 };
