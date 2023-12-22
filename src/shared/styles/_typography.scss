@@ -1,66 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 
 :root {
-  --font-primary: 'IBM Plex Sans KR', sans-serif;
-  /* base values */
+  --font-primary: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   --text-style: normal;
-
   /* weight */
-  --text-weight-light: 400;
-  --text-weight-regular: 500;
-  --text-weight-midium: 600;
-  --text-weight-semibold: 700;
+  --text-weight-light: 300;
+  --text-weight-normal: 400;
+  --text-weight-semibold: 500;
+  --text-weight-bold: 700;
 }
 
-body,
-h1,
-h2,
-h3,
-input,
-select,
-button,
-p,
-span,
-li,
-a,
-svg,
-text {
-  font-family: var(--font-primary);
+body {
+  font-family: 'Pretendard', sans-serif;
   font-style: var(--text-style);
 }
 
 h1 {
-  margin: 0.2rem;
-  padding: 0.1rem;
-  font-weight: var(--text-weight-semibold);
-  font-size: 1.2rem;
-  line-height: 1.5rem;
-  color: #2d3748;
+  font-size: 3.5rem;
+  line-height: 4.5rem;
+  font-weight: var(--text-weight-normal);
 }
 
 h2 {
-  margin: 0.2rem;
-  padding: 0.1rem;
-  font-weight: var(--text-weight-regular);
-  font-size: 1rem;
-  line-height: 1.2rem;
-  color: #2d3748;
+  font-size: 3rem;
+  line-height: 4rem;
+  font-weight: var(--text-weight-normal);
 }
 
 h3 {
-  margin: 0.2rem;
-  padding: 0.1rem;
-  font-weight: var(--text-weight-midium);
-  font-size: 0.8rem;
-  line-height: 1rem;
-  color: #2d3748;
+  font-size: 2rem;
+  line-height: 3rem;
+  font-weight: var(--text-weight-normal);
 }
 
 h4 {
-  margin: 0.2rem;
-  padding: 0.1rem;
-  font-weight: var(--text-weight-midium);
-  font-size: 0.7rem;
-  line-height: 1rem;
-  color: #2d3748;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  font-weight: var(--text-weight-normal);
 }
+
+h5 {
+  font-size: 1.25rem;
+  line-height: 2.25rem;
+  font-weight: var(--text-weight-normal);
+}
+
+h6 {
+  font-size: 1.125rem;
+  line-height: 2rem;
+  font-weight: var(--text-weight-normal);
+}
+
+.subtitle {}
+
+.subtitle_sm {}
+
+.body {}
+
+.body_sm {}
+
+.caption {}
+
+.caption_sm {}
