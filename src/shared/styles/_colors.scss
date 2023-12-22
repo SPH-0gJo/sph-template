@@ -1,0 +1,39 @@
+:root {
+  // primary
+  --ligth-primary-dark: #0A9B88;
+  --light-primary-origin: #0CC2AA;
+  --light-primary-light: #0EE9CC;
+
+  // secondary
+  --light-secondary-dark: #7F52CD;
+  --light-secondary-origin: #A88ADD;
+  --light-secondary-light: #D1C2ED;
+
+  // semantic
+  --light-semantic-error-origin: #F44455;
+  --light-semantic-warning-light: #FFCE2F;
+  --light-semantic-info-origin: #6887FF;
+  --light-semantic-success-origin: #6CC788;
+
+  // Text (on light space)
+  --light-text-primary: #212121;
+  --light-text-secondary: #707070;
+  --light-text-hint: #ADADAD;
+  --light-text-disabled: #C2C2C2;
+
+  // surface - light
+  --light-surface-level-0: #FFF;
+  --light-surface-level-1: #FAFAFA;
+  --light-surface-level-2: #F0F0F0;
+
+  // Text (on dark space)
+  --dark-text-primary: #FFF;
+  --dark-text-secondary: #ADADAD;
+  --dark-text-hint: #525252;
+  --dark-text-disabled: #3D3D3D;
+
+  // surface - dark
+  --dark-surface-level-0: #354759;
+  --dark-surface-level-1: #2E3E4E;
+  --dark-surface-level-2: #293846;
+}

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import maplibregl, { Map, MapMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { circleColor, lineColor, tbCircleColor } from 'app/containers/pages/style.filter';
 import { faCameraRetro } from '@fortawesome/free-solid-svg-icons';
 
 const GeolabMap = styled.div`
@@ -40,6 +39,7 @@ export const GeolabSample = () => {
     map.current?.on('load', () => {
       map.current?.loadImage('assets/images/img_1.png', (error, image) => {
         if (error) throw error;
+        if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
         if (layerType === 'vector-tiles') addVectorTiles();
       });
@@ -101,7 +101,27 @@ export const GeolabSample = () => {
         'line-cap': 'round',
       },
       paint: {
-        'line-color': lineColor,
+        'line-color': [
+          'match',
+          ['get', 'GIS_PL_TY_'],
+          '2010',
+          '#fc03e3',
+          '2013',
+          '#fc03e3',
+          '2020',
+          '#ff000d',
+          '2022',
+          '#ff000d',
+          '2023',
+          '#ff000d',
+          '2031',
+          '#0037ff',
+          '2032',
+          '#0037ff',
+          '2033',
+          '#0037ff',
+          'black',
+        ],
         'line-width': 2.5,
       },
     });
@@ -116,7 +136,27 @@ export const GeolabSample = () => {
         'icon-size': 0.6,
       },
       paint: {
-        'icon-color': circleColor,
+        'icon-color': [
+          'match',
+          ['get', 'GIS_VV_TYP'],
+          '2310',
+          '#fc03e3',
+          '2313',
+          '#002869',
+          '2320',
+          '#ff000d',
+          '2322',
+          '#9d00ff',
+          '2323',
+          '#ff6f00',
+          '2331',
+          '#0800ff',
+          '2332',
+          '#00b7ff',
+          '2333',
+          '#0f0404',
+          'black',
+        ],
         // 'circle-radius': 5,
       },
     });
@@ -127,7 +167,17 @@ export const GeolabSample = () => {
       source: 'geolab-layers',
       'source-layer': 'gsf_tb_mt',
       paint: {
-        'circle-color': tbCircleColor,
+        'circle-color': [
+          'match',
+          ['get', 'GIS_TB_TY_'],
+          '2240',
+          '#fc03e3',
+          '2241',
+          '#fc03e3',
+          '2242',
+          '#fc03e3',
+          'black',
+        ],
         'circle-radius': 5,
       },
     });
@@ -144,12 +194,13 @@ export const GeolabSample = () => {
     });
 
     map.current?.on('mouseover', 'layer_002', (e: MapMouseEvent) => {
-      console.log(e);
+      console.log(e.target.getStyle());
     });
   }
 
   return (
     <GeolabMap>
+      <h3>TEST</h3>
       <AppMap ref={mapContainer} />
     </GeolabMap>
   );

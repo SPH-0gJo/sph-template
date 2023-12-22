@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import 'shared/styles/icon-font/style.css';
 import 'shared/styles/style.scss';
 import { App } from 'app/containers/App';
 
