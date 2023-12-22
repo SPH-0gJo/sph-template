@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: 'Pretendard', sans-serif;
+  font-family: var(--font-primary);
   font-style: var(--text-style);
 }
 
@@ -33,7 +33,19 @@ h3 {
   font-weight: var(--text-weight-normal);
 }
 
+.h3 {
+  font-size: 2rem;
+  line-height: 3rem;
+  font-weight: var(--text-weight-normal);
+}
+
 h4 {
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  font-weight: var(--text-weight-normal);
+}
+
+.h4 {
   font-size: 1.5rem;
   line-height: 2.5rem;
   font-weight: var(--text-weight-normal);
@@ -51,14 +63,32 @@ h6 {
   font-weight: var(--text-weight-normal);
 }
 
-.subtitle {}
+.h6 {
+  font-size: 1.125rem;
+  line-height: 2rem;
+  font-weight: var(--text-weight-normal);
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: var(--text-weight-semibold);
+  line-height: 1.75rem;
+}
 
 .subtitle_sm {}
 
-.body {}
+.body {
+  font-size: 1rem;
+  font-weight: var(--text-weight-normal);
+  line-height: 1.625rem;
+}
 
 .body_sm {}
 
-.caption {}
+.caption {
+  font-size: 0.75rem;
+  font-weight: var(--text-weight-normal);
+  line-height: 1.25rem;
+}
 
 .caption_sm {}
