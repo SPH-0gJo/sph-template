@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import maplibregl, { Map, MapMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { faCameraRetro } from '@fortawesome/free-solid-svg-icons';
 
 const GeolabMap = styled.div`
   width: 100%;
@@ -24,7 +23,6 @@ export const GeolabSample = () => {
   const [layerType] = useState('vector-tiles');
 
   useEffect(() => {
-    console.log(faCameraRetro);
     if (map.current) return;
     map.current = new maplibregl.Map({
       container: mapContainer.current || '',
@@ -37,7 +35,7 @@ export const GeolabSample = () => {
     map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
 
     map.current?.on('load', () => {
-      map.current?.loadImage('assets/images/img_1.png', (error, image) => {
+      map.current?.loadImage('/assets/images/img_1.png', (error, image) => {
         if (error) throw error;
         if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
@@ -122,7 +120,7 @@ export const GeolabSample = () => {
           '#0037ff',
           'black',
         ],
-        'line-width': 2.5,
+        'line-width': 1,
       },
     });
 
@@ -133,7 +131,7 @@ export const GeolabSample = () => {
       'source-layer': 'gsf_vv_mt',
       layout: {
         'icon-image': 'shop-icon',
-        'icon-size': 0.6,
+        'icon-size': 0.4,
       },
       paint: {
         'icon-color': [
@@ -200,7 +198,6 @@ export const GeolabSample = () => {
 
   return (
     <GeolabMap>
-      <h3>TEST</h3>
       <AppMap ref={mapContainer} />
     </GeolabMap>
   );

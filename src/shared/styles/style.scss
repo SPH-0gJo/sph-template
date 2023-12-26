@@ -1,3 +1,4 @@
+@import 'colors';
 @import 'typography';
 @import 'variables';
 
@@ -6,10 +7,10 @@
 }
 
 html {
-  line-height: 1.2;
+  font-size: 12px;
 }
 
-body {
+body, h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
@@ -19,6 +20,7 @@ button {
 
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 p {
