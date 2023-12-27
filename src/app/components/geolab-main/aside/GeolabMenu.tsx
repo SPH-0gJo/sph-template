@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { MainMenu, SubMenu } from 'shared/constants/types';
 
+import { Link } from 'react-router-dom';
+
 interface StyledProps {
   $isActive?: boolean;
   disabled?: boolean;
@@ -72,7 +74,7 @@ export const GeolabMenu = (props: GeolabMenuProps) => {
         {!menuItems ||
           menuItems.map((e, index) => (
             <li className='subtitle' key={index}>
-              {e.name}
+              <Link to={e.link}>{e.name}</Link>
             </li>
           ))}
       </SubMenuItems>

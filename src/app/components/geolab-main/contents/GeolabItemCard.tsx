@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ChildMenuTypes } from 'shared/fixtures/menu.items';
+import { SubMenu } from 'shared/constants/types';
+
+import { Link } from 'react-router-dom';
 
 const ItemCard = styled.div`
   cursor: pointer;
@@ -54,7 +56,7 @@ const CardDescBox = styled.div`
 `;
 
 interface GeolabItemCardData {
-  childMenu: ChildMenuTypes;
+  subMenu: SubMenu;
 }
 
 interface GeolabItemCardProps {
@@ -62,15 +64,17 @@ interface GeolabItemCardProps {
 }
 
 export const GeolabItemCard = (props: GeolabItemCardProps) => {
-  const { childMenu } = props.data;
-  const { name, summary } = childMenu;
+  const { subMenu } = props.data;
+  const { name, summary, link } = subMenu;
   return (
-    <ItemCard>
-      <CardImg src='/assets/images/sample_map.png' alt='sample map inage' />
-      <CardDescBox>
-        <h5>{name}</h5>
-        <p>{summary}</p>
-      </CardDescBox>
-    </ItemCard>
+    <Link to={link}>
+      <ItemCard>
+        <CardImg src='/assets/images/sample_map.png' alt='sample map inage' />
+        <CardDescBox>
+          <h5>{name}</h5>
+          <p>{summary}</p>
+        </CardDescBox>
+      </ItemCard>
+    </Link>
   );
 };

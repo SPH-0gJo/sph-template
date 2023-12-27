@@ -17,7 +17,7 @@ const Aside = styled.aside`
 
 const AsideHeader = styled.div`
   height: 5.625rem;
-  color: #fff;
+  color: var(--dark-text-primary);
   display: flex;
   justify-content: flex-start;
   align-items: center;

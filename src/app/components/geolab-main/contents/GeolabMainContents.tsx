@@ -100,8 +100,8 @@ export const GeolabMainContents = (props: GeolabMainContentsProps) => {
             <ItemCardSection key={id}>
               <h4>{name}</h4>
               <ItemCardWrapper>
-                {children.map((childMenu, index) => (
-                  <GeolabItemCard data={{ childMenu }} key={index} />
+                {children.map((subMenu, index) => (
+                  <GeolabItemCard data={{ subMenu }} key={index} />
                 ))}
               </ItemCardWrapper>
             </ItemCardSection>

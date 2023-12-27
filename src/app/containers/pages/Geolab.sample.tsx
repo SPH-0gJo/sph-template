@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import maplibregl, { Map, MapMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 
 const GeolabMap = styled.div`
   width: 100%;
@@ -27,7 +28,7 @@ export const GeolabSample = () => {
     map.current = new maplibregl.Map({
       container: mapContainer.current || '',
       hash: true,
-      style: 'https://api.maptiler.com/maps/streets/style.json?key=DifPnucmd6PF6UqDKcMm',
+      style: vectorTileBaseMaps[5].style,
       center: [lng, lat],
       zoom: zoom,
     });
@@ -86,114 +87,125 @@ export const GeolabSample = () => {
   function addVectorTiles() {
     map.current?.addSource('geolab-layers', {
       type: 'vector',
-      url: 'http://localhost:8081/data/pipeline_samples.json',
+      url: 'http://localhost:8081/data/pipeline_samplesv2.json',
     });
 
     map.current?.addLayer({
-      id: 'layer_001',
-      type: 'line',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_pl_mt',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round',
-      },
-      paint: {
-        'line-color': [
-          'match',
-          ['get', 'GIS_PL_TY_'],
-          '2010',
-          '#fc03e3',
-          '2013',
-          '#fc03e3',
-          '2020',
-          '#ff000d',
-          '2022',
-          '#ff000d',
-          '2023',
-          '#ff000d',
-          '2031',
-          '#0037ff',
-          '2032',
-          '#0037ff',
-          '2033',
-          '#0037ff',
-          'black',
-        ],
-        'line-width': 1,
-      },
-    });
-
-    map.current?.addLayer({
-      id: 'layer_002',
-      type: 'symbol',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_vv_mt',
-      layout: {
-        'icon-image': 'shop-icon',
-        'icon-size': 0.4,
-      },
-      paint: {
-        'icon-color': [
-          'match',
-          ['get', 'GIS_VV_TYP'],
-          '2310',
-          '#fc03e3',
-          '2313',
-          '#002869',
-          '2320',
-          '#ff000d',
-          '2322',
-          '#9d00ff',
-          '2323',
-          '#ff6f00',
-          '2331',
-          '#0800ff',
-          '2332',
-          '#00b7ff',
-          '2333',
-          '#0f0404',
-          'black',
-        ],
-        // 'circle-radius': 5,
-      },
-    });
-
-    map.current?.addLayer({
-      id: 'layer_003',
+      id: 'layer_Songdo_asc_step7_mv',
       type: 'circle',
       source: 'geolab-layers',
-      'source-layer': 'gsf_tb_mt',
+      'source-layer': 'Songdo_asc_step7_mv',
       paint: {
-        'circle-color': [
-          'match',
-          ['get', 'GIS_TB_TY_'],
-          '2240',
-          '#fc03e3',
-          '2241',
-          '#fc03e3',
-          '2242',
-          '#fc03e3',
-          'black',
-        ],
-        'circle-radius': 5,
+        'circle-color': '#fc03e3',
+        'circle-radius': 1,
       },
     });
 
-    map.current?.addLayer({
-      id: 'layer_004',
-      type: 'circle',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_rglt_mt',
-      paint: {
-        'circle-color': '#0000ff',
-        'circle-radius': 5,
-      },
-    });
-
-    map.current?.on('mouseover', 'layer_002', (e: MapMouseEvent) => {
-      console.log(e.target.getStyle());
-    });
+    // map.current?.addLayer({
+    //   id: 'layer_001',
+    //   type: 'line',
+    //   source: 'geolab-layers',
+    //   'source-layer': 'gsf_pl_mt',
+    //   layout: {
+    //     'line-join': 'round',
+    //     'line-cap': 'round',
+    //   },
+    //   paint: {
+    //     'line-color': [
+    //       'match',
+    //       ['get', 'GIS_PL_TY_'],
+    //       '2010',
+    //       '#fc03e3',
+    //       '2013',
+    //       '#fc03e3',
+    //       '2020',
+    //       '#ff000d',
+    //       '2022',
+    //       '#ff000d',
+    //       '2023',
+    //       '#ff000d',
+    //       '2031',
+    //       '#0037ff',
+    //       '2032',
+    //       '#0037ff',
+    //       '2033',
+    //       '#0037ff',
+    //       'black',
+    //     ],
+    //     'line-width': 1,
+    //   },
+    // });
+    //
+    // map.current?.addLayer({
+    //   id: 'layer_002',
+    //   type: 'symbol',
+    //   source: 'geolab-layers',
+    //   'source-layer': 'gsf_vv_mt',
+    //   layout: {
+    //     'icon-image': 'shop-icon',
+    //     'icon-size': 0.4,
+    //   },
+    //   paint: {
+    //     'icon-color': [
+    //       'match',
+    //       ['get', 'GIS_VV_TYP'],
+    //       '2310',
+    //       '#fc03e3',
+    //       '2313',
+    //       '#002869',
+    //       '2320',
+    //       '#ff000d',
+    //       '2322',
+    //       '#9d00ff',
+    //       '2323',
+    //       '#ff6f00',
+    //       '2331',
+    //       '#0800ff',
+    //       '2332',
+    //       '#00b7ff',
+    //       '2333',
+    //       '#0f0404',
+    //       'black',
+    //     ],
+    //     // 'circle-radius': 5,
+    //   },
+    // });
+    //
+    // map.current?.addLayer({
+    //   id: 'layer_003',
+    //   type: 'circle',
+    //   source: 'geolab-layers',
+    //   'source-layer': 'gsf_tb_mt',
+    //   paint: {
+    //     'circle-color': [
+    //       'match',
+    //       ['get', 'GIS_TB_TY_'],
+    //       '2240',
+    //       '#fc03e3',
+    //       '2241',
+    //       '#fc03e3',
+    //       '2242',
+    //       '#fc03e3',
+    //       'black',
+    //     ],
+    //     'circle-radius': 5,
+    //   },
+    // });
+    //
+    // map.current?.addLayer({
+    //   id: 'layer_004',
+    //   type: 'circle',
+    //   source: 'geolab-layers',
+    //   'source-layer': 'gsf_rglt_mt',
+    //   paint: {
+    //     'circle-color': '#0000ff',
+    //     'circle-radius': 5,
+    //   },
+    // });
+    //
+    // map.current?.on('mouseover', 'layer_002', (e: MapMouseEvent) => {
+    //   console.log(e.target.getStyle());
+    // });
   }
 
   return (
