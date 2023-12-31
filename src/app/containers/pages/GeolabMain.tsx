@@ -12,7 +12,7 @@ const LandingPage = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 21.25rem 1fr;
-  grid-template-rows: 5.6rem 1fr;
+  grid-template-rows: 5.625rem 1fr;
   overflow-x: hidden;
   overflow-y: hidden;
   grid-template-areas:

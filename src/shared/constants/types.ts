@@ -1,6 +1,7 @@
 export interface SubMenu {
   name: string;
   summary: string;
+  link: string;
 }
 
 export interface MainMenu {
@@ -8,3 +9,5 @@ export interface MainMenu {
   name: string;
   children?: SubMenu[];
 }
+
+export type measureTypes = 'none' | 'distance' | 'radius' | 'area';

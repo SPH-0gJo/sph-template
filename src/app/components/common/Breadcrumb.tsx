@@ -6,6 +6,7 @@ const BreadcrumbWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-left: auto;
   span {
     display: flex;
     justify-content: center;
