@@ -1,55 +1,50 @@
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  background-color: var(--light-surface-level-1);
+  background-color: var(--white-a100);
+  height: 5.625rem;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
   grid-area: header;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 0.63rem 1.25rem;
+  padding: 0.625rem 1.25rem;
   em {
     font-size: 1.5rem;
     margin-right: 0.88rem;
   }
 `;
 
-export const ToolboxWrapper = styled.div`
+export const ToolboxButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  button:first-child {
-    border-top-right-radius: 0.3rem;
-    border-top-left-radius: 0.3rem;
-  }
-  button:last-child {
-    border-bottom-right-radius: 0.3rem;
-    border-bottom-left-radius: 0.3rem;
-  }
-`;
-
-export const ToolboxButton = styled.button`
-  width: 4rem;
-  height: 4rem;
-  background-color: var(--light-surface-level-0);
-  border: 0.08rem solid gray;
-  display: flex;
+  width: 2.125rem;
+  padding: 0.125rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.2rem;
-  color: var(--light-text-secondary);
-  padding: 0.4rem;
-  em {
-    font-size: 1.3rem;
-  }
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+`;
+
+export const ToolboxButton = styled.button`
+  display: flex;
+  width: 1.875rem;
+  height: 1.75rem;
+  padding: 0.25rem 0.8125rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 0.375rem;
+  border: 0;
+  font-size: 1.5rem;
+  color: var(--dark-text-disabled);
+  background-color: var(--white-a100);
   &.selected {
-    border: 0.15rem solid green;
-    color: var(--light-text-primary);
-    background-color: #c2c2c2;
-    font-weight: var(--text-weight-bold);
+    background-color: var(--light-secondary-light);
   }
   &:hover {
-    border: 0.15rem solid green;
-    color: var(--light-text-primary);
+    background-color: var(--light-secondary-a16);
   }
 `;

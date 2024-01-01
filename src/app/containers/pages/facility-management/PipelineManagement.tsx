@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { MapViewer } from 'app/components/facility-management/MapViewer';
+import { MapViewer } from 'app/components/facility-management/pipeline-management-system/MapViewer';
 
 const PageContainer = styled.div`
   width: 100%;

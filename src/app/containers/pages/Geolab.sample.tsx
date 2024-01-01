@@ -40,18 +40,32 @@ export const GeolabSample = () => {
         if (error) throw error;
         if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
-        if (layerType === 'vector-tiles') addVectorTiles();
+        // if (layerType === 'vector-tiles') addWMSLayers();
       });
 
       map.current?.fitBounds([
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
         [127.57186889648438, 36.98272705078125], // northeastern corner of the bounds
       ]);
+      if (layerType === 'vector-tiles') addVectorTiles();
     });
   }, [lng, lat, zoom]);
 
   // function addWMSLayers() {
-  //   const obj = {
+  //   interface WMSRequest {
+  //     SERVICE: string;
+  //     VERSION: string;
+  //     REQUEST: 'GetMap' | 'GetFeatureInfo';
+  //     FORMAT: string;
+  //     TRANSPARENT: string;
+  //     LAYERS: string;
+  //     exceptions: string;
+  //     SRS: string;
+  //     WIDTH: number;
+  //     HEIGHT: number;
+  //     BBOX: string;
+  //   }
+  //   const obj: WMSRequest = {
   //     SERVICE: 'WMS',
   //     VERSION: '1.1.1',
   //     REQUEST: 'GetMap',
@@ -73,15 +87,12 @@ export const GeolabSample = () => {
   //     tiles: [wmsReq],
   //     tileSize: 256,
   //   });
-  //   map.current?.addLayer(
-  //     {
-  //       id: 'wms-test-layer',
-  //       type: 'raster',
-  //       source: 'wms-test-source',
-  //       paint: {},
-  //     },
-  //     'building',
-  //   );
+  //   map.current?.addLayer({
+  //     id: 'wms-test-layer',
+  //     type: 'raster',
+  //     source: 'wms-test-source',
+  //     paint: {},
+  //   });
   // }
 
   function addVectorTiles() {

@@ -10,8 +10,8 @@ const BaseMapButtonWrapper = styled.div`
 `;
 
 const BaseMapButton = styled.button`
-  width: 5.5rem;
-  height: 3rem;
+  width: 4rem;
+  height: 2rem;
   border: 0.07rem solid #212121;
   border-radius: 0.3rem;
   &.selected {
@@ -33,7 +33,7 @@ export const BaseMapButtons = () => {
       {vectorTileBaseMaps.map(({ name, style: styleUrl }, index) => {
         const selected = style === styleUrl ? 'selected' : '';
         return (
-          <BaseMapButton className={`${selected} subtitle_sm`} key={index} onClick={() => setStyleOption(styleUrl)}>
+          <BaseMapButton className={`${selected} caption_sm`} key={index} onClick={() => setStyleOption(styleUrl)}>
             {name}
           </BaseMapButton>
         );

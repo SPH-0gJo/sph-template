@@ -47,10 +47,7 @@ export const drawNRemoveLayers = (map: Map, check: boolean) => {
 export const measureDistanceAction = (e: MapMouseEvent) => {
   const map = e.target;
   if (!map) return;
-  const features =
-    map.queryRenderedFeatures(e.point, {
-      layers: ['measure-points'],
-    }) || [];
+  const features = map.queryRenderedFeatures(e.point, { layers: ['measure-points'] }) || [];
   sourceGeojson.features.length > 1 && sourceGeojson.features.pop();
   if (features.length) {
     const id = features[0].properties.id;
