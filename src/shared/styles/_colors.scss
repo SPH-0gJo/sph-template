@@ -3,11 +3,26 @@
   --light-primary-dark: #0A9B88;
   --light-primary-origin: #0CC2AA;
   --light-primary-light: #0EE9CC;
+  --light-primary-a4: rgba(12, 194, 170, 0.04);
+  --light-primary-a8: rgba(12, 194, 170, 0.08);
+  --light-primary-a12: rgba(12, 194, 170, 0.12);
+  --light-primary-a16: rgba(12, 194, 170, 0.16);
+  --light-primary-a24: rgba(12, 194, 170, 0.24);
+  --light-primary-a32: rgba(12, 194, 170, 0.32);
+  --light-primary-a56: rgba(12, 194, 170, 0.56);
 
   // secondary
-  --light-secondary-dark: #7F52CD;
-  --light-secondary-origin: #A88ADD;
-  --light-secondary-light: #D1C2ED;
+  --light-secondary-dark: #003660;
+  --light-secondary-origin: #004478;
+  --light-secondary-light: #005290;
+  --light-secondary-a4: rgba(0, 68, 120, 0.04);
+  --light-secondary-a8: rgba(0, 68, 120, 0.08);
+  --light-secondary-a12: rgba(0, 68, 120, 0.12);
+  --light-secondary-a16: rgba(0, 68, 120, 0.16);
+  --light-secondary-a24: rgba(0, 68, 120, 0.24);
+  --light-secondary-a32: rgba(0, 68, 120, 0.32);
+  --light-secondary-a64: rgba(0, 68, 120, 0.64);
+
 
   // semantic
   --light-semantic-error-origin: #F44455;
@@ -33,11 +48,67 @@
   --dark-text-disabled: #3D3D3D;
 
   // surface - dark
-  --dark-surface-level-0: #354759;
-  --dark-surface-level-1: #2E3E4E;
+  --dark-surface-level-0: #121212;
+  --dark-surface-level-1: #292929;
   --dark-surface-level-2: #293846;
 
   // colors
+  --palette-red-50: #F8ECEC;
+  --palette-red-100: #F4D7D7;
+  --palette-red-200: #F1C5C5;
+  --palette-red-300: #EF9A9A;
+  --palette-red-400: #EE6D6D;
+  --palette-red-500: #EE3F3F;
+  --palette-red-600: #EC1313;
+  --palette-red-700: #C01111;
+  --palette-red-800: #921111;
+  --palette-red-900: #651010;
+
+  --palette-pink-50: #F8ECF0;
+  --palette-pink-100: #F4D7E1;
+  --palette-pink-200: #F1C5D5;
+  --palette-pink-300: #EF9AB8;
+  --palette-pink-400: #EE6D9A;
+  --palette-pink-500: #EE3F7C;
+  --palette-pink-600: #EC135F;
+  --palette-pink-700: #C0114E;
+  --palette-pink-800: #C0114E;
+  --palette-pink-900: #65102E;
+
+  --palette-purple-50: #F6ECF8;
+  --palette-purple-100: #EED7F4;
+  --palette-purple-200: #E9C5F1;
+  --palette-purple-300: #DE9AEF;
+  --palette-purple-400: #D46DEE;
+  --palette-purple-500: #CB3FEE;
+  --palette-purple-600: #C113EC;
+  --palette-purple-700: #9D11C0;
+  --palette-purple-800: #791192;
+  --palette-purple-900: #541065;
+
+  --palette-green-50: #ECF8EE;
+  --palette-green-100: #D7F4DC;
+  --palette-green-200: #C5F1CD;
+  --palette-green-300: #9AEFAA;
+  --palette-green-400: #6DEE85;
   --palette-green-500: #3FEE5F;
+  --palette-green-600: #13EC3B;
+  --palette-green-700: #11C031;
+  --palette-green-800: #119229;
+  --palette-green-900: #106520;
+
+
   --white-a4: rgba(255, 255, 255, 0.04);
+  --white-a8: rgba(255, 255, 255, 0.08);
+  --white-a12: rgba(255, 255, 255, 0.12);
+  --white-a16: rgba(255, 255, 255, 0.16);
+  --white-a24: rgba(255, 255, 255, 0.24);
+  --white-a32: rgba(255, 255, 255, 0.32);
+  --white-a48: rgba(255, 255, 255, 0.48);
+  --white-a56: rgba(255, 255, 255, 0.56);
+  --white-a65: rgba(255, 255, 255, 0.65);
+  --white-a87: rgba(255, 255, 255, 0.87);
+  --white-a98: rgba(255, 255, 255, 0.98);
+  --white-a100: #FFFFFF;
+  --white: #FFFFFF;
 }

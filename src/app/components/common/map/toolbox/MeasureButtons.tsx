@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ToolboxWrapper, ToolboxButton } from 'shared/styles/styled/common';
+import { ToolboxButtonWrapper, ToolboxButton } from 'shared/styles/styled/common';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import styled from 'styled-components';
 
@@ -36,6 +36,7 @@ export const MeasureButtons = () => {
   function getCalculationBoxPosition(e: React.MouseEvent, measureType: measureTypes) {
     if (!e.currentTarget || measureType === 'none') return;
     const { top, left: currentLeft, width } = e.currentTarget.getBoundingClientRect();
+    console.log(currentLeft - width * 1.8);
     const left = currentLeft - width * 1.55; // 0.5 is right margin
     setCalculationBoxPosition([top, left]);
     setMeasureType(measureType);
@@ -43,34 +44,28 @@ export const MeasureButtons = () => {
 
   return (
     <>
-      <ToolboxWrapper>
+      <ToolboxButtonWrapper>
         <ToolboxButton
-          className={`${measureType === 'radius' ? 'selected' : ''} subtitle_sm`}
+          className={`${measureType === 'radius' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'radius')}
+          title='반경'
           disabled
-        >
-          <em className='icon-circle-slice-8' />
-          <span>반경</span>
-        </ToolboxButton>
+        ></ToolboxButton>
         <ToolboxButton
-          className={`${measureType === 'distance' ? 'selected' : ''} subtitle_sm`}
+          className={`${measureType === 'distance' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'distance')}
-        >
-          <em className='icon-pencil-ruler-o' />
-          <span>거리</span>
-        </ToolboxButton>
+          title='거리'
+        ></ToolboxButton>
         <ToolboxButton
-          className={`${measureType === 'area' ? 'selected' : ''} subtitle_sm`}
+          className={`${measureType === 'area' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'area')}
+          title='면적'
           disabled
-        >
-          <em className='icon-resize-bottom-right-rectangle' />
-          <span>면적</span>
-        </ToolboxButton>
-      </ToolboxWrapper>
-      <CalculationBox className='body' $position={calculationBoxPosition}>
-        <p>{measuredValue}</p>
-      </CalculationBox>
+        ></ToolboxButton>
+      </ToolboxButtonWrapper>
+      {/* <CalculationBox className='body' $position={calculationBoxPosition}>*/}
+      {/*  <p>{measuredValue}</p>*/}
+      {/* </CalculationBox>*/}
     </>
   );
 };
