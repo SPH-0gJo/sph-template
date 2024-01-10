@@ -12,6 +12,7 @@ import { addVectorTiles } from 'app/components/pages/facility-management/pipelin
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
 import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { DataTable } from 'app/components/common-ui';
 
 const MapContainer = styled.div`
   width: 100%;
@@ -85,6 +86,7 @@ export const MapViewer = () => {
       <MapViewerWrapper ref={mapContainer} />
       <MapToolbox />
       <GSFLayerBox data={{ appMap: map.current }} />
+      <DataTable />
     </MapContainer>
   );
 };

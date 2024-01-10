@@ -39,7 +39,9 @@
   // surface - light
   --light-surface-level-0: #FFF;
   --light-surface-level-1: #FAFAFA;
-  --light-surface-level-2: #F0F0F0;
+  --light-surface-level-2: #F5F5F5;
+  --light-surface-level-3: #F0F0F0;
+  --light-surface-level-4: #EBEBEB;
 
   // Text (on dark space)
   --dark-text-primary: #FFF;
@@ -111,4 +113,7 @@
   --white-a98: rgba(255, 255, 255, 0.98);
   --white-a100: #FFFFFF;
   --white: #FFFFFF;
+
+  --divider: rgba(0, 0, 0, 0.12);
+  --line: #EBEBEB;
 }
