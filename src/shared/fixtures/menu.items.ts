@@ -36,6 +36,11 @@ export const MainMenus: MainMenu[] = [
         summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
         link: '/geolab/fm/pm',
       },
+      {
+        name: 'WMS & Vector tile',
+        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        link: '/geolab/lm/mc',
+      },
     ],
   },
   {

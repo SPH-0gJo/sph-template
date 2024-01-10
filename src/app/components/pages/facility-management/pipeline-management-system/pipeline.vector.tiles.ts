@@ -1,4 +1,4 @@
-import { Map } from 'maplibre-gl';
+import { Map as AppMap } from 'maplibre-gl';
 
 const styleUrl = 'http://localhost:8081/data/pipeline_samplesv2.json';
 const circleSize = 3;
@@ -35,7 +35,7 @@ const rglt = [
   { code: '2112', color: '#fc03e3' },
 ];
 
-export function addVectorTiles(map: Map) {
+export function addVectorTiles(map: AppMap) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource('geolab-layers');
   if (source) return;

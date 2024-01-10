@@ -7,10 +7,10 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { initMap } from 'shared/modules/map.utils';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { measureDistanceAction, drawNRemoveLayers } from './measure.distance';
-import { addVectorTiles } from 'app/components/facility-management/pipeline-management-system/pipeline.vector.tiles';
+import { addVectorTiles } from 'app/components/pages/facility-management/pipeline-management-system/pipeline.vector.tiles';
 
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
-import { GSFLayerBox } from 'app/components/facility-management/pipeline-management-system/GSFLayerBox';
+import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 
 const MapContainer = styled.div`
@@ -35,7 +35,7 @@ export const MapViewer = () => {
     if (map.current || !mapContainer) return;
     setLayerGroup();
     const container = mapContainer.current || '';
-    map.current = initMap(container, zoom);
+    map.current = initMap(container, zoom, 0);
     map.current.on('load', () => {
       map.current?.loadImage('/assets/images/img_1.png', (error, image) => {
         if (error) throw error;
