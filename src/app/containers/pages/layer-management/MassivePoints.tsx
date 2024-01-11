@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 
+import { MapViewer } from 'app/components/pages/layer-management/MassivePoints/MapViewer';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { MapViewer } from 'app/components/pages/facility-management/pipeline-management-system/MapViewer';
 
 import { PageContainer } from 'shared/styles/styled/common';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 
-export const PipelineManagement = () => {
+export const MassivePoints = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
   useEffect(() => {
-    setBreadcrumb(['Main', '시설물 관리', '배관시설물 관리']);
+    setBreadcrumb(['Main', '레이어 관리', '대용량 Point 데이터 시각화']);
   }, []);
   return (
     <PageContainer>

@@ -33,7 +33,7 @@ export const MapViewer = (props: MapViewerProps) => {
   useEffect(() => {
     if (map.current || !mapContainer) return;
     const container = mapContainer.current || '';
-    map.current = initMap(container, zoom, 2);
+    map.current = initMap(container, zoom, 2, undefined);
     map.current.on('load', () => {
       map.current?.fitBounds([
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds

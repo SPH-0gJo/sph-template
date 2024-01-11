@@ -1,5 +1,17 @@
 import styled from 'styled-components';
 
+export const PageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 5.625rem 1fr;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  grid-template-areas:
+    'header'
+    'content';
+`;
+
 export const Header = styled.header`
   background-color: var(--white-a100);
   height: 5.625rem;

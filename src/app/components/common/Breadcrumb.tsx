@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useBreadcrumbStore } from 'app/stores/breadcrumb';
+
 const BreadcrumbWrapper = styled.div`
   color: var(--light-text-secondary);
   display: flex;
@@ -19,17 +21,18 @@ const BreadcrumbWrapper = styled.div`
 `;
 
 export const Breadcrumb = () => {
-  const samples = ['Main', '시설물 관리', '배관시설물 관리'];
+  const { breadcrumb } = useBreadcrumbStore();
   return (
     <BreadcrumbWrapper className={'body'}>
-      {samples.map((name, index) => {
-        return (
-          <span key={index}>
-            <a>{name}</a>
-            {index !== samples.length - 1 && <em className={'icon-chevron-right'} />}
-          </span>
-        );
-      })}
+      {breadcrumb &&
+        breadcrumb.map((name, index) => {
+          return (
+            <span key={index}>
+              <a>{name}</a>
+              {index !== breadcrumb.length - 1 && <em className={'icon-chevron-right'} />}
+            </span>
+          );
+        })}
     </BreadcrumbWrapper>
   );
 };
