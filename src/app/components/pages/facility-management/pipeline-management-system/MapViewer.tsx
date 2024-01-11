@@ -8,6 +8,7 @@ import { initMap } from 'shared/modules/map.utils';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { measureDistanceAction, drawNRemoveLayers } from './measure.distance';
 import { addVectorTiles } from 'app/components/pages/facility-management/pipeline-management-system/pipeline.vector.tiles';
+import { LayerStyle } from 'shared/fixtures/pipeline';
 
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
 import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
@@ -31,6 +32,7 @@ export const MapViewer = () => {
   const map = useRef<AppMap | null>(null);
   const { measureType, style, zoomLevel: zoom } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
+  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -73,13 +75,19 @@ export const MapViewer = () => {
     !measure && map.current.off('click', measureDistanceAction);
   }, [measureType]);
 
-  // useEffect(() => {
-  //   if (!map.current?.getStyle()) return;
-  //   const layerId = 'gsf_pl_mt_2031';
-  //   const visible = hiddenLayers.includes('2031') ? 'visible' : 'none';
-  //   console.log(map.current?.getLayer('layer_002'));
-  //   map.current?.setLayoutProperty(layerId, 'visibility', visible);
-  // }, [hiddenLayers]);
+  useEffect(() => {
+    if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;
+    const layer = gsfLayerGroups.get(layerStyleEditorId);
+    const { style } = layer!;
+    if (!style) return;
+    let paintProperties = ['line-color', 'line-width'];
+    if (Object.prototype.hasOwnProperty.call(style, 'circle-color'))
+      paintProperties = ['circle-color', 'circle-radius'];
+    paintProperties.forEach(
+      (propertyName) =>
+        map.current?.setPaintProperty(layerStyleEditorId, propertyName, style[propertyName as keyof LayerStyle]),
+    );
+  }, [gsfLayerGroups, layerStyleEditorId]);
 
   return (
     <MapContainer>

@@ -50,18 +50,24 @@ export const MeasureButtons = () => {
           onClick={(e) => getCalculationBoxPosition(e, 'radius')}
           title='반경'
           disabled
-        ></ToolboxButton>
+        >
+          <em className='icon-map-circle' />
+        </ToolboxButton>
         <ToolboxButton
           className={`${measureType === 'distance' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'distance')}
           title='거리'
-        ></ToolboxButton>
+        >
+          <em className='icon-map-ruler' />
+        </ToolboxButton>
         <ToolboxButton
           className={`${measureType === 'area' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'area')}
           title='면적'
           disabled
-        ></ToolboxButton>
+        >
+          <em className='icon-map-polygon' />
+        </ToolboxButton>
       </ToolboxButtonWrapper>
       {/* <CalculationBox className='body' $position={calculationBoxPosition}>*/}
       {/*  <p>{measuredValue}</p>*/}

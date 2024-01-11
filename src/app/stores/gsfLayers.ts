@@ -4,12 +4,15 @@ import { facilityManagementApi } from 'app/api/facility-management.api';
 
 interface GsfLayerState {
   gsfLayerGroups: Map<string, GsfLayer> | undefined;
+  layerStyleEditorId: string | undefined;
   setLayerGroup: () => void;
+  setLayerStyleEditorId: (id: string | undefined) => void;
   upsertItem: (layer: GsfLayer) => void;
 }
 
 export const useGsfLayerStore = create<GsfLayerState>()((set) => ({
   gsfLayerGroups: undefined,
+  layerStyleEditorId: undefined,
   setLayerGroup: async () => {
     const { data } = await facilityManagementApi.geoData();
     const groupKeys = Object.keys(data) as GeoDataKeys[];
@@ -23,6 +26,13 @@ export const useGsfLayerStore = create<GsfLayerState>()((set) => ({
       });
     });
     set({ gsfLayerGroups: geoDataMap });
+  },
+  setLayerStyleEditorId: (layerStyleEditorId) => {
+    set((state) => {
+      const current = state.layerStyleEditorId;
+      if (current === layerStyleEditorId) return { layerStyleEditorId: undefined };
+      return { layerStyleEditorId };
+    });
   },
   upsertItem: (layer: GsfLayer) => {
     const { sourceLayerId } = layer;

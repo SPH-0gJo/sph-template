@@ -99,8 +99,12 @@ export const MapToolbox = () => {
     <ToolboxContainer ref={toolboxContainer}>
       <BaseMapButtons />
       <ToolboxButtonWrapper>
-        <ToolboxButton title='주제도' />
-        <ToolboxButton title='거리뷰' />
+        <ToolboxButton title='주제도'>
+          <em className='icon-layers' />
+        </ToolboxButton>
+        <ToolboxButton title='거리뷰'>
+          <em className='icon-map-street' />
+        </ToolboxButton>
       </ToolboxButtonWrapper>
       <MeasureButtons />
       <ZoomButtons />

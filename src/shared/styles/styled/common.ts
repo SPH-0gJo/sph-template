@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Header = styled.header`
   background-color: var(--white-a100);
   height: 5.625rem;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
   grid-area: header;
   display: flex;
   justify-content: flex-start;
@@ -25,7 +25,7 @@ export const ToolboxButtonWrapper = styled.div`
   gap: 0.25rem;
   border-radius: 0.5rem;
   background: #fff;
-  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
 `;
 
 export const ToolboxButton = styled.button`
