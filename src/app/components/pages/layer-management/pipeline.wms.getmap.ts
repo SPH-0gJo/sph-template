@@ -39,6 +39,8 @@ export function getMapByWMS(map: AppMap) {
     const queryString = `?${searchParams.toString()}`;
     const wmsReq = `http://localhost:8080/geoserver/geolab/wms${queryString}&bbox={bbox-epsg-4326}`;
     console.log(wmsReq);
+    console.log(map.getContainer().clientWidth);
+    console.log(map.getContainer().clientHeight);
     // map.addSource(layerId, {
     //   type: 'raster',
     //   tiles: [wmsReq],
@@ -53,11 +55,11 @@ export function getMapByWMS(map: AppMap) {
   }
 }
 
-function getExtentCoordinatesFromBounds(bounds) {
-  return [
-    bounds.getNorthWest().toArray(),
-    bounds.getNorthEast().toArray(),
-    bounds.getSouthEast().toArray(),
-    bounds.getSouthWest().toArray(),
-  ];
-}
+// function getExtentCoordinatesFromBounds(bounds) {
+//   return [
+//     bounds.getNorthWest().toArray(),
+//     bounds.getNorthEast().toArray(),
+//     bounds.getSouthEast().toArray(),
+//     bounds.getSouthWest().toArray(),
+//   ];
+// }

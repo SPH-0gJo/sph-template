@@ -6,7 +6,9 @@ export const ZoomButtons = () => {
   const { setZoomLevel } = useMapOptionsStore();
   return (
     <ToolboxButtonWrapper>
-      <ToolboxButton title='초기화'></ToolboxButton>
+      <ToolboxButton title='초기화'>
+        <em className='icon-map-position' />
+      </ToolboxButton>
       <ToolboxButton onClick={() => setZoomLevel(1)} title='확대'>
         <em className='icon-plus' />
       </ToolboxButton>

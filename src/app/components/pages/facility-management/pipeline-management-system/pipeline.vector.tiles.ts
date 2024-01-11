@@ -109,4 +109,32 @@ export function addVectorTiles(map: AppMap) {
       'text-justify': 'auto',
     },
   });
+
+  map.addLayer({
+    id: 'gsf_tb_mt_labels',
+    type: 'symbol',
+    source: 'geolab-layers',
+    'source-layer': 'gsf_tb_mt',
+    minzoom: 16,
+    layout: {
+      'text-field': ['get', 'GIS_VV_TYP'],
+      'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+      'text-radial-offset': 0.5,
+      'text-justify': 'auto',
+    },
+  });
+
+  map.addLayer({
+    id: 'gsf_rglt_mt_labels',
+    type: 'symbol',
+    source: 'geolab-layers',
+    'source-layer': 'gsf_rglt_mt',
+    minzoom: 16,
+    layout: {
+      'text-field': ['get', 'GIS_VV_TYP'],
+      'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+      'text-radial-offset': 0.5,
+      'text-justify': 'auto',
+    },
+  });
 }
