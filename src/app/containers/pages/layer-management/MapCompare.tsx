@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { MapViewer } from 'app/components/pages/layer-management/MapViewer';
+import { MapViewer } from 'app/components/pages/layer-management/MapCompare/MapViewer';
+import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 
 const MapCompareContainer = styled.div`
   width: 100%;
@@ -20,6 +21,10 @@ const LeftMapWrapper = styled.div`
   height: 100%;
 `;
 export const MapCompare = () => {
+  const { setBreadcrumb } = useBreadcrumbStore();
+  useEffect(() => {
+    setBreadcrumb(['Main', '시설물 관리', '배관시설물 관리']);
+  }, []);
   return (
     <MapCompareContainer>
       <LeftMapWrapper>

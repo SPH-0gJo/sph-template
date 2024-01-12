@@ -38,7 +38,7 @@ export const MapViewer = () => {
     if (map.current || !mapContainer) return;
     setLayerGroup();
     const container = mapContainer.current || '';
-    map.current = initMap(container, zoom, 0);
+    map.current = initMap(container, zoom, 0, undefined);
     map.current.on('load', () => {
       map.current?.loadImage('/assets/images/img_1.png', (error, image) => {
         if (error) throw error;
@@ -50,8 +50,8 @@ export const MapViewer = () => {
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
         [127.57186889648438, 36.98272705078125], // northeastern corner of the bounds
       ]);
-      return () => map.current?.remove();
     });
+    return () => map.current?.remove();
   }, []);
 
   useEffect(() => {

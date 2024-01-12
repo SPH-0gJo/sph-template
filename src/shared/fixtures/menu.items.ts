@@ -7,7 +7,7 @@ export const MainMenus: MainMenu[] = [
     children: [
       {
         name: '배관 시설물 관리',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        summary: '배관, 밸브, Test box, 정압기 시설물 시각화, 데이터 관리 화면',
         link: '/geolab/fm/pm',
       },
       {
@@ -40,6 +40,11 @@ export const MainMenus: MainMenu[] = [
         name: 'WMS & Vector tile',
         summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
         link: '/geolab/lm/mc',
+      },
+      {
+        name: '대용량 Point 데이터 시각화',
+        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        link: '/geolab/lm/mp',
       },
     ],
   },
