@@ -1,4 +1,4 @@
-import React, { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { ToolboxButtonWrapper, ToolboxButton } from 'shared/styles/styled/common';
