@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import { numberFormatterForUS } from 'shared/modules/app.utils';
+import styled from 'styled-components';
 
 const StyleEditorWrapper = styled.div`
   background-color: var(--white);
@@ -21,17 +20,19 @@ const PointCountButtons = styled.div`
 const PointCountButton = styled.button`
   border: 0;
   border-radius: 0.5rem;
-  background-color: var(--dark-surface-level-1);
+  background-color: var(--light-surface-level-2);
   width: 5rem;
   height: 2.5rem;
-  color: var(--white);
+  color: var(--dark-text-hint);
   font-weight: 700;
   &:hover {
-    background-color: var(--dark-surface-level-2);
+    background-color: var(--light-surface-level-4);
+    color: var(--dark-text-hint);
     font-size: 1.2rem;
   }
   &.selected {
-    background-color: var(--light-text-secondary);
+    background-color: var(--dark-surface-level-1);
+    color: var(--white);
   }
 `;
 

@@ -6,8 +6,11 @@ Best Practice 참고
 * https://shravanmeena.medium.com/leveling-up-your-react-skills-in-2023-best-practices-tips-and-techniques-for-writing-b870ff2e1d3f
 * https://www.yourteaminindia.com/blog/react-best-practices
 
+##
+* (**Essential**) IDE prettier & eslint 설정 필수
+
 ## Component 
 * 단일 책임 원칙
-  * 
 * (**Essential**) 컴포넌트 최대 200 라인 넘지 않기!!!
-* 
+* import/export 순서 : eslint 설정, 저장시 자동 완성
+  * IDE prettier & eslint 설정 필수

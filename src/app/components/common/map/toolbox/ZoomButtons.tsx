@@ -1,6 +1,6 @@
 import React from 'react';
-import { ToolboxButtonWrapper, ToolboxButton } from 'shared/styles/styled/common';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
 
 export const ZoomButtons = () => {
   const { setZoomLevel } = useMapOptionsStore();

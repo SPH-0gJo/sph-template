@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import { GeolabMenu } from 'app/components/geolab-main/aside/GeolabMenu';
 import { MainMenu } from 'shared/constants/types';
+import styled from 'styled-components';
 
 const Aside = styled.aside`
   font-family: var(--font-primary);

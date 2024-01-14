@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
+import styled from 'styled-components';
 
 const BreadcrumbWrapper = styled.div`
   color: var(--light-text-secondary);

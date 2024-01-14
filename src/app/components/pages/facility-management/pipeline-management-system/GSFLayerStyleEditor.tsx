@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
 import { InputField } from 'app/components/common-ui';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { GeoDataKeys, LayerStyle } from 'shared/fixtures/pipeline';
+import styled from 'styled-components';
 
 const LayerStyleEditor = styled.div`
   width: 12.4375rem;

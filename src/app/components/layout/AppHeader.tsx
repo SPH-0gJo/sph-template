@@ -1,9 +1,8 @@
 import React from 'react';
-
-import { Header } from 'shared/styles/styled/common';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from 'app/components/common/Breadcrumb';
+import { Header } from 'shared/styles/styled/common';
+import styled from 'styled-components';
 
 const HomeLink = styled(Link)`
   height: 5.625rem;

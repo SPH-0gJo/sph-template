@@ -1,7 +1,7 @@
-import { Map, MapMouseEvent, GeoJSONSource } from 'maplibre-gl';
-import { Feature, FeatureCollection, Point, LineString } from 'geojson';
 import { length } from '@turf/turf';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { Feature, FeatureCollection, LineString, Point } from 'geojson';
+import { GeoJSONSource, Map, MapMouseEvent } from 'maplibre-gl';
 
 const sourceGeojson: FeatureCollection = {
   type: 'FeatureCollection',

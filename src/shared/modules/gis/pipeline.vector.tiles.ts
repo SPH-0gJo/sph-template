@@ -1,45 +1,12 @@
 import { Map as AppMap } from 'maplibre-gl';
-
-const styleUrl = 'http://localhost:8081/data/pipeline_samplesv2.json';
-const circleSize = 3;
-const pipelines = [
-  { code: '2010', color: '#fc03e3', width: 1.5, lineStyle: 'solid' },
-  { code: '2013', color: '#fc03e3', width: 1, lineStyle: 'dashed' },
-  { code: '2020', color: '#ff000d', width: 1.5, lineStyle: 'solid' },
-  { code: '2022', color: '#ff000d', width: 1, lineStyle: 'solid' },
-  { code: '2023', color: '#ff000d', width: 1, lineStyle: 'dashed' },
-  { code: '2031', color: '#0037ff', width: 1.5, lineStyle: 'solid' },
-  { code: '2032', color: '#0037ff', width: 1, lineStyle: 'solid' },
-  { code: '2033', color: '#0037ff', width: 1, lineStyle: 'dashed' },
-];
-
-const valves = [
-  { code: '2310', color: '#fc03e3' },
-  { code: '2313', color: '#002869' },
-  { code: '2320', color: '#ff000d' },
-  { code: '2322', color: '#9d00ff' },
-  { code: '2323', color: '#ff6f00' },
-  { code: '2331', color: '#0800ff' },
-  { code: '2332', color: '#00b7ff' },
-  { code: '2333', color: '#0f0404' },
-];
-
-const tbs = [
-  { code: '2240', color: '#fc03e3' },
-  { code: '2241', color: '#fc03e3' },
-  { code: '2242', color: '#fc03e3' },
-];
-
-const rglt = [
-  { code: '2111', color: '#fc03e3' },
-  { code: '2112', color: '#fc03e3' },
-];
+import { CircleSize, GeolabVectorTileStyle } from 'shared/constants/varibales';
+import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 
 export function addVectorTiles(map: AppMap) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource('geolab-layers');
   if (source) return;
-  map.addSource('geolab-layers', { type: 'vector', url: styleUrl });
+  map.addSource('geolab-layers', { type: 'vector', url: GeolabVectorTileStyle });
   pipelines.forEach((e) => {
     const { code, color, width, lineStyle } = e;
     const paint: { 'line-color': string; 'line-width': number; 'line-dasharray'?: Array<number> } = {
@@ -65,9 +32,9 @@ export function addVectorTiles(map: AppMap) {
       type: 'circle',
       source: 'geolab-layers',
       'source-layer': 'gsf_vv_mt',
-      minzoom: 13,
+      // minzoom: 13,
       // layout: { 'icon-image': 'shop-icon', 'icon-size': 0.4 },
-      paint: { 'circle-color': color, 'circle-radius': circleSize },
+      paint: { 'circle-color': color, 'circle-radius': CircleSize },
       filter: ['==', 'GIS_VV_TYP', code],
     });
   });
@@ -79,8 +46,8 @@ export function addVectorTiles(map: AppMap) {
       type: 'circle',
       source: 'geolab-layers',
       'source-layer': 'gsf_tb_mt',
-      minzoom: 13,
-      paint: { 'circle-color': color, 'circle-radius': circleSize },
+      // minzoom: 13,
+      paint: { 'circle-color': color, 'circle-radius': CircleSize },
     });
   });
 
@@ -91,8 +58,8 @@ export function addVectorTiles(map: AppMap) {
       type: 'circle',
       source: 'geolab-layers',
       'source-layer': 'gsf_rglt_mt',
-      minzoom: 13,
-      paint: { 'circle-color': color, 'circle-radius': circleSize },
+      // minzoom: 13,
+      paint: { 'circle-color': color, 'circle-radius': CircleSize },
     });
   });
 

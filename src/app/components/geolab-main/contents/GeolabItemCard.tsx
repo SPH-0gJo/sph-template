@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import { SubMenu } from 'shared/constants/types';
-
 import { Link } from 'react-router-dom';
+import { SubMenu } from 'shared/constants/types';
+import styled from 'styled-components';
 
 const ItemCard = styled.div`
   cursor: pointer;

@@ -1,19 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-
-import { Map as AppMap } from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-
-import { initMap } from 'shared/modules/map.utils';
-import { useMapOptionsStore } from 'app/stores/mapOptions';
-import { measureDistanceAction, drawNRemoveLayers } from './measure.distance';
-import { addVectorTiles } from 'app/components/pages/facility-management/pipeline-management-system/pipeline.vector.tiles';
-import { LayerStyle } from 'shared/fixtures/pipeline';
-
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
+import { DataTable } from 'app/components/common-ui';
 import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { DataTable } from 'app/components/common-ui';
+import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { Map as AppMap } from 'maplibre-gl';
+import { LayerStyle } from 'shared/fixtures/pipeline';
+import { drawNRemoveLayers, measureDistanceAction } from 'shared/modules/gis/measure.distance';
+import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
+import { initMap } from 'shared/modules/map.utils';
+import styled from 'styled-components';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.div`
   width: 100%;
