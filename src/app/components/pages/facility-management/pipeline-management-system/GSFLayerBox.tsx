@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import { GeoDataKeys } from 'shared/fixtures/pipeline';
-import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { Map as AppMap } from 'maplibre-gl';
-
 import { GSFLayerBoxContents } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBoxContents';
 import { GSFLayerStyleEditor } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerStyleEditor';
+import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { Map as AppMap } from 'maplibre-gl';
+import { GeoDataKeys } from 'shared/fixtures/pipeline';
+import styled from 'styled-components';
 
 const LayerBoxWrapper = styled.div`
   display: flex;

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import styled from 'styled-components';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { GeoDataKeys, GsfLayer } from 'shared/fixtures/pipeline';
 import { Map as AppMap } from 'maplibre-gl';
+import { GeoDataKeys, GsfLayer } from 'shared/fixtures/pipeline';
+import styled from 'styled-components';
 
 const LayerBoxContents = styled.ul`
   user-select: none;

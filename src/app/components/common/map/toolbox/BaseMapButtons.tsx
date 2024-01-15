@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
+import styled from 'styled-components';
 
 const BaseMapButtonWrapper = styled.div`
   display: flex;

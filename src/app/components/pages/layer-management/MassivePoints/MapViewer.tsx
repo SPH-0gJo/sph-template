@@ -1,17 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-
-import { Map as AppMap } from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-
-import { initMap } from 'shared/modules/map.utils';
 import {
-  sourceName,
   addMassivePoints,
   removeMassivePoints,
+  sourceName,
 } from 'app/components/pages/layer-management/MassivePoints/songdo.asc_step7.mv';
-
 import { StyleEditor } from 'app/components/pages/layer-management/MassivePoints/StyleEditor';
+import { Map as AppMap } from 'maplibre-gl';
+import { initMap } from 'shared/modules/map.utils';
+import styled from 'styled-components';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.div`
   width: 100%;

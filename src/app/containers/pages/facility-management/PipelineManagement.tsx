@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-
 import { AppHeader } from 'app/components/layout/AppHeader';
 import { MapViewer } from 'app/components/pages/facility-management/pipeline-management-system/MapViewer';
-
-import { PageContainer } from 'shared/styles/styled/common';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
+import { PageContainer } from 'shared/styles/styled/common';
 
 export const PipelineManagement = () => {
   const { setBreadcrumb } = useBreadcrumbStore();

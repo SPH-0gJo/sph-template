@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-
-import { GeolabMainHeader } from 'app/components/geolab-main/herader/GeolabMainHeader';
 import { GeolabMainAside } from 'app/components/geolab-main/aside/GeolabMainAside';
 import { GeolabMainContents } from 'app/components/geolab-main/contents/GeolabMainContents';
-
+import { GeolabMainHeader } from 'app/components/geolab-main/herader/GeolabMainHeader';
 import { useCommonStore } from 'app/stores/menuItems';
+import styled from 'styled-components';
 
 const LandingPage = styled.div`
   width: 100%;

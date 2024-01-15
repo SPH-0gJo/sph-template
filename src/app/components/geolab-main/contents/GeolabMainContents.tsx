@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
-
-import { GeolabItemCard } from 'app/components/geolab-main/contents/GeolabItemCard';
 import { Breadcrumb } from 'app/components/common/Breadcrumb';
+import { GeolabItemCard } from 'app/components/geolab-main/contents/GeolabItemCard';
 import { MainMenu } from 'shared/constants/types';
+import styled from 'styled-components';
 
 const Main = styled.main`
   background-color: var(--light-surface-level-2);

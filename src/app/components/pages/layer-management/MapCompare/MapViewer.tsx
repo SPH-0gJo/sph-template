@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { Map as AppMap } from 'maplibre-gl';
+import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
+import { getMapByWMS } from 'shared/modules/gis/pipeline.wms.getmap';
+import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
-import { Map as AppMap } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-
-import { initMap } from 'shared/modules/map.utils';
-import { useMapOptionsStore } from 'app/stores/mapOptions';
-import { addVectorTiles } from 'app/components/pages/facility-management/pipeline-management-system/pipeline.vector.tiles';
-import { getMapByWMS } from 'app/components/pages/layer-management/pipeline.wms.getmap';
 
 const MapContainer = styled.div`
   width: 100%;
@@ -43,6 +42,10 @@ export const MapViewer = (props: MapViewerProps) => {
         ? map.current && getMapByWMS(map.current)
         : map.current && addVectorTiles(map.current);
       return () => map.current?.remove();
+    });
+    map.current.on('moveend', () => {
+      if (props.data.requestType === 'vector-tile') return;
+      map.current && getMapByWMS(map.current);
     });
   }, [zoom]);
 

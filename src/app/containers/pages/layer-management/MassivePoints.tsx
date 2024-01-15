@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-
-import { MapViewer } from 'app/components/pages/layer-management/MassivePoints/MapViewer';
 import { AppHeader } from 'app/components/layout/AppHeader';
-
-import { PageContainer } from 'shared/styles/styled/common';
+import { MapViewer } from 'app/components/pages/layer-management/MassivePoints/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
+import { PageContainer } from 'shared/styles/styled/common';
 
 export const MassivePoints = () => {
   const { setBreadcrumb } = useBreadcrumbStore();

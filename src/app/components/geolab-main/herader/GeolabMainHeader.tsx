@@ -1,7 +1,6 @@
 import React from 'react';
-
-import { Header } from 'shared/styles/styled/common';
 import { Search } from 'app/components/common-ui/index';
+import { Header } from 'shared/styles/styled/common';
 
 interface GeolabMainHeaderProps {
   setInputText: (text: string | undefined) => void;

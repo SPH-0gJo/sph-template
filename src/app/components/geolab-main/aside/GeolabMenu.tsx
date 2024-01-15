@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-
-import { MainMenu, SubMenu } from 'shared/constants/types';
-
 import { Link } from 'react-router-dom';
+import { MainMenu, SubMenu } from 'shared/constants/types';
+import styled from 'styled-components';
 
 interface StyledProps {
   $isActive?: boolean;
