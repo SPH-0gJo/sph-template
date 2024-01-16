@@ -1,11 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
-import { GeolabMain } from 'app/containers/pages/GeolabMain';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PipelineManagement } from 'app/containers/pages/facility-management/PipelineManagement';
+import { GeolabMain } from 'app/containers/pages/GeolabMain';
 import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
 import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
+import styled from 'styled-components';
 
 const AppPage = styled.div`
   width: 100vw;

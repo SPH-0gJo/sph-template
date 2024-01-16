@@ -11,7 +11,7 @@
   ],
   "ignorePatterns": ["dist/", "node_modules/"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "react-hooks", "react-refresh", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "react-hooks", "react-refresh", "@typescript-eslint", "prettier", "simple-import-sort"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
@@ -21,8 +21,31 @@
     "quotes": ["error", "single"],
     "no-duplicate-imports": "error",
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
+  "overrides": [
+    // override "simple-import-sort" config
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^react", "^@?\\w"], // Packages `react` related packages come first.
+              ["^(@|components)(/.*|$)"], // Internal packages.
+              ["^\\u0000"], // Side effect imports.
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"], // Parent imports. Put `..` last.
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],  // Other relative imports. Put same-folder imports and `.` last.
+              ["^.+\\.?(css)$"] // Style imports.
+            ]
+          }
+        ]
+      }
+    }
+  ],
   "settings": {
     "import/resolver": {
       "typescript": {}

@@ -166,3 +166,36 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
     ],
   },
 };
+
+export const pipelines = [
+  { code: '2010', color: '#fc03e3', width: 1.5, lineStyle: 'solid' },
+  { code: '2013', color: '#fc03e3', width: 1, lineStyle: 'dashed' },
+  { code: '2020', color: '#ff000d', width: 1.5, lineStyle: 'solid' },
+  { code: '2022', color: '#ff000d', width: 1, lineStyle: 'solid' },
+  { code: '2023', color: '#ff000d', width: 1, lineStyle: 'dashed' },
+  { code: '2031', color: '#0037ff', width: 1.5, lineStyle: 'solid' },
+  { code: '2032', color: '#0037ff', width: 1, lineStyle: 'solid' },
+  { code: '2033', color: '#0037ff', width: 1, lineStyle: 'dashed' },
+];
+
+export const valves = [
+  { code: '2310', color: '#fc03e3' },
+  { code: '2313', color: '#002869' },
+  { code: '2320', color: '#ff000d' },
+  { code: '2322', color: '#9d00ff' },
+  { code: '2323', color: '#ff6f00' },
+  { code: '2331', color: '#0800ff' },
+  { code: '2332', color: '#00b7ff' },
+  { code: '2333', color: '#0f0404' },
+];
+
+export const tbs = [
+  { code: '2240', color: '#fc03e3' },
+  { code: '2241', color: '#fc03e3' },
+  { code: '2242', color: '#fc03e3' },
+];
+
+export const rglt = [
+  { code: '2111', color: '#fc03e3' },
+  { code: '2112', color: '#fc03e3' },
+];

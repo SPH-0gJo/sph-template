@@ -10,32 +10,32 @@ export const MainMenus: MainMenu[] = [
         summary: '배관, 밸브, Test box, 정압기 시설물 시각화, 데이터 관리 화면',
         link: '/geolab/fm/pm',
       },
-      {
-        name: '실시간 시설물 모니터링(Web)',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-        link: '/geolab/fm/pm',
-      },
-      {
-        name: '실시간 시설물 모니터링(Mobile)',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-        link: '/geolab/fm/pm',
-      },
+      // {
+      //   name: '실시간 시설물 모니터링(Web)',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
+      // {
+      //   name: '실시간 시설물 모니터링(Mobile)',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
     ],
   },
   {
     id: '002',
     name: 'Layer 관리',
     children: [
-      {
-        name: '관리자 Panel',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-        link: '/geolab/fm/pm',
-      },
-      {
-        name: '지도 파일 업로드',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-        link: '/geolab/fm/pm',
-      },
+      // {
+      //   name: '관리자 Panel',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
+      // {
+      //   name: '지도 파일 업로드',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
       {
         name: 'WMS & Vector tile',
         summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
@@ -51,13 +51,13 @@ export const MainMenus: MainMenu[] = [
   {
     id: '003',
     name: '도면조회\u002F공간탐색',
-    children: [
-      {
-        name: '공간탐색',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-        link: '/geolab/fm/pm',
-      },
-    ],
+    // children: [
+    //   {
+    //     name: '공간탐색',
+    //     summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+    //     link: '/geolab/fm/pm',
+    //   },
+    // ],
   },
   {
     id: '004',

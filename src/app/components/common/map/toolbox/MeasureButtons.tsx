@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ToolboxButtonWrapper, ToolboxButton } from 'shared/styles/styled/common';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
-import styled from 'styled-components';
-
 import { measureTypes } from 'shared/constants/types';
+import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
+import styled from 'styled-components';
 
 interface StyledProps {
   $position: number[] | undefined;

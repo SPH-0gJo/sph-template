@@ -1,6 +1,7 @@
-import maplibregl from 'maplibre-gl';
+import maplibregl, { LngLatBounds } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { initCoords } from 'shared/constants/varibales';
+import { ImageExtent, WMSRequest } from 'shared/constants/types';
 export const initMap = (
   container: HTMLDivElement | string,
   zoom: number,
@@ -17,4 +18,27 @@ export const initMap = (
     center: [lng, lat],
     zoom,
   });
+};
+
+export function getExtentCoordinatesFromBounds(bounds: LngLatBounds): ImageExtent {
+  return [
+    bounds.getNorthWest().toArray(),
+    bounds.getNorthEast().toArray(),
+    bounds.getSouthEast().toArray(),
+    bounds.getSouthWest().toArray(),
+  ];
+}
+
+export const getMapRequestParams = (params: WMSRequest) => {
+  // const { WIDTH, HEIGHT, LAYERS, BBOX } = params;
+  const payload: WMSRequest = {
+    SERVICE: 'WMS',
+    VERSION: '1.1.0',
+    REQUEST: 'GetMap',
+    FORMAT: 'image/png',
+    TRANSPARENT: 'true',
+    SRS: 'EPSG:4326',
+    CRS: 'EPSG:4326',
+  };
+  return Object.assign(payload, params);
 };

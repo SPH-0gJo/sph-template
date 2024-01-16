@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import { InputField, Select } from 'app/components/common-ui';
+import { InputField } from 'app/components/common-ui';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { GeoDataKeys, LayerStyle } from 'shared/fixtures/pipeline';
+import styled from 'styled-components';
 
 const optionData = [
   { key: '1', value: 'Option 1' },
@@ -100,7 +100,6 @@ export const GSFLayerStyleEditor = () => {
           value={`${selectedLayerStyle?.[paintStyle?.colorFieldId as keyof LayerStyle] || ''}`}
           setInputValue={(color) => styleProcessor(paintStyle?.colorFieldId as keyof LayerStyle, String(color))}
         />
-
 
         <Select label="라인 스타일" optionData={optionData} />
       </LayerStyleEditForm>
