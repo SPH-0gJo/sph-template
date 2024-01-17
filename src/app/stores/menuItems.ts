@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { MainMenu } from 'shared/constants/types';
 import { commonApis } from 'app/api/common.api';
+import { MainMenu } from 'shared/constants/types/types';
+import { create } from 'zustand';
 
 interface MenuItemState {
   menuItems: MainMenu[];

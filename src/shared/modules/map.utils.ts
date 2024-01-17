@@ -1,7 +1,7 @@
 import maplibregl, { LngLatBounds } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
+import { ImageExtent, WMSRequest } from 'shared/constants/types/types';
 import { initCoords } from 'shared/constants/varibales';
-import { ImageExtent, WMSRequest } from 'shared/constants/types';
 export const initMap = (
   container: HTMLDivElement | string,
   zoom: number,

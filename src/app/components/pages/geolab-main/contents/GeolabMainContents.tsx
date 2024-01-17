@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Breadcrumb } from 'app/components/common/Breadcrumb';
-import { GeolabItemCard } from 'app/components/geolab-main/contents/GeolabItemCard';
-import { MainMenu } from 'shared/constants/types';
+import { GeolabItemCard } from 'app/components/pages/geolab-main/contents/GeolabItemCard';
+import { MainMenu } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
 const Main = styled.main`

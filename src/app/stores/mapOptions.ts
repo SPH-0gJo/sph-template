@@ -1,5 +1,5 @@
+import { measureTypes } from 'shared/constants/types/types';
 import { create } from 'zustand';
-import { measureTypes } from 'shared/constants/types';
 
 interface MapOptionState {
   measureType: measureTypes;

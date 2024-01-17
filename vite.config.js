@@ -4,6 +4,11 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
+  server: {
+    proxy: {
+      '/geolab/api/v1': 'http://localhost:9000',
+    },
+  },
   plugins: [viteReact()],
   resolve: {
     alias: [

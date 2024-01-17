@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const DataTableWrapper = styled.div`
-    position: absolute;\
-    background-color: #fff;
-    bottom: 1.25rem;
-    left: 1.25rem;
-    border-radius: 0.625rem;
-    background: var(--white);
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
-    max-width: calc(100vw - 2.5rem);
+  position: absolute;
+  background-color: #fff;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  border-radius: 0.625rem;
+  background: var(--white);
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+  max-width: calc(100vw - 2.5rem);
 `;
 
 export const DataTable = () => {

@@ -1,5 +1,5 @@
 import { Map as AppMap } from 'maplibre-gl';
-import { ImageExtent, WMSRequest } from 'shared/constants/types';
+import { ImageExtent, WMSRequest } from 'shared/constants/types/types';
 import { GeoserverWMSRequestURL, PipelineLayerIdsInGeoserver } from 'shared/constants/varibales';
 import { getExtentCoordinatesFromBounds, getMapRequestParams } from 'shared/modules/map.utils';
 

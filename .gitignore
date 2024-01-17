@@ -142,3 +142,4 @@ coverage/
 
 #vite
 .vite
+vite.config.js.timestamp*
