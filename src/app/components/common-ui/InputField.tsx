@@ -32,7 +32,7 @@ const Field = styled.input.attrs((props) => ({
   width: 100%;
   height: 100%;
   border: 0;
-  padding: 0rem 0.875rem;
+  padding: 0 0.5rem;
   background-color: transparent;
   &:focus {
     outline: none;
