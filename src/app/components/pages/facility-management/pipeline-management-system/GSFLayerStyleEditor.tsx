@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { InputField } from 'app/components/common-ui';
+import { InputField, Select } from 'app/components/common-ui';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { GeoDataKeys, LayerStyle } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';

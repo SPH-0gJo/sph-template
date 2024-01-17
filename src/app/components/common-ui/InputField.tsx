@@ -9,20 +9,19 @@ const InputFieldWrapper = styled.div`
 
 const InputFieldLabel = styled.label`
   color: #000;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: normal;
-  letter-spacing: -0.0075rem;
 `;
 
 const InputFieldBase = styled.div`
   flex: 0 0 50%;
+  min-width: 50%;
   border: 0;
-  width: 6.8125rem;
   height: 2rem;
   justify-content: space-between;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: var(--light-surface-level-2);
 `;
 
@@ -32,7 +31,7 @@ const Field = styled.input.attrs((props) => ({
   width: 100%;
   height: 100%;
   border: 0;
-  padding: 0 0.5rem;
+  padding: 0 0.4rem;
   background-color: transparent;
   &:focus {
     outline: none;
