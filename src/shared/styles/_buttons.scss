@@ -1,3 +1,10 @@
+.btn-wrap {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
 .btn {
   background-color: transparent;
   border-radius: 0.25rem;
@@ -51,7 +58,7 @@
   }
 
   &.btn-warning {
-    background-color: var(--light-semantic-warning-light);
+    background-color: var(--light-semantic-warning-origin);
     color: #fff;
   }
 
