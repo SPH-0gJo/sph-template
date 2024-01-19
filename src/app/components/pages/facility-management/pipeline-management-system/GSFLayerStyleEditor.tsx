@@ -5,9 +5,8 @@ import { GeoDataKeys, LayerStyle } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
 const optionData = [
-  { key: '1', value: 'Option 1' },
-  { key: '2', value: 'Option 2' },
-  { key: '3', value: 'Option 3' },
+  { key: '1', value: 'solid' },
+  { key: '2', value: 'dashed' },
 ];
 
 const LayerStyleEditor = styled.div`
@@ -93,15 +92,14 @@ export const GSFLayerStyleEditor = () => {
           value={`${selectedLayerStyle?.[paintStyle?.sizeFieldId as keyof LayerStyle] || 0}`}
           setInputValue={(width) => styleProcessor(paintStyle?.sizeFieldId as keyof LayerStyle, Number(width))}
         />
-        <InputField label='라인 스타일' setInputValue={(e) => console.log(e)} />
+        {/* <InputField label='라인 스타일' setInputValue={(e) => console.log(e)} />*/}
+        {groupId === 'pl' && <Select label='라인 스타일' optionData={optionData} />}
         <InputField
           label={paintStyle?.colorField}
           inputType='color'
           value={`${selectedLayerStyle?.[paintStyle?.colorFieldId as keyof LayerStyle] || ''}`}
           setInputValue={(color) => styleProcessor(paintStyle?.colorFieldId as keyof LayerStyle, String(color))}
         />
-
-        <Select label="라인 스타일" optionData={optionData} />
       </LayerStyleEditForm>
     </LayerStyleEditor>
   );

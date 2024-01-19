@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
-import { DataTable } from 'app/components/common-ui';
 import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
@@ -30,7 +29,7 @@ export const MapViewer = () => {
   const map = useRef<AppMap | null>(null);
   const { measureType, style, zoomLevel: zoom } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
-  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
+  const { gsfLayerGroups, layerDataTableId, layerStyleEditorId } = useGsfLayerStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -92,7 +91,6 @@ export const MapViewer = () => {
       <MapViewerWrapper ref={mapContainer} />
       <MapToolbox />
       <GSFLayerBox data={{ appMap: map.current }} />
-      <DataTable />
     </MapContainer>
   );
 };

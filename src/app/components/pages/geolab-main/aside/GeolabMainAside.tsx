@@ -1,6 +1,6 @@
 import React from 'react';
-import { GeolabMenu } from 'app/components/geolab-main/aside/GeolabMenu';
-import { MainMenu } from 'shared/constants/types';
+import { GeolabMenu } from 'app/components/pages/geolab-main/aside/GeolabMenu';
+import { MainMenu } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
 const Aside = styled.aside`

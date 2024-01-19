@@ -1,17 +1,20 @@
-import { create } from 'zustand';
-import { GeoDataKeys, GsfLayer } from 'shared/fixtures/pipeline';
 import { facilityManagementApi } from 'app/api/facility-management.api';
+import { GeoDataKeys, GsfLayer } from 'shared/fixtures/pipeline';
+import { create } from 'zustand';
 
 interface GsfLayerState {
   gsfLayerGroups: Map<string, GsfLayer> | undefined;
+  layerDataTableId: string | undefined;
   layerStyleEditorId: string | undefined;
   setLayerGroup: () => void;
+  setLayerDataTableId: (id: string | undefined) => void;
   setLayerStyleEditorId: (id: string | undefined) => void;
   upsertItem: (layer: GsfLayer) => void;
 }
 
 export const useGsfLayerStore = create<GsfLayerState>()((set) => ({
   gsfLayerGroups: undefined,
+  layerDataTableId: undefined,
   layerStyleEditorId: undefined,
   setLayerGroup: async () => {
     const { data } = await facilityManagementApi.geoData();
@@ -26,6 +29,13 @@ export const useGsfLayerStore = create<GsfLayerState>()((set) => ({
       });
     });
     set({ gsfLayerGroups: geoDataMap });
+  },
+  setLayerDataTableId: (layerDataTableId) => {
+    set((state) => {
+      const current = state.layerDataTableId;
+      if (current === layerDataTableId) return { layerDataTableId: undefined };
+      return { layerDataTableId };
+    });
   },
   setLayerStyleEditorId: (layerStyleEditorId) => {
     set((state) => {

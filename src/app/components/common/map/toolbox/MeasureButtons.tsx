@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
-import { measureTypes } from 'shared/constants/types';
+import { measureTypes } from 'shared/constants/types/types';
 import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
 import styled from 'styled-components';
 

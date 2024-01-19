@@ -1,4 +1,4 @@
-import { MainMenu } from 'shared/constants/types';
+import { MainMenu } from 'shared/constants/types/types';
 
 export const MainMenus: MainMenu[] = [
   {
@@ -9,6 +9,7 @@ export const MainMenus: MainMenu[] = [
         name: '배관 시설물 관리',
         summary: '배관, 밸브, Test box, 정압기 시설물 시각화, 데이터 관리 화면',
         link: '/geolab/fm/pm',
+        image: '/assets/images/sample_map.png',
       },
       // {
       //   name: '실시간 시설물 모니터링(Web)',
@@ -38,13 +39,15 @@ export const MainMenus: MainMenu[] = [
       // },
       {
         name: 'WMS & Vector tile',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        summary: 'WMS getMap & Vector tile 렌더링 비교',
         link: '/geolab/lm/mc',
+        image: '/assets/images/img_1.png',
       },
       {
         name: '대용량 Point 데이터 시각화',
-        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        summary: '최대 1억 개 포인트 지도 데이터 렌더링 테스트',
         link: '/geolab/lm/mp',
+        image: '/assets/images/img_2.png',
       },
     ],
   },

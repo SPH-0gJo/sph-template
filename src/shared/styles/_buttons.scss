@@ -18,17 +18,14 @@
   gap: 0.5rem;
   font-size: 1rem;
   line-height: 1;
-
   &.btn-sm {
     padding: 0.4rem 0.6rem;
     font-size: 0.75rem;
   }
-
   &.btn-xs {
     padding: 0.35rem 0.5rem;
     font-size: 0.65rem;
   }
-
   &.btn-primary {
     background-color: var(--light-primary-origin);
     color: #fff;
@@ -37,7 +34,6 @@
       background-color: var(--light-primary-dark);
     }
   }
-
   &.btn-secondary {
     background-color: var(--light-secondary-origin);
     color: #fff;
@@ -46,40 +42,32 @@
       background-color: var(--light-secondary-dark);
     }
   }
-
   &.btn-info {
     background-color: var(--light-semantic-info-origin);
     color: #fff;
   }
-
   &.btn-success {
     background-color: var(--light-semantic-success-origin);
     color: #fff;
   }
-
   &.btn-warning {
     background-color: var(--light-semantic-warning-origin);
     color: #fff;
   }
-
   &.btn-error {
     background-color: var(--light-semantic-error-origin);
     color: #fff;
-
     &:hover {
       background-color: #de3646;
     }
   }
-
   &.btn-close {
     font-size: 1.25rem;
     padding: 0.5rem;
-
     &:hover {
       background-color: var(--light-surface-level-3);
     }
   }
-
   & + & {
     margin-left: 0.25rem;
   }

@@ -67,7 +67,14 @@ interface GSFLayerBoxContentProps {
 }
 
 export const GSFLayerBoxContents = (props: GSFLayerBoxContentProps) => {
-  const { gsfLayerGroups, layerStyleEditorId, setLayerStyleEditorId, upsertItem } = useGsfLayerStore();
+  const {
+    gsfLayerGroups,
+    layerDataTableId,
+    layerStyleEditorId,
+    setLayerDataTableId,
+    setLayerStyleEditorId,
+    upsertItem,
+  } = useGsfLayerStore();
   const { layerGroupId } = props.data;
 
   const layerGroup: GsfLayer[] = useMemo(() => {
@@ -104,9 +111,11 @@ export const GSFLayerBoxContents = (props: GSFLayerBoxContentProps) => {
             <span>{layer.name}</span>
             <LayerButtons>
               <LayerButton
+                className={layer.sourceLayerId === layerDataTableId ? 'selected' : ''}
                 onClick={(e) => {
                   e.stopPropagation();
-                  console.log('속성 >>>', e);
+                  const { sourceLayerId } = layer;
+                  setLayerDataTableId(sourceLayerId);
                 }}
               >
                 <em className='icon-format-list-group' />
