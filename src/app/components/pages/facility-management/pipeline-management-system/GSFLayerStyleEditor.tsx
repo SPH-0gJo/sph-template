@@ -1,13 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { InputField, Select } from 'app/components/common-ui';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { GeoDataKeys, LayerStyle } from 'shared/fixtures/pipeline';
+import { LayerStyleProperty } from 'shared/constants/types/types';
+import { GeoDataKeys, LayerStyle, pipelineStrokeStyleOptions } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
-
-const optionData = [
-  { key: '1', value: 'solid' },
-  { key: '2', value: 'dashed' },
-];
 
 const LayerStyleEditor = styled.div`
   width: 12.4375rem;
@@ -36,15 +32,16 @@ const LayerStyleEditForm = styled.div`
 export const GSFLayerStyleEditor = () => {
   const { gsfLayerGroups, layerStyleEditorId, upsertItem } = useGsfLayerStore();
   const [groupId, setGroupId] = useState<GeoDataKeys>();
+  const [lineStrokeStyle, setLineStrokeStyle] = useState<string | undefined>(undefined);
 
   const selectedLayer = useMemo(() => {
-    if (!layerStyleEditorId || !gsfLayerGroups) return;
+    if (!layerStyleEditorId || !gsfLayerGroups) return undefined;
     const layer = gsfLayerGroups.get(layerStyleEditorId);
     return layer;
   }, [layerStyleEditorId]);
 
   const selectedLayerStyle = useMemo(() => {
-    if (!selectedLayer) return;
+    if (!selectedLayer) return undefined;
     return selectedLayer?.style;
   }, [selectedLayer]);
 
@@ -62,25 +59,24 @@ export const GSFLayerStyleEditor = () => {
     selectedLayer && setGroupId(selectedLayer?.groupId);
   }, [selectedLayer]);
 
-  function changeLineNSymbolStyle(key: string, value: string | number | number[]) {
-    if (!selectedLayer) return;
-    if (!layerStyleEditorId || !gsfLayerGroups) return;
+  useEffect(() => {
+    if (groupId !== 'pl') return;
+    const strokeStyle = selectedLayerStyle?.['line-dasharray'];
+    if (!strokeStyle) setLineStrokeStyle('1');
+    else {
+      const optionKey = strokeStyle[0] === 2.5 ? '2' : '3';
+      setLineStrokeStyle(optionKey);
+    }
+  }, [groupId, selectedLayerStyle]);
+
+  function changeLineNSymbolStyle(key: string, value: LayerStyleProperty) {
+    if (!selectedLayer || !layerStyleEditorId || !gsfLayerGroups) return;
     const layer = gsfLayerGroups.get(layerStyleEditorId);
-    if (!layer || !layer.style || !value) return;
+    if (!layer || !layer.style) return;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     layer.style[key as keyof LayerStyle] = value;
     upsertItem(layer);
-  }
-  const changeStyleProcessors = {
-    pl: changeLineNSymbolStyle,
-    vv: changeLineNSymbolStyle,
-    tb: changeLineNSymbolStyle,
-    rglt: changeLineNSymbolStyle,
-  };
-
-  function styleProcessor(key: keyof LayerStyle, value: string | number) {
-    groupId && changeStyleProcessors[groupId](key, value);
   }
 
   return (
@@ -90,15 +86,23 @@ export const GSFLayerStyleEditor = () => {
           label={paintStyle?.sizeField}
           inputType='number'
           value={`${selectedLayerStyle?.[paintStyle?.sizeFieldId as keyof LayerStyle] || 0}`}
-          setInputValue={(width) => styleProcessor(paintStyle?.sizeFieldId as keyof LayerStyle, Number(width))}
+          setInputValue={(width) => changeLineNSymbolStyle(paintStyle?.sizeFieldId as keyof LayerStyle, Number(width))}
         />
-        {/* <InputField label='라인 스타일' setInputValue={(e) => console.log(e)} />*/}
-        {groupId === 'pl' && <Select label='라인 스타일' optionData={optionData} />}
+        {groupId === 'pl' && (
+          <Select
+            label='라인 스타일'
+            optionData={pipelineStrokeStyleOptions}
+            defaultKey={lineStrokeStyle}
+            onChange={(strokeStyle) => {
+              changeLineNSymbolStyle('line-dasharray', strokeStyle);
+            }}
+          />
+        )}
         <InputField
           label={paintStyle?.colorField}
           inputType='color'
           value={`${selectedLayerStyle?.[paintStyle?.colorFieldId as keyof LayerStyle] || ''}`}
-          setInputValue={(color) => styleProcessor(paintStyle?.colorFieldId as keyof LayerStyle, String(color))}
+          setInputValue={(color) => changeLineNSymbolStyle(paintStyle?.colorFieldId as keyof LayerStyle, String(color))}
         />
       </LayerStyleEditForm>
     </LayerStyleEditor>

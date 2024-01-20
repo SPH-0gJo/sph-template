@@ -29,7 +29,7 @@ export const MapViewer = () => {
   const map = useRef<AppMap | null>(null);
   const { measureType, style, zoomLevel: zoom } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
-  const { gsfLayerGroups, layerDataTableId, layerStyleEditorId } = useGsfLayerStore();
+  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -77,9 +77,7 @@ export const MapViewer = () => {
     const layer = gsfLayerGroups.get(layerStyleEditorId);
     const { style } = layer!;
     if (!style) return;
-    let paintProperties = ['line-color', 'line-width'];
-    if (Object.prototype.hasOwnProperty.call(style, 'circle-color'))
-      paintProperties = ['circle-color', 'circle-radius'];
+    const paintProperties = Object.keys(style);
     paintProperties.forEach(
       (propertyName) =>
         map.current?.setPaintProperty(layerStyleEditorId, propertyName, style[propertyName as keyof LayerStyle]),

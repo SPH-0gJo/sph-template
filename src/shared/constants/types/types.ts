@@ -12,6 +12,8 @@ export interface MainMenu {
 }
 
 export type measureTypes = 'none' | 'distance' | 'radius' | 'area';
+
+export type LayerStyleProperty = string | number | number[] | object | null;
 export interface LayerStyle {
   'line-color'?: string;
   'line-width'?: number;

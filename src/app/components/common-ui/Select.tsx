@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+
+interface StyledProps {
+  $show: boolean;
+}
 
 const SelectWrapper = styled.div`
   display: inline-flex;
@@ -12,7 +16,7 @@ const SelectLabel = styled.label`
   font-size: 0.75rem;
   font-weight: 400;
   line-height: normal;
-  color: #000;
+  color: var(--white);
   letter-spacing: -0.0075rem;
 `;
 
@@ -49,7 +53,7 @@ const SelectBoxLabel = styled.label`
   overflow: hidden;
 `;
 
-const SelectOptions = styled.ul<{ show: boolean }>`
+const SelectOptions = styled.ul<StyledProps>`
   box-sizing: border-box;
   position: absolute;
   list-style-type: none;
@@ -60,8 +64,8 @@ const SelectOptions = styled.ul<{ show: boolean }>`
   border-radius: 6px;
   background: var(--white);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
-  height: ${(props) => (props.show ? 'auto' : '0')};
-  max-height: ${(props) => (props.show ? '200px' : '0')};
+  height: ${(props) => (props.$show ? 'auto' : '0')};
+  max-height: ${(props) => (props.$show ? '200px' : '0')};
   transition: height 0.2s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
@@ -95,44 +99,58 @@ const Option = styled.li`
   }
 `;
 
+type SelectOptionValue = string | number | object | null;
+
 interface OptionData {
   key: string;
-  value: string;
+  label: string;
+  value?: SelectOptionValue;
 }
 
 interface SelectProps {
   label?: string;
   optionData: OptionData[];
+  defaultKey: string | number | undefined;
+  onChange?: (value: SelectOptionValue) => void;
 }
 
-export const Select: React.FC<SelectProps> = ({ label, optionData }) => {
-  const [currentValue, setCurrentValue] = useState(optionData[0].value);
+export const Select: React.FC<SelectProps> = (props: SelectProps) => {
+  const { label, optionData, defaultKey, onChange } = props;
   const [showOptions, setShowOptions] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
+  const selectedLabel = useMemo(() => {
+    if (!selectedKey) return '선택';
+    return optionData.filter((e) => e.key === selectedKey)[0].label;
+  }, [selectedKey]);
 
   useEffect(() => {
-    setShowOptions(false);
-  }, [currentValue]);
-  const handleSelectChange = (value: string) => {
-    setCurrentValue(value);
-    setShowOptions(false);
-    setSelectedOption(value);
+    if (!defaultKey) setSelectedKey(null);
+    else {
+      const value = optionData.filter((e) => e.key === defaultKey)[0].key;
+      setSelectedKey(value);
+    }
+  }, [defaultKey]);
+  const handleSelectChange = (value: SelectOptionValue | undefined, key: string | null) => {
+    if (value === undefined) return;
+    setShowOptions(true);
+    setSelectedKey(key);
+    onChange && onChange(value);
   };
 
   return (
     <SelectWrapper>
       {label && <SelectLabel>{label}</SelectLabel>}
       <SelectBox onClick={() => setShowOptions((prev) => !prev)}>
-        <SelectBoxLabel>{currentValue}</SelectBoxLabel>
-        <SelectOptions show={showOptions}>
+        <SelectBoxLabel>{selectedLabel}</SelectBoxLabel>
+        <SelectOptions $show={showOptions}>
           {optionData.map((data) => (
             <Option
               key={data.key}
-              value={data.value}
-              className={selectedOption === data.value ? 'selected' : ''}
-              onClick={() => handleSelectChange(data.value)}
+              className={selectedKey === data.label ? 'selected' : ''}
+              onClick={() => handleSelectChange(data.value, data.key)}
             >
-              {data.value}
+              {data.label}
             </Option>
           ))}
         </SelectOptions>

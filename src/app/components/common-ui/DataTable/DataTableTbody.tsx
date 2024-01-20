@@ -35,7 +35,6 @@ interface DataTableTbodyProps {
 
 export const DataTableTbody = (props: DataTableTbodyProps) => {
   const { data: RowData } = props;
-  console.log('RowData???', RowData);
   function getTd(values: Array<string | number | undefined>) {
     return values.map((e, index) => <TD key={index}>{e}</TD>);
   }
