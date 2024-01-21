@@ -54,7 +54,6 @@ export const GSFLayerData = () => {
     if (!gisType) return [];
     try {
       const { data } = await gsfApis.pipeline(gisType);
-      console.log(data.data);
       return data.data;
     } catch (e) {
       return [];

@@ -2,7 +2,7 @@ export type GeoDataKeys = 'pl' | 'vv' | 'tb' | 'rglt';
 export interface LayerStyle {
   'line-color'?: string;
   'line-width'?: string | number;
-  'line-dasharray'?: Array<number>;
+  'line-dasharray'?: Array<number> | null;
   'circle-color'?: string;
   'circle-radius'?: number;
 }
@@ -33,7 +33,7 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
         name: 'HP본관',
         key: 'GIS_PL_TY_',
         code: '2010',
-        style: { 'line-color': '#fc03e3', 'line-width': 1.5 },
+        style: { 'line-color': '#fc03e3', 'line-width': 1.5, 'line-dasharray': null },
       },
       {
         name: 'HP내관',
@@ -45,13 +45,13 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
         name: 'MA본관',
         key: 'GIS_PL_TY_',
         code: '2020',
-        style: { 'line-color': '#ff000d', 'line-width': 1.5 },
+        style: { 'line-color': '#ff000d', 'line-width': 1.5, 'line-dasharray': null },
       },
       {
         name: 'MA사용자공급관',
         key: 'GIS_PL_TY_',
         code: '2022',
-        style: { 'line-color': '#ff000d', 'line-width': 1 },
+        style: { 'line-color': '#ff000d', 'line-width': 1, 'line-dasharray': null },
       },
       {
         name: 'MA내관',
@@ -63,13 +63,13 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
         name: 'LP본관',
         key: 'GIS_PL_TY_',
         code: '2031',
-        style: { 'line-color': '#0037ff', 'line-width': 1.5 },
+        style: { 'line-color': '#0037ff', 'line-width': 1.5, 'line-dasharray': null },
       },
       {
         name: 'LP사용자공급관',
         key: 'GIS_PL_TY_',
         code: '2032',
-        style: { 'line-color': '#0037ff', 'line-width': 1 },
+        style: { 'line-color': '#0037ff', 'line-width': 1, 'line-dasharray': null },
       },
       {
         name: 'LP내관',
@@ -198,4 +198,10 @@ export const tbs = [
 export const rglt = [
   { code: '2111', color: '#fc03e3' },
   { code: '2112', color: '#fc03e3' },
+];
+
+export const pipelineStrokeStyleOptions = [
+  { key: '1', label: 'solid', value: null },
+  { key: '2', label: 'dashed', value: [2.5, 2.5] },
+  { key: '3', label: 'dotted', value: [1.5, 1.5] },
 ];

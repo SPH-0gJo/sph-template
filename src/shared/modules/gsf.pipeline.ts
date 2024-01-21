@@ -45,5 +45,5 @@ export const columnValue = (convertId: string, key: string | number): string => 
   const convertType: WordDictTypes = converter[convertId as keyof typeof converter];
   const id = String(key) as keyof WordDictTypes;
   const value: string = convertType[id];
-  return value && '';
+  return value || '-';
 };
