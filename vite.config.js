@@ -10,6 +10,11 @@ export default defineConfig({
     },
   },
   plugins: [viteReact()],
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
+  },
   resolve: {
     alias: [
       { find: 'app', replacement: path.resolve(__dirname, './src/app/') },

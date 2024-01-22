@@ -1,0 +1,18 @@
+.content-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content-wrap {
+  background-color: #eee;
+  padding: 15px 20px;
+  border-radius: 10px;
+
+  .btn-wrap {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+}

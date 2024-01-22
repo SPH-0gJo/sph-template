@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GeolabMenu } from 'app/components/pages/geolab-main/aside/GeolabMenu';
 import { MainMenu } from 'shared/constants/types/types';
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ const Aside = styled.aside`
 `;
 
 const AsideHeader = styled.div`
+  cursor: pointer;
   height: 5.625rem;
   color: var(--dark-text-primary);
   display: flex;
@@ -58,10 +60,11 @@ interface GeolabMainAsideProps {
 }
 
 export const GeolabMainAside = (props: GeolabMainAsideProps) => {
+  const navigator = useNavigate();
   const { menuItems } = props.data;
   return (
     <Aside>
-      <AsideHeader>
+      <AsideHeader onClick={() => navigator('/geolab')}>
         <img src='/assets/images/logo.svg' alt='Geolab Logo' />
         <span>GEOLAB</span>
       </AsideHeader>
