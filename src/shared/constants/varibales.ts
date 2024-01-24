@@ -5,6 +5,6 @@ export const PipelineLayerIdsInGeoserver = [
   'geolab:GSF_TB_MT',
   'geolab:GSF_RGLT_MT',
 ];
-export const GeoserverWMSRequestURL = 'http://localhost:8080/geoserver/geolab/wms';
-export const GeolabVectorTileStyle = 'http://localhost:8081/data/pipeline_samplesv2.json';
+export const GeoserverWMSRequestURL = 'http://34.64.161.119:8080/geoserver/geolab/wms';
+export const GeolabVectorTileStyle = 'http://34.64.161.119:8081/data/pipeline_samplesv2.json';
 export const CircleSize = 3;

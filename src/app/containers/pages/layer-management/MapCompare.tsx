@@ -32,7 +32,7 @@ export const MapCompare = () => {
   const [ curPosition, setCurPosition] = useState<Array<Array<number>>>([[]]);
   const [ isMove, setIsMove] = useState<number>(0)
   useEffect(() => {
-    setBreadcrumb(['Main', '시설물 관리', '배관시설물 관리']);
+    setBreadcrumb(['Main', 'Layer 관리', 'WMS & Vector tile']);
   }, []);
   return (
     <MapCompareContainer>

@@ -7,7 +7,7 @@ import { PageContainer } from 'shared/styles/styled/common';
 export const MassivePoints = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
   useEffect(() => {
-    setBreadcrumb(['Main', '레이어 관리', '대용량 Point 데이터 시각화']);
+    setBreadcrumb(['Main', 'Layer 관리', '대용량 Point 데이터 시각화']);
   }, []);
   return (
     <PageContainer>
