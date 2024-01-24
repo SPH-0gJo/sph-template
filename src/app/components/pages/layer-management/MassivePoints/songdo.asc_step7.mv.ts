@@ -1,6 +1,6 @@
 import { Map as AppMap } from 'maplibre-gl';
 
-const styleUrl = 'http://localhost:8081/data/pipeline_samplesv2.json';
+const styleUrl = 'http://34.64.161.119:8081/data/pipeline_samplesv2.json';
 const circleSize = 1;
 const pointUnitValue = 100;
 const sourceLayerFromVectortile = 'Songdo_asc_step7_mv';
