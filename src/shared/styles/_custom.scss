@@ -125,15 +125,15 @@
 .content-box {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1.2rem;
 }
 
 .content-wrap {
-  background-color: #eee;
-  padding: 15px 20px;
-  border-radius: 10px;
+  background-color: #fff;
+  padding: 1rem 1.2rem;
+  border-radius: 0.8rem;
 
   .btn-wrap {
-    gap: 10px;
+    gap: 0.7rem;
   }
 }
