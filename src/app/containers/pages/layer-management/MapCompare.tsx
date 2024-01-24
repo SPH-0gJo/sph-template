@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
 import { MapViewer } from 'app/components/pages/layer-management/MapCompare/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
@@ -29,6 +29,8 @@ const MapWrapper = styled.div`
 `;
 export const MapCompare = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
+  const [ curPosition, setCurPosition] = useState<Array<Array<number>>>([[]]);
+  const [ isMove, setIsMove] = useState<number>(0)
   useEffect(() => {
     setBreadcrumb(['Main', '시설물 관리', '배관시설물 관리']);
   }, []);
@@ -37,10 +39,10 @@ export const MapCompare = () => {
       <AppHeader />
       <Maps>
         <MapWrapper>
-          <MapViewer data={{ requestType: 'wms' }} />
+          <MapViewer isMove={isMove} num={1} setIsMove={setIsMove} curPosition={curPosition} setCurPosition={setCurPosition} data={{ requestType: 'wms' }} />
         </MapWrapper>
         <MapWrapper>
-          <MapViewer data={{ requestType: 'vector-tile' }} />
+          <MapViewer isMove={isMove} num={2} setIsMove={setIsMove} curPosition={curPosition} setCurPosition={setCurPosition} data={{ requestType: 'vector-tile' }} />
         </MapWrapper>
       </Maps>
     </MapCompareContainer>

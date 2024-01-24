@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
@@ -22,6 +22,11 @@ interface MapViewerProps {
   data: {
     requestType: 'wms' | 'vector-tile';
   };
+  num?: number;
+  isMove? : number;
+  setIsMove? : React.Dispatch<React.SetStateAction<number>>;
+  curPosition?: Array<Array<number>>;
+  setCurPosition?: React.Dispatch<React.SetStateAction<Array<Array<number>>>>;
 }
 
 export const MapViewer = (props: MapViewerProps) => {
@@ -47,7 +52,75 @@ export const MapViewer = (props: MapViewerProps) => {
       if (props.data.requestType === 'vector-tile') return;
       map.current && getMapByWMS(map.current);
     });
-  }, [zoom]);
+    map.current.dragRotate.disable();
+    map.current.touchZoomRotate.disableRotation();
+  },[zoom]);
+
+  useEffect(() => {
+    if(map.current){
+      const onDrag = () => {
+        if(props.setIsMove && props.num){
+          props.setIsMove(props.num);
+        }
+      };
+      const onDragEnd = () => {
+        if(props.setIsMove){
+          props.setIsMove(0);
+        }
+      };
+      const dblclick = () => {
+        if(props.setIsMove && props.num){
+          props.setIsMove(props.num);
+        }
+      };
+
+      const wheel = () =>{
+        if(props.setIsMove && props.num){
+          props.setIsMove(props.num);
+        }
+      }
+      const rotate = () =>{
+        if(props.setIsMove && props.num){
+          props.setIsMove(props.num);
+        }
+      }
+
+      const move = () => {
+        if (props.setCurPosition && map.current?.getBounds().toArray() && props.num && props.setIsMove) {
+          // console.log(map.current?.getBounds().toArray());
+          if(props.isMove === props.num) {
+            props.setCurPosition(map.current?.getBounds().toArray());
+          }
+        }
+      };
+
+      if(props.isMove!==0){
+        map.current.on('move',move)
+      }
+      map.current.on('rotate',rotate)
+      map.current.on('wheel',wheel)
+      map.current.on('drag',onDrag)
+      map.current.on('dragend',onDragEnd)
+      map.current.on('dblclick',dblclick)
+
+      if(props.curPosition && props.curPosition.length===2){
+        if(props.isMove !== props.num){
+          map.current?.fitBounds([props.curPosition[0][0],props.curPosition[0][1],props.curPosition[1][0],props.curPosition[1][1]], {duration: 0});
+        }
+      }
+
+      return () => {
+        if(map.current) {
+          map.current.off('rotate',rotate)
+          map.current.off('wheel',wheel)
+          map.current.off('drag', onDrag);
+          map.current.off('dragend', onDragEnd);
+          map.current.off('dblclick',dblclick)
+          map.current.off('move',move)
+        }
+      };
+    }
+  }, [map,props.isMove,props.num,props.curPosition]);
 
   return (
     <MapContainer>
