@@ -49,6 +49,12 @@ export const MainMenus: MainMenu[] = [
         link: '/geolab/lm/mp',
         image: '/assets/images/img_2.png',
       },
+      {
+        name: 'Vector tile 정보 표출',
+        summary: 'Vector tile 정보 표출 Info Window',
+        link: '/geolab/lm/iw',
+        image: '/assets/images/img_3.png',
+      },
     ],
   },
   {
