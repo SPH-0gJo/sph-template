@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Breadcrumb } from 'app/components/common/Breadcrumb';
 import { GeolabItemCard } from 'app/components/pages/geolab-main/contents/GeolabItemCard';
 import { MainMenu } from 'shared/constants/types/types';
 import styled from 'styled-components';
@@ -90,7 +89,6 @@ export const GeolabMainContents = (props: GeolabMainContentsProps) => {
             오픈소스&nbsp;기반&nbsp;GIS&nbsp;데이터&nbsp;활용&nbsp;예제를&nbsp;경험해&nbsp;보세요.
           </p>
         </ContentTitle>
-        <Breadcrumb />
       </ContentsHeader>
       <MainContent>
         {filteredMenuItems.map(({ id, name, children }) => {
