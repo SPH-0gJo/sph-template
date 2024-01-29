@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
+import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles.window';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { useMapOptionsStore } from 'app/stores/mapOptions';
-import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles.window';
 
 const MapContainer = styled.div`
   width: 100%;
