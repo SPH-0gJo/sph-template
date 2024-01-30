@@ -60,6 +60,7 @@ export const MapViewer = () => {
   useEffect(() => {
     if (!map.current || !zoom) return;
     map.current?.zoomTo(zoom, { duration: 1000 });
+    console.log(map.current?.getStyle());
   }, [zoom]);
 
   useEffect(() => {

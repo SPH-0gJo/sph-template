@@ -88,4 +88,16 @@ export const MainMenus: MainMenu[] = [
     id: '008',
     name: '대시보드',
   },
+  {
+    id: '009',
+    name: '디자인 가이드',
+    children: [
+      {
+        name: '공통 컴포넌트 모음',
+        summary: 'Geolab 개발자 공통 컴포넌트 및 디자인 가이드',
+        link: '/geolab/guide',
+        image: '/assets/images/sample_map.png',
+      },
+    ],
+  },
 ];
