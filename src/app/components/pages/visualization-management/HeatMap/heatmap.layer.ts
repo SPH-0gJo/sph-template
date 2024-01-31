@@ -1,6 +1,5 @@
 import { Map as AppMap, MapMouseEvent } from 'maplibre-gl';
 
-// const styleUrl = 'https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson';
 const styleUrl = '/public/assets/data/heat_map_test.json';
 export const heatmapSource = 'heat-map-layers';
 export const heatmapLayerPrefix = 'heat_map_sample';
@@ -21,8 +20,8 @@ export async function addHeatMap(map: AppMap) {
             'heatmap-weight': [
               'interpolate',
               ['linear'],
-              ['get', 'mag'],
-              0, 0, 6, 1,
+              ['get', 'scale'],
+              0, 0, 1, 1
             ],
             'heatmap-intensity': [
               'interpolate',
@@ -51,7 +50,7 @@ export async function addHeatMap(map: AppMap) {
               'interpolate',
               ['linear'],
               ['zoom'],
-              7, 1, 9, 0,
+              9, 1, 12, 0,
             ],
           },
         },
@@ -67,10 +66,8 @@ export async function addHeatMap(map: AppMap) {
               'interpolate',
               ['linear'],
               ['zoom'],
-              7,
-              ['interpolate', ['linear'], ['get', 'mag'], 1, 1, 6, 4],
-              16,
-              ['interpolate', ['linear'], ['get', 'mag'], 1, 5, 6, 50],
+              10, ['interpolate', ['linear'], ['get', 'scale'], 0.5, 1],
+              16, ['interpolate', ['linear'], ['get', 'scale'], 0.5, 10],
             ],
             'circle-color': ['get', 'color'],
             'circle-stroke-color': ['get', 'color'],
@@ -85,11 +82,7 @@ export async function addHeatMap(map: AppMap) {
         },
       );
 
-      map.on('click', `${heatmapLayerPrefix}_point`, (e: MapMouseEvent) => {
-        console.log(e);
-      });
       resolve({ success: true });
     });
-
   }
 }

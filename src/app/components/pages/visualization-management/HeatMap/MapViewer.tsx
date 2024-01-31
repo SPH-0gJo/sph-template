@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { addHeatMap } from 'app/components/pages/visualization-management/HeatMap/farmer.layer';
+import { addHeatMap } from 'app/components/pages/visualization-management/HeatMap/heatmap.layer';
 import { HMLegend } from 'app/components/pages/visualization-management/HeatMap/HMLegend';
 import { Map as AppMap } from 'maplibre-gl';
 import { initMap } from 'shared/modules/map.utils';
@@ -24,8 +24,8 @@ export const MapViewer = () => {
   useEffect(() => {
     if (map.current || !mapContainer) return;
     const container = mapContainer.current || '';
-    const center = [126.64261, 37.38354];
-    map.current = initMap(container, 2, 2, center);
+    const center = [128.9742, 35.1636];
+    map.current = initMap(container, 9, 2, center);
     map.current.on('load', () => {
       map.current && addHeatMap(map.current);
       return () => map.current?.remove();
