@@ -36,7 +36,6 @@ export const MapViewer = () => {
     });
   }, []);
 
-
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />

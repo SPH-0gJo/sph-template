@@ -3,10 +3,11 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PipelineManagement } from 'app/containers/pages/facility-management/PipelineManagement';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
 import { UIGuidePage } from 'app/containers/pages/guide/UIGuidePage';
+import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
 import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
 import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
+import { HeatMap } from 'app/containers/pages/visualization-management/HeatMap';
 import styled from 'styled-components';
-import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
 
 const AppPage = styled.div`
   width: 100vw;
@@ -26,6 +27,7 @@ export const App = () => {
           <Route path='/geolab/lm/mc' element={<MapCompare />} />
           <Route path='/geolab/lm/mp' element={<MassivePoints />} />
           <Route path='/geolab/lm/iw' element={<InfoWindow />} />
+          <Route path='/geolab/gv/hm' element={<HeatMap />} />
         </Routes>
       </BrowserRouter>
     </AppPage>

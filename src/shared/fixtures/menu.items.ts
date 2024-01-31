@@ -79,6 +79,14 @@ export const MainMenus: MainMenu[] = [
   {
     id: '006',
     name: 'GIS 시각화',
+    children: [
+      {
+        name: 'Heat map',
+        summary: '색상으로 표현한 통계 정보를 확인해 보세요',
+        link: '/geolab/gv/hm',
+        image: '/assets/images/img_4.png',
+      }
+    ]
   },
   {
     id: '007',
