@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
+import { Simulate } from 'react-dom/test-utils';
 import { GeolabItemCard } from 'app/components/pages/geolab-main/contents/GeolabItemCard';
 import { MainMenu } from 'shared/constants/types/types';
 import styled from 'styled-components';
+import load = Simulate.load;
 
 const Main = styled.main`
   background-color: var(--light-surface-level-2);

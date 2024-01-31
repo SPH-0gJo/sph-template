@@ -6,6 +6,7 @@ import { UIGuidePage } from 'app/containers/pages/guide/UIGuidePage';
 import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
 import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
 import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
+import { MobileMain } from 'app/containers/pages/MobileMain';
 import { HeatMap } from 'app/containers/pages/visualization-management/HeatMap';
 import styled from 'styled-components';
 
@@ -28,6 +29,7 @@ export const App = () => {
           <Route path='/geolab/lm/mp' element={<MassivePoints />} />
           <Route path='/geolab/lm/iw' element={<InfoWindow />} />
           <Route path='/geolab/gv/hm' element={<HeatMap />} />
+          <Route path='/geolab/m/mm' element={<MobileMain />} />
         </Routes>
       </BrowserRouter>
     </AppPage>
