@@ -11,11 +11,12 @@ export const MainMenus: MainMenu[] = [
         link: '/geolab/fm/pm',
         image: '/assets/images/sample_map.png',
       },
-      // {
-      //   name: '실시간 시설물 모니터링(Web)',
-      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-      //   link: '/geolab/fm/pm',
-      // },
+      {
+        name: '실시간 시설물 모니터링',
+        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        link: '/geolab/fm/rpm',
+        image: '/assets/images/sample_map.png',
+      },
       // {
       //   name: '실시간 시설물 모니터링(Mobile)',
       //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
