@@ -108,4 +108,26 @@ export const MainMenus: MainMenu[] = [
       },
     ],
   },
+  {
+    id: '010',
+    name: '모바일 현장 지원 시스템',
+    children: [
+      // {
+      //   name: '관리자 Panel',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
+      // {
+      //   name: '지도 파일 업로드',
+      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+      //   link: '/geolab/fm/pm',
+      // },
+      {
+        name: '모바일 현장 지원 시스템',
+        summary: '모바일 현장지원 시스템',
+        link: '/geolab/m/mm',
+        image: '/assets/images/img_1.png',
+      },
+    ]
+  },
 ];
