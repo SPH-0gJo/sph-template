@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ToggleSwitch } from 'app/components/common/ToggleSwitch';
+import { ToggleSwitch } from 'app/components/common-ui/ToggleSwitch';
+import { useMobileMapStore } from 'app/stores/mobile/mobileMap';
 import { useMobilePageStore } from 'app/stores/mobile/mobilePages';
 import styled from 'styled-components';
 
@@ -19,15 +20,17 @@ const StyledAside = styled.aside`
 `;
 
 const Button = styled.button`
-  font-size: 0.8rem;
+  font-size: 1rem;
   width: 100%;
   border: none;
   background-color: transparent;
   height: 2.5rem;
   padding-left: 1rem;
-  display: flex;
+  display: grid;
   align-items: center;
   margin-top: 0.5rem;
+  grid-template-columns: 0.5fr 3fr 0.5fr;
+  text-align: left;
 `
 const Em = styled.em`
   font-size: 1.5rem;
@@ -35,6 +38,7 @@ const Em = styled.em`
 `
 
 interface menuType{
+  id : string;
   title : string;
   icon : string;
   toggle:boolean;
@@ -43,14 +47,15 @@ interface menuType{
 
 export const MobileAside = () => {
   const { menuOpen } = useMobilePageStore();
+  const { setMapInfoView, setMapLayerView } = useMobileMapStore();
   const [ menuList, setMenuList ] = useState<Array<menuType>>([])
 
   useEffect(() => {
     const newMenuList = [
-      {title:'지도 주소 검색', icon:'icon-magnifier', toggle:false, key:0},
-      {title:'지도 중심 정보 표시', icon:'icon-map-position', toggle:true, key:1},
-      {title:'레이어 범례', icon:'icon-layers-o', toggle:false, key:2},
-      {title:'설정', icon:'icon-cog', toggle:false, key:3},
+      {id:'search',title:'지도 주소 검색', icon:'icon-magnifier', toggle:false, key:0},
+      {id:'info',title:'지도 정보 표시', icon:'icon-map-position', toggle:true, key:1},
+      {id:'layer',title:'레이어 표출', icon:'icon-layers-o', toggle:true, key:2},
+      {id:'setting',title:'설정', icon:'icon-cog', toggle:false, key:3},
     ]
 
     setMenuList(newMenuList)
@@ -58,18 +63,25 @@ export const MobileAside = () => {
 
   const transformValue = menuOpen ? '' : 'translateX(-100%)';
 
-  const getValue = (e:boolean) => {
-    console.log(e);
+  const getValue = (value:boolean, id:string) => {
+    switch (id){
+      case 'info':
+        setMapInfoView(value)
+        break;
+      case 'layer':
+        setMapLayerView(value)
+        break;
+    }
   }
   return (
     <StyledAside style={{ transform: transformValue }}>
-       {menuList.map(({title,icon,toggle,key})=> {
+       {menuList.map(({id, title,icon,toggle,key})=> {
          return(
-           <Button key={key}>
+           <Button key={key} >
              <Em className={icon}></Em>
-             <span style={{paddingRight:'8rem'}}>{title}</span>
+             <span>{title}</span>
              {!toggle||
-                <ToggleSwitch type={'round'} value={getValue}/>
+                <ToggleSwitch id={id} type={'round'} value={(value)=>getValue(value,id)}/>
              }
            </Button>
          )
