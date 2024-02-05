@@ -54,18 +54,19 @@ const RoundSlider = styled(Slider)`
 `
 
 interface defaultProps{
+  id:string;
   type:string;
   value:(checked:boolean)=>void;
 }
 
 export const ToggleSwitch = (props:defaultProps) => {
-  const {type, value} = props;
+  const {id, type, value} = props;
 
   return(
-    <Switch htmlFor="toggleSwitch">
+    <Switch htmlFor={id}>
       <CheckBox
         type='checkbox'
-        id="toggleSwitch"
+        id={id}
         onClick={(e:React.MouseEvent<HTMLInputElement>)=>{
           const { checked } = e.target as HTMLInputElement;
           value(checked)
