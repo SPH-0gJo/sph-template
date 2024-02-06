@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  addMonitoringLayer
+} from 'app/components/pages/facility-management/pipeline-monitoring-system/contents/monitoring_layer';
+import { Map as AppMap } from 'maplibre-gl';
 import styled from 'styled-components';
 
 const LayerWrapper = styled.div`
@@ -9,7 +13,7 @@ const LayerWrapper = styled.div`
     padding: 0.5rem 1rem;
 `;
 
-const Header = styled.div`
+const LayerHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,12 +28,18 @@ const Header = styled.div`
 `;
 
 export const LayerList = () => {
+  const [groupIdList, setGroupIdList] = useState<Array<string>>();
+
+  useEffect(() => {
+    setGroupIdList(['pipeline']);
+  }, []);
+
   return (
     <LayerWrapper>
-      <Header>
+      <LayerHeader>
         <div>레이어 추가</div>
         <em className="icon-plus"></em>
-      </Header>
+      </LayerHeader>
     </LayerWrapper>
   );
 };
