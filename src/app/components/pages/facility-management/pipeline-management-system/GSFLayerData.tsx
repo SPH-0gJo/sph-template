@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { gsfApis } from 'app/api/pipeline.api';
 import { DataTable } from 'app/components/common-ui/index';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
@@ -41,22 +41,21 @@ const GSFLayerDataHeader = styled.div`
 
 export const GSFLayerData = () => {
   const { layerDataTableId, setLayerDataTableId } = useGsfLayerStore();
-  const {
-    isLoading,
-    data: layerData,
-    error,
-    refetch,
-  } = useQuery('layerData', async () => {
-    if (!layerDataTableId) return [];
-    const arr = layerDataTableId.split('_') || [];
-    const gisType = arr.at(-1);
-    if (!gisType) return [];
-    try {
-      const { data } = await gsfApis.pipeline(gisType);
-      return data.data;
-    } catch (e) {
-      return [];
-    }
+  const {isLoading, data: layerData, error, refetch,} = useQuery({
+      queryKey:['layerData'],
+      queryFn:async() =>
+      {
+        if (!layerDataTableId) return [];
+        const arr = layerDataTableId.split('_') || [];
+        const gisType = arr.at(-1);
+        if (!gisType) return [];
+        try {
+          const { data } = await gsfApis.pipeline(gisType);
+          return data.data;
+        } catch (e) {
+          return [];
+        }
+      }
   });
 
   useEffect(() => {
