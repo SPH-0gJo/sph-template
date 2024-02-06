@@ -4,6 +4,7 @@ import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-m
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
+import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { LayerStyle } from 'shared/fixtures/pipeline';
 import { drawNRemoveLayers, measureDistanceAction } from 'shared/modules/gis/measure.distance';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
@@ -27,7 +28,7 @@ const MapViewerWrapper = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const { measureType, style, zoomLevel: zoom } = useMapOptionsStore();
+  const { measureType, style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
   const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
@@ -48,7 +49,10 @@ export const MapViewer = () => {
         [127.57186889648438, 36.98272705078125], // northeastern corner of the bounds
       ]);
     });
-    return () => map.current?.remove();
+    return () => {
+      setStyleOption(vectorTileBaseMaps[0].style);
+      map.current?.remove();
+    }
   }, []);
 
   useEffect(() => {
