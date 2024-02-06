@@ -5,6 +5,8 @@ import { GeolabMainHeader } from 'app/components/pages/geolab-main/herader/Geola
 import { useCommonStore } from 'app/stores/menuItems';
 import styled from 'styled-components';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import styles from 'app/containers/pages/guide/UIGuidePage.module.scss';
 
 const LandingPage = styled.div`
