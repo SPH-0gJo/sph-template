@@ -1,8 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { mobileApi } from 'app/api/mobile.api';
+import { InfoBox } from 'app/components/pages/mobile-main/map/InfoBox';
 import { LayerBox } from 'app/components/pages/mobile-main/map/LayerBox';
+import { SearchView } from 'app/components/pages/mobile-main/map/SearchView';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { useMobileMapStore } from 'app/stores/mobile/mobileMap';
 import { LngLatBoundsLike, Map as AppMap } from 'maplibre-gl';
+import { SvcRequest } from 'shared/constants/types/mobile/openapi';
+import {  OpenAPIKey } from 'shared/constants/varibales';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 import { addVectorTilesMobile } from 'shared/modules/gis/pipeline.vector.tiles.mobile';
 import { initMap } from 'shared/modules/map.utils';
@@ -17,19 +22,17 @@ const MapContainer = styled.div`
   position: absolute;
   top: 3.625rem;
 `;
-
 const MapViewerWrapper = styled.div`
   width: 100%;
   height: 100%;
   cursor: crosshair;
 `;
-
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
+  const [curZoom, setCurZoom] = useState<number | undefined>(12)
   const map = useRef<AppMap | null>(null);
   const { zoomLevel: zoom } = useMapOptionsStore();
-  const { mapButtonAction,setMapButtonAction,  mapLayerView, mapLayerViewList } = useMobileMapStore();
-
+  const { mapButtonAction,setMapButtonAction,  mapLayerView, mapLayerViewActiveList, mapInfoView, mapSearchView, setMapInfoList, setRequestInfo, requestInfo } = useMobileMapStore();
   const setMap = (bounds:LngLatBoundsLike) => {
     const container = mapContainer.current || '';
     map.current = initMap(container, zoom, 0, undefined);
@@ -40,7 +43,57 @@ export const MapViewer = () => {
     });
     return () => map.current?.remove();
   }
-
+  useEffect(() => {
+    if (map.current || !mapContainer) return;
+    const bbox:LngLatBoundsLike = [
+      [127.0396123, 36.3755123],
+      [127.0396123, 36.9755123],
+    ]
+    setMap(bbox);
+  }, []);
+  useEffect(() => {
+    if (!map.current || !zoom) return;
+    map.current?.zoomTo(zoom, { duration: 1000 });
+  }, [zoom]);
+  useEffect(() => {
+    const getInfo = async () => {
+      if (mapInfoView && map.current) {
+        if(map.current?.getZoom()>12){
+          const naverResult = await mobileApi.naverApi(map.current?.getCenter().lat,map.current?.getCenter().lng)
+          const request:SvcRequest = {
+            serviceKey:OpenAPIKey,
+            pageNo:'1',
+            numOfRows:'999',
+            viewType:'json',
+            BSI:naverResult[0],
+            SIGUN:naverResult[1],
+          }
+          if(JSON.stringify(request) === JSON.stringify(requestInfo)) return
+          setRequestInfo(request);
+          const result =await mobileApi.openApi(request)
+          setMapInfoList(result.response.body.items);
+        }
+      }
+    };
+    const getZoom = () => {
+      if (mapInfoView && map.current) {
+        setCurZoom(map.current?.getZoom())
+      }
+    }
+    if (mapInfoView) {
+      map.current?.on('moveend', getInfo);
+      map.current?.on('move',getZoom);
+    } else {
+      map.current?.off('moveend', getInfo);
+      map.current?.off('move', getZoom);
+    }
+    return () => {
+      if (map.current) {
+        map.current.off('moveend', getInfo);
+        map.current.off('move', getZoom);
+      }
+    };
+  }, [mapInfoView,requestInfo]);
   const layerTrigger = (layer:string, visibility:string) => {
       switch (layer){
         case 'gas-pipe':
@@ -65,16 +118,16 @@ export const MapViewer = () => {
           break;
       }
   }
-
   useEffect(() => {
-    if (map.current || !mapContainer) return;
-    const bbox:LngLatBoundsLike = [
-      [126.9759123, 37.2085123],
-      [126.9759123, 37.8085123],
-    ]
-    setMap(bbox);
-  }, []);
-
+    if(!map.current || !map.current?.getSource('geolab-layers')) return
+    ['gas-pipe', 'gas-valve', 'gas-tb', 'gas-gauge'].map((layer)=>{
+      layerTrigger(layer,'none')
+    })
+    if(!mapLayerView) return;
+    Array.from(mapLayerViewActiveList).map((layer)=>{
+      layerTrigger(layer,'visible')
+    })
+  }, [mapLayerView,mapLayerViewActiveList.size,pipelines,rglt, tbs, valves]);
   useEffect(() => {
     if(!map.current)
       return
@@ -86,29 +139,12 @@ export const MapViewer = () => {
         break;
     }
   }, [mapButtonAction]);
-
-  useEffect(() => {
-    if(!map.current || !map.current?.getSource('geolab-layers')) return
-    ['gas-pipe', 'gas-valve', 'gas-tb', 'gas-gauge'].map((layer)=>{
-      layerTrigger(layer,'none')
-    })
-    if(!mapLayerView) return;
-    Array.from(mapLayerViewList).map((layer)=>{
-      layerTrigger(layer,'visible')
-    })
-  }, [mapLayerView,mapLayerViewList.size,pipelines,rglt, tbs, valves]);
-
-  useEffect(() => {
-    if (!map.current || !zoom) return;
-    map.current?.zoomTo(zoom, { duration: 1000 });
-  }, [zoom]);
-
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
-      {
-        !mapLayerView|| <LayerBox/>
-      }
+      { !mapLayerView|| <LayerBox/> }
+      { !mapInfoView|| <InfoBox zoomLevel={curZoom}/> }
+      { !mapSearchView|| <SearchView/> }
     </MapContainer>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ToggleSwitch } from 'app/components/common-ui/ToggleSwitch';
 import { useMobileMapStore } from 'app/stores/mobile/mobileMap';
 import styled from 'styled-components';
 
@@ -60,34 +59,24 @@ const LayerIconClick = styled.em`
         background-color: var(--black-a12);
     }
 `
-
-const Tooltip = styled.div`
-  display: none;
-  border: 1px solid blue;
-  border-radius: 6px;
-  padding: 8px 11px;
-  font-size: 16px;
-  line-height: 22px;
-`;
-
 export const LayerBox = ()=>{
   const [open, setOpen] = useState<boolean>(false);
-  const { setMapLayerViewList,mapLayerViewList } = useMobileMapStore();
+  const { setMapLayerViewActiveList,mapLayerViewActiveList } = useMobileMapStore();
   const layerList = ['gas-pipe', 'gas-valve', 'gas-tb', 'gas-gauge']
 
   const opacityValue = open ? '' : '0';
   const visibilityValue = open ? 'visible' : 'hidden';
 
   const getValue = (id:string) => {
-    const newSet = mapLayerViewList;
+    const newSet = mapLayerViewActiveList;
 
-    if(mapLayerViewList.has(id)){
+    if(mapLayerViewActiveList.has(id)){
       newSet.delete(id)
     }else{
       newSet.add(id)
     }
 
-    setMapLayerViewList(newSet)
+    setMapLayerViewActiveList(newSet)
   }
 
   return(
@@ -97,7 +86,7 @@ export const LayerBox = ()=>{
       </LayerBoxHeader>
       <LayerBoxContents style={{opacity:opacityValue, visibility:visibilityValue}}>
         {layerList.map((nm, idx)=>{
-          if(mapLayerViewList.has(nm)){
+          if(mapLayerViewActiveList.has(nm)){
             return (
               <div key={idx}>
                 <LayerIconClick className={`icon-${nm}`} onClick={()=>getValue(nm)}/>

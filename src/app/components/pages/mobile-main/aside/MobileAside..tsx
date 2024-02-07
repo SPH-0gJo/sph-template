@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const StyledAside = styled.aside`
   grid-area: aside;
-  width: 80%;
+  width: 60%;
   height: 100%;
   background-color: var(--white-a100);
   transition: transform 600ms ease;
@@ -26,6 +26,7 @@ const Button = styled.button`
   background-color: transparent;
   height: 2.5rem;
   padding-left: 1rem;
+  padding-right: 0.5rem;
   display: grid;
   align-items: center;
   margin-top: 0.5rem;
@@ -46,8 +47,8 @@ interface menuType{
 }
 
 export const MobileAside = () => {
-  const { menuOpen } = useMobilePageStore();
-  const { setMapInfoView, setMapLayerView } = useMobileMapStore();
+  const { menuOpen, setMenuOpen } = useMobilePageStore();
+  const { setMapInfoView, setMapLayerView, setMapSearch } = useMobileMapStore();
   const [ menuList, setMenuList ] = useState<Array<menuType>>([])
 
   useEffect(() => {
@@ -73,11 +74,16 @@ export const MobileAside = () => {
         break;
     }
   }
+  const searchAction = () =>{
+    setMapSearch(true);
+    setMenuOpen(false);
+  }
+
   return (
     <StyledAside style={{ transform: transformValue }}>
        {menuList.map(({id, title,icon,toggle,key})=> {
          return(
-           <Button key={key} >
+           <Button key={key} onClick={()=>{id==='search'?searchAction():''}}>
              <Em className={icon}></Em>
              <span>{title}</span>
              {!toggle||
