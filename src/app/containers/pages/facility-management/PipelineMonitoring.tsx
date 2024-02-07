@@ -7,14 +7,14 @@ import { PageContainer } from 'shared/styles/styled/common';
 import styled from 'styled-components';
 
 const MapWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    display: grid;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    grid-template-columns: 32rem 1fr;
-    grid-template-areas: 'aside content';
-    transition: all 0.3s ease;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  grid-template-columns: 32rem 1fr;
+  grid-template-areas: 'aside content';
+  transition: all 0.3s ease;
 `;
 
 export const PipelineMonitoring = () => {

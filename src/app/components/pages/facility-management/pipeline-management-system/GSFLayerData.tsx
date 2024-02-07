@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { invariant } from '@turf/turf';
 import { gsfApis } from 'app/api/pipeline.api';
 import { DataTable } from 'app/components/common-ui/index';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { GSFPipelineData, pipelineOptions } from 'shared/fixtures/pipeline.data';
+import { pipelineOptions } from 'shared/fixtures/pipeline.data';
 import { columnValue } from 'shared/modules/gsf.pipeline';
 import styled from 'styled-components';
 
