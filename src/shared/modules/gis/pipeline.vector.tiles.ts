@@ -105,3 +105,23 @@ export function addVectorTiles(map: AppMap) {
     },
   });
 }
+
+export function removeVectorTiles(map: AppMap) {
+  if (!map || !map.getStyle()) return;
+  pipelines.forEach(({ code }) => {
+    map.removeLayer(`gsf_pl_mt_${code}`);
+  });
+  valves.forEach(({ code }) => {
+    map.removeLayer(`gsf_vv_mt_${code}`);
+  });
+  tbs.forEach(({ code }) => {
+    map.removeLayer(`gsf_tb_mt_${code}`);
+  });
+  rglt.forEach(({ code }) => {
+    map.removeLayer(`gsf_rglt_mt_${code}`);
+  });
+
+  map.removeLayer('gsf_vv_mt_labels');
+  map.removeLayer('gsf_tb_mt_labels');
+  map.removeLayer('gsf_rglt_mt_labels');
+}
