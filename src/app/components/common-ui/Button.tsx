@@ -157,7 +157,6 @@ export const Button = (props: ButtonStyleProps) => {
   if (color) classes.push(color);
   if (rounded) classes.push('rounded');
   if (disabled) classes.push('disabled');
-
   return (
     <ButtonStyle className={classes.join(' ')} onClick={props.onClick}>
       {children}
