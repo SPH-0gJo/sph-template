@@ -13,7 +13,14 @@ export interface MainMenu {
 
 export type measureTypes = 'none' | 'distance' | 'radius' | 'area';
 
+export interface MonitoringMenu {
+  id: number;
+  name: string;
+  image: string;
+}
+
 export type LayerStyleProperty = string | number | number[] | object | null;
+
 export interface LayerStyle {
   'line-color'?: string;
   'line-width'?: number;
@@ -21,6 +28,7 @@ export interface LayerStyle {
 }
 
 export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
+
 export interface WMSRequest {
   SERVICE?: string;
   VERSION?: string;

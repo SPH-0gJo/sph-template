@@ -15,8 +15,8 @@ const LayerItemWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    color: var(--dark-text-primary);
-    border: 1px solid var(--light-surface-level-0);
+    color: var(--light-text-primary);
+    border: 2px solid var(--light-text-secondary);
     border-radius: 0.625rem;
     padding: 0.5rem 1rem 1.2rem 1rem;
 `;
