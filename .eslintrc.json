@@ -7,9 +7,9 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb",
-    "airbnb/hook",
-    "airbnb-typescript",
+//    "airbnb",
+//    "airbnb/hook",
+//    "airbnb-typescript",
     "prettier"
   ],
   "parserOptions": {

@@ -86,6 +86,12 @@ export const MainMenus: MainMenu[] = [
         summary: '색상으로 표현한 통계 정보를 확인해 보세요',
         link: '/geolab/gv/hm',
         image: '/assets/images/img_4.png',
+      },
+      {
+        name: 'Hexagon Layer',
+        summary: '3차원 데이터 집계를 확인해 보세요',
+        link: '/geolab/gv/hl',
+        image: '/assets/images/img_4.png',
       }
     ]
   },
