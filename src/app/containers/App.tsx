@@ -4,6 +4,7 @@ import { PipelineManagement } from 'app/containers/pages/facility-management/Pip
 import { PipelineMonitoring } from 'app/containers/pages/facility-management/PipelineMonitoring';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
 import { UIGuidePage } from 'app/containers/pages/guide/UIGuidePage';
+import { GISFileUploader } from 'app/containers/pages/layer-management/GISFileUploader';
 import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
 import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
 import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
@@ -13,9 +14,9 @@ import { HexagonLayer } from 'app/containers/pages/visualization-management/Hexa
 import styled from 'styled-components';
 
 const AppPage = styled.div`
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 `;
 
 export const App = () => {
@@ -34,6 +35,7 @@ export const App = () => {
           <Route path="/geolab/gv/hm" element={<HeatMap />} />
           <Route path="/geolab/gv/hl" element={<HexagonLayer />} />
           <Route path='/geolab/m/mm' element={<MobileMain />} />
+          <Route path='/geolab/layer/uploader' element={<GISFileUploader />} />
         </Routes>
       </BrowserRouter>
     </AppPage>

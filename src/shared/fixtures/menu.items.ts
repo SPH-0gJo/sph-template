@@ -33,11 +33,12 @@ export const MainMenus: MainMenu[] = [
       //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
       //   link: '/geolab/fm/pm',
       // },
-      // {
-      //   name: '지도 파일 업로드',
-      //   summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
-      //   link: '/geolab/fm/pm',
-      // },
+      {
+        name: '지도 파일 업로드',
+        summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
+        link: '/geolab/layer/uploader',
+        image: '/assets/images/img_1.png',
+      },
       {
         name: 'WMS & Vector tile',
         summary: 'WMS getMap & Vector tile 렌더링 비교',
@@ -93,7 +94,7 @@ export const MainMenus: MainMenu[] = [
         link: '/geolab/gv/hl',
         image: '/assets/images/img_4.png',
       }
-    ]
+    ],
   },
   {
     id: '007',
@@ -135,6 +136,6 @@ export const MainMenus: MainMenu[] = [
         link: '/geolab/m/mm',
         image: '/assets/images/img_1.png',
       },
-    ]
+    ],
   },
 ];
