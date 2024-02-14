@@ -1,4 +1,4 @@
-import { Map as AppMap, MapMouseEvent } from 'maplibre-gl';
+import { Map as AppMap } from 'maplibre-gl';
 
 const styleUrl = '/public/assets/data/heat_map_test.json';
 export const heatmapSource = 'heat-map-layers';
@@ -21,7 +21,7 @@ export async function addHeatMap(map: AppMap) {
               'interpolate',
               ['linear'],
               ['get', 'scale'],
-              0, 0, 1, 1
+              0, 0, 1, 1,
             ],
             'heatmap-intensity': [
               'interpolate',
