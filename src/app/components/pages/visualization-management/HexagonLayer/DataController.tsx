@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RangeSlider } from 'app/components/common-ui/RangeSlider';
 import { useHexagonStore } from 'app/stores/visualization/hexagon.layer';
 import styled from 'styled-components';
@@ -18,6 +18,12 @@ const TypeLabel = styled.span`
 
 export const DataController = () => {
   const { coverage, setCoverage, radius, setRadius, upper, setUpper } = useHexagonStore();
+
+  useEffect(() => {
+    setCoverage(1);
+    setRadius(1000);
+    setUpper(100);
+  }, []);
 
   const updateRange = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     const value = Number(e.target.value);
