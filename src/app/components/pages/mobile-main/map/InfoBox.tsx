@@ -27,8 +27,8 @@ const InfoBoxButton = styled.div`
     bottom: 2rem;
     transition: all 0.5s;
     overflow: hidden;
-    
-    button{
+
+    button {
         align-self: center;
         border: none;
         background-color: transparent;
@@ -38,6 +38,7 @@ const InfoBoxButton = styled.div`
         align-items: center;
         color: var(--white);
     }
+
     em {
         font-size: 1.5rem;
         color: var(--white);
@@ -48,51 +49,52 @@ const InfoBoxButton = styled.div`
     }
 `;
 
-interface InfoBoxProps{
-  zoomLevel : number | undefined;
+interface InfoBoxProps {
+  zoomLevel: number | undefined;
 }
 
-export const InfoBox = (props:InfoBoxProps) => {
-  const { mapInfoList, requestInfo } = useMobileMapStore()
-  const [detailOpen, setDetailOpen] = useState<boolean>(false)
+export const InfoBox = (props: InfoBoxProps) => {
+  const { mapInfoList, requestInfo } = useMobileMapStore();
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
 
   const transformButton = detailOpen ? 'translateY(-15rem)' : '';
   const transformButtonWidth = detailOpen ? '6rem' : '12rem';
   const transformDetail = detailOpen ? '' : 'translateY(23rem)';
 
   const openDetail = (flag = true) => {
-    if(!flag){
-      setDetailOpen(false)
-      return
+    if (!flag) {
+      setDetailOpen(false);
+      return;
     }
-    if(mapInfoList.length<1){
-      setDetailOpen(false)
-    }else{
-      setDetailOpen(!detailOpen)
+    if (mapInfoList.length < 1) {
+      setDetailOpen(false);
+    } else {
+      setDetailOpen(!detailOpen);
     }
-  }
+  };
   useEffect(() => {
-    if(props.zoomLevel && props.zoomLevel<=12){
-      openDetail(false)
+    if (props.zoomLevel && props.zoomLevel <= 12) {
+      openDetail(false);
     }
   }, [props.zoomLevel]);
+
   return (
-    <InfoBoxWrapper style={{opacity:props.zoomLevel?props.zoomLevel<=12?0.5:1:1}}>
+    <InfoBoxWrapper style={{ opacity: props.zoomLevel ? props.zoomLevel <= 12 ? 0.5 : 1 : 1 }}>
       <InfoBoxButton onClick={() => {
-        if(props.zoomLevel) if(props.zoomLevel<=12) return
-          openDetail()
-        }} style={{ transform: transformButton, width:transformButtonWidth }}>
-          {
-            detailOpen ?
-              <button>
-                메뉴 닫기 <em className="icon-chevron-down"></em>
-              </button>
-              :
-             <button>{mapInfoList.length<1?'정보없음':`${requestInfo.BSI} ${requestInfo.SIGUN} (${mapInfoList.length})`}</button>
-         }
+        if (props.zoomLevel) if (props.zoomLevel <= 12) return;
+        openDetail();
+      }} style={{ transform: transformButton, width: transformButtonWidth }}>
+        {
+          detailOpen ?
+            <button>
+              메뉴 닫기 <em className="icon-chevron-down"></em>
+            </button>
+            :
+            <button>{mapInfoList.length < 1 ? '정보없음' : `${requestInfo.BSI} ${requestInfo.SIGUN} (${mapInfoList.length})`}</button>
+        }
       </InfoBoxButton>
       <InfoBoxDetail changeStyle={transformDetail} />
     </InfoBoxWrapper>
-  )
-}
+  );
+};
 
