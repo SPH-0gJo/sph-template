@@ -3,7 +3,7 @@ import { SvcRequest } from 'shared/constants/types/mobile/openapi';
 import { NaverMapsIdKey, NaverMapsSecretKey } from 'shared/constants/varibales';
 
 const mobileApi = {
-  openApi: async (request:SvcRequest) => {
+  openApi: async (request: SvcRequest) => {
 
     const openApiUrl = 'http://apis.data.go.kr/B500001/fcltySvc/getItkFclty';
     let queryParams = `?serviceKey=${encodeURIComponent(request.serviceKey)}`;
@@ -21,18 +21,30 @@ const mobileApi = {
     return response.data;
   },
 
-  naverApi: async(latitude:number, longitude:number) =>{
+  naverApiRG: async (latitude: number, longitude: number) => {
     const navereGeoCodingUrl = `/naverApi/map-reversegeocode/v2/gc?coords=${longitude},${latitude}&output=json&orders=addr`;
-    const { data } = await axios.get(navereGeoCodingUrl,{
-      headers:{
-         'X-NCP-APIGW-API-KEY-ID': NaverMapsIdKey,
-         'X-NCP-APIGW-API-KEY': NaverMapsSecretKey
-      }
+    const { data } = await axios.get(navereGeoCodingUrl, {
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': NaverMapsIdKey,
+        'X-NCP-APIGW-API-KEY': NaverMapsSecretKey,
+      },
     });
-    const fullAddr = [data.results[0].region['area1'].name , (data.results[0].region['area2'].name).split(' ')[0]]
+    const fullAddr = [data.results[0].region['area1'].name, (data.results[0].region['area2'].name).split(' ')[0]];
 
     return fullAddr;
-  }
+  },
+
+  naverApiG: async (query: string, latitude: number, longitude: number) => {
+    const navereGeoCodingUrl = `/naverApi/map-geocode/v2/geocode?query=${query}&coordinate=${longitude},${latitude}&output=json&orders=addr`;
+    const { data } = await axios.get(navereGeoCodingUrl, {
+      headers: {
+        'X-NCP-APIGW-API-KEY-ID': NaverMapsIdKey,
+        'X-NCP-APIGW-API-KEY': NaverMapsSecretKey,
+      },
+    });
+
+    return data;
+  },
 };
 
 export { mobileApi };
