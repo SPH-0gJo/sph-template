@@ -1,0 +1,76 @@
+name: Build & Push GCE Artifact Registry
+run-name: Initiate Build & Deploy ${{ github.actor }}.
+
+on:
+  push:
+    branches: [ 'devops/cicd' ]
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  
+  setup:
+    name: CheckOut & Auth Setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: devops/cicd
+
+      - name: Authenticate to Google Cloud from GitHub Actions
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WIP }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: GKE Cluster Get Credential
+        id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+          cluster_name: sph-geolabs-cluster
+          location: ${{ vars.GCP_REGION }}
+        
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: '>= 363.0.0'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
+      - name: Authentication Google Artifact Registry
+        run: |-
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin ${{ vars.GCP_REGION }}-docker.pkg.dev/
+  
+      - name: Build the Docker image
+        run: |-
+          docker build -f Dockerfile -t ${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" \
+          .
+
+      - name: Check the built Docker image
+        run: |-
+          docker images
+        
+      - name: Push Image to Artifact Registry
+        run: |-
+          docker push ${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA
+
+      # - name: Deploy to GKE
+      #   run: |-
+      #     cd kustomize/overlays
+      #     kubectl kustomize edit set image ${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA
+      #     kubectl kustomize build . | kubectl apply -f -
+      #     kubectl rollout status -n opens deployment/geolabs-frontend
+
+      - name: Deploy to GKE
+        run: |-
+          kubectl set image -n opens deployment/geolabs-frontend geolabs-nginx-app=${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA
+          kubectl rollout status -n opens deployment/geolabs-frontend
