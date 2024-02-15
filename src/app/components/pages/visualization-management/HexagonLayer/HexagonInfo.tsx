@@ -1,4 +1,5 @@
 import React from 'react';
+import { DataController } from 'app/components/pages/visualization-management/HexagonLayer/DataController';
 import { hexagonColorRange } from 'app/components/pages/visualization-management/HexagonLayer/hexagon.layer';
 import styled from 'styled-components';
 
@@ -32,6 +33,12 @@ const InfoTitle = styled.label`
     line-height: 1.5;
 `;
 
+const InfoDetail = styled.label`
+    font-size: 1rem;
+    font-weight: var(--text-weight-semibold);
+    line-height: 1.75rem;
+`;
+
 const ColorBar = styled.div`
     display: flex;
     height: 1.4rem;
@@ -53,6 +60,7 @@ const InfoBottom = styled.div`
     height: 30%;
     display: flex;
     flex-direction: column;
+    padding: 0.8rem 0.3rem 0 0.3rem;
 `;
 
 export const HexagonInfo = () => {
@@ -60,7 +68,7 @@ export const HexagonInfo = () => {
     <InfoWrapper>
       <InfoTop>
         <InfoTitle>2024 Starbucks Korea Store</InfoTitle>
-        <label>2024 스타벅스 한국 매장 크롤링 데이터 집계</label>
+        <InfoDetail>2024 스타벅스 한국 매장 크롤링 데이터 집계</InfoDetail>
         <div>
           <ColorBar>
             {hexagonColorRange.map((color, idx) => {
@@ -74,6 +82,7 @@ export const HexagonInfo = () => {
         </div>
       </InfoTop>
       <InfoBottom>
+        <DataController />
       </InfoBottom>
     </InfoWrapper>
   );
