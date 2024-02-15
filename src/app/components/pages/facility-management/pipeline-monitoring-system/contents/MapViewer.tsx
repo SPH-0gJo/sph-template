@@ -5,11 +5,7 @@ import { useLayerGroupStore } from 'app/stores/layerGroup';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
-import {
-  addClickLayer,
-  addGroupLayer,
-  setFitBounds,
-} from 'shared/fixtures/layer.groups';
+import { addClickLayer, addGroupLayer, setFitBounds } from 'shared/fixtures/layer.groups';
 import { drawNRemoveLayers, measureDistanceAction } from 'shared/modules/gis/measure.distance';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
@@ -17,15 +13,15 @@ import styled from 'styled-components';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.main`
-    width: 100%;
-    height: 100%;
-    grid-area: content;
+  width: 100%;
+  height: 100%;
+  grid-area: content;
 `;
 
 const MapViewerWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
 `;
 
 export const MapViewer = () => {
@@ -44,7 +40,7 @@ export const MapViewer = () => {
     map.current.on('load', () => {
       map.current && setFitBounds(map.current, layerIdList);
       map.current && addGroupLayer(map.current, layerIdList);
-      layerIdList.forEach(layerId => {
+      layerIdList.forEach((layerId) => {
         map.current && addClickLayer(map.current, layerId, layerGroupsList);
       });
     });
@@ -59,7 +55,7 @@ export const MapViewer = () => {
     map.current.setStyle(style, { diff: false });
     map.current.once('styledata', () => {
       map.current && addGroupLayer(map.current, layerIdList);
-      layerIdList.forEach(layerId => {
+      layerIdList.forEach((layerId) => {
         map.current && addClickLayer(map.current, layerId, layerGroupsList);
       });
     });
@@ -83,7 +79,7 @@ export const MapViewer = () => {
   useEffect(() => {
     if (!map.current || !map.current?.getStyle()) return;
     map.current && addGroupLayer(map.current, layerIdList);
-    layerIdList.forEach(layerId => {
+    layerIdList.forEach((layerId) => {
       map.current && addClickLayer(map.current, layerId, layerGroupsList);
     });
   }, [layerIdList, layerGroupsList]);
