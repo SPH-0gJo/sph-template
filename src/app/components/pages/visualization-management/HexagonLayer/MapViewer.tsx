@@ -58,25 +58,27 @@ export const MapViewer = () => {
     if (!data) return;
     const tempLayer = [addHexagonLayer(data, coverage, radius, upper)];
     setLayers(tempLayer);
-  }, [data, coverage]);
+  }, [data, coverage, radius, upper]);
 
   return (
     <MapContainer ref={mapContainer}>
       {
         map.current && data &&
-        <DeckGL
-          layers={layers}
-          effects={[lightingEffect]}
-          initialViewState={hxInitMapState}
-          controller={true}
-        >
-          <Map
-            reuseMaps
-            mapLib={maplibregl as unknown as undefined}
-            mapStyle={map.current.getStyle() as unknown as string}
-          />
+        <>
+          <DeckGL
+            layers={layers}
+            effects={[lightingEffect]}
+            initialViewState={hxInitMapState}
+            controller={true}
+          >
+            <Map
+              reuseMaps
+              mapLib={maplibregl as unknown as undefined}
+              mapStyle={map.current.getStyle() as unknown as string}
+            />
+          </DeckGL>
           <HexagonInfo />
-        </DeckGL>
+        </>
       }
     </MapContainer>
   );

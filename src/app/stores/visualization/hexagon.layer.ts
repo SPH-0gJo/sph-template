@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface HexagonState {
+export interface HexagonState {
   coverage: number;
   setCoverage: (coverage: number) => void;
   radius: number;
