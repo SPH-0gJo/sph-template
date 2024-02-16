@@ -73,7 +73,13 @@ export const MainMenus: MainMenu[] = [
         name: 'Hexagon Layer',
         summary: '2024 스타벅스 한국 매장 데이터 집계',
         link: '/geolab/gv/hl',
-        thumbnail: '/assets/images/img_5.png',
+        thumbnail: '/assets/images/img_4.png',
+      },
+      {
+        name: 'Screen Grid map',
+        summary: '격자안의 색상으로 정보의 밀집도를 확인 가능합니다.',
+        link: '/geolab/gv/sg',
+        thumbnail: '/assets/images/img_6.png',
       },
       {
         name: 'Contour Layer',
