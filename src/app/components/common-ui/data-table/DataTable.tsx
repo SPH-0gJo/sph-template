@@ -1,7 +1,7 @@
 import React from 'react';
-import { DataTableSearchBar } from 'app/components/common-ui/DataTable/DataTableSearchBar';
-import { DataTableTbody } from 'app/components/common-ui/DataTable/DataTableTbody';
-import { DataTableThead } from 'app/components/common-ui/DataTable/DataTableThead';
+import { DataTableSearchBar } from 'app/components/common-ui/data-table/DataTableSearchBar';
+import { DataTableTbody } from 'app/components/common-ui/data-table/DataTableTbody';
+import { DataTableThead } from 'app/components/common-ui/data-table/DataTableThead';
 import { DataTableOptions } from 'shared/constants/types/datatable';
 import styled from 'styled-components';
 

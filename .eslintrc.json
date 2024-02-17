@@ -11,7 +11,7 @@
   ],
   "ignorePatterns": ["dist/", "node_modules/"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "react-hooks", "react-refresh", "@typescript-eslint", "prettier", "simple-import-sort"],
+  "plugins": ["react", "react-hooks", "react-refresh", "@typescript-eslint", "prettier", "simple-import-sort", "sort-exports"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
@@ -23,7 +23,11 @@
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "sort-exports/sort-exports": [
+      "error",
+      { "sortDir": "asc", "ignoreCase": true, "sortExportKindFirst": "type", "pattern": "**/*.ts" }
+    ]
   },
   "overrides": [
     // override "simple-import-sort" config

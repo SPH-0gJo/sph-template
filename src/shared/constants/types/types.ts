@@ -2,7 +2,7 @@ export interface SubMenu {
   name: string;
   summary: string;
   link: string;
-  image: string;
+  thumbnail?: string;
 }
 
 export interface MainMenu {
