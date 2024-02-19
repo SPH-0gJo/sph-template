@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SubMenu } from 'shared/constants/types/types';
+import { NoImage } from 'shared/constants/varibales';
 import styled from 'styled-components';
+
+interface StyledProps {
+  $thumbnail: string | undefined;
+}
 
 const ItemCard = styled.div`
   cursor: pointer;
@@ -23,17 +28,18 @@ const ItemCard = styled.div`
   }
 `;
 
-const CardImg = styled.img`
+const CardImg = styled.img<StyledProps>`
   display: block;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   width: 100%;
   height: 12.5rem;
-  object-fit: cover;
+  object-fit: ${(props) => (props.$thumbnail ? 'cover' : 'scale-down')};
   border-top-left-radius: 0.625rem;
   border-top-right-radius: 0.625rem;
   user-drag: none;
+  -webkit-user-drag: none;
 `;
 
 const CardDescBox = styled.div`
@@ -64,11 +70,11 @@ interface GeolabItemCardProps {
 
 export const GeolabItemCard = (props: GeolabItemCardProps) => {
   const { subMenu } = props.data;
-  const { name, summary, link, image } = subMenu;
+  const { name, summary, link, thumbnail } = subMenu;
   return (
     <Link to={link}>
       <ItemCard>
-        <CardImg src={image} alt='sample map inage' />
+        <CardImg src={thumbnail || NoImage} alt='sample map inage' $thumbnail={thumbnail} />
         <CardDescBox>
           <h5>{name}</h5>
           <p>{summary}</p>

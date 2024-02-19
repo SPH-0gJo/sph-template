@@ -3,7 +3,7 @@ run-name: Initiate Build & Deploy ${{ github.actor }}.
 
 on:
   push:
-    branches: [ 'devops/cicd' ]
+    branches: [ 'develops' ]
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: devops/cicd
+          ref: develop
 
       - name: Authenticate to Google Cloud from GitHub Actions
         id: auth
