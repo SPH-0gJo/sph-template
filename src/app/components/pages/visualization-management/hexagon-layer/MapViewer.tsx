@@ -13,7 +13,7 @@ import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { hexagonData } from 'shared/constants/types/visualization.layer';
 import styled from 'styled-components';
 
-const dataUrl = '/public/assets/data/hexagon_test.json';
+const dataUrl = '/src/shared/fixtures/hexagon_test.json';
 
 export const hxInitMapState = {
   longitude: 127.5,
