@@ -1,10 +1,5 @@
-import React from 'react';
-import { Map } from 'react-map-gl';
 import { AmbientLight, LightingEffect, PointLight } from '@deck.gl/core/typed';
-import { HexagonInfo } from 'app/components/pages/visualization-management/HexagonLayer/HexagonInfo';
-import { hxInitMapState } from 'app/components/pages/visualization-management/HexagonLayer/MapViewer';
-import { DeckGL, HexagonLayer } from 'deck.gl/typed';
-import maplibregl, { Map as AppMap } from 'maplibre-gl';
+import { HexagonLayer } from 'deck.gl/typed';
 
 const ambientLight = new AmbientLight({
   color: [255, 255, 255],
@@ -39,12 +34,13 @@ export function addHexagonLayer(data: number[][], coverage: number, radius: numb
     id: 'heatmap',
     colorRange: hexagonColorRange,
     data,
-    coverage, radius,
+    coverage,
+    radius,
     upperPercentile: upper,
     elevationRange: [0, 3000],
     elevationScale: data && data.length ? 50 : 0,
     extruded: true,
-    getPosition: d => d,
+    getPosition: (d) => d,
     pickable: true,
     material: {
       ambient: 0.64,
@@ -57,5 +53,3 @@ export function addHexagonLayer(data: number[][], coverage: number, radius: numb
     },
   });
 }
-
-``;

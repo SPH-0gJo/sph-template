@@ -71,9 +71,15 @@ export const MainMenus: MainMenu[] = [
       },
       {
         name: 'Hexagon Layer',
-        summary: '3차원 데이터 집계를 확인해 보세요',
+        summary: '2024 스타벅스 한국 매장 데이터 집계',
         link: '/geolab/gv/hl',
         thumbnail: '/assets/images/img_5.png',
+      },
+      {
+        name: 'Contour Layer',
+        summary: '2021 미국 COVID-19 확진 사례',
+        link: '/geolab/gv/cl',
+        thumbnail: '/assets/images/img_6.png',
       },
     ],
   },

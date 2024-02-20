@@ -3,15 +3,14 @@ import { Map } from 'react-map-gl';
 import {
   addHexagonLayer,
   lightingEffect,
-} from 'app/components/pages/visualization-management/HexagonLayer/hexagon.layer';
-import { HexagonInfo } from 'app/components/pages/visualization-management/HexagonLayer/HexagonInfo';
+} from 'app/components/pages/visualization-management/hexagon-layer/hexagon.layer';
+import { HexagonInfo } from 'app/components/pages/visualization-management/hexagon-layer/HexagonInfo';
 import { useHexagonStore } from 'app/stores/visualization/hexagon.layer';
 import axios from 'axios';
 import { DeckGL } from 'deck.gl/typed';
-import maplibregl, { Map as AppMap } from 'maplibre-gl';
+import maplibregl from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { hexagonData } from 'shared/constants/types/visualization.layer';
-import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
 const dataUrl = '/public/assets/data/hexagon_test.json';
@@ -25,9 +24,9 @@ export const hxInitMapState = {
 };
 
 const MapContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    background-color: #141414;
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
 `;
 
 export const MapViewer = () => {
@@ -52,24 +51,14 @@ export const MapViewer = () => {
 
   return (
     <MapContainer ref={mapContainer}>
-      {
-        data &&
+      {data && (
         <>
-          <DeckGL
-            layers={layers}
-            effects={[lightingEffect]}
-            initialViewState={hxInitMapState}
-            controller={true}
-          >
-            <Map
-              reuseMaps
-              mapLib={maplibregl as unknown as undefined}
-              mapStyle={vectorTileBaseMaps[3].style}
-            />
+          <DeckGL layers={layers} effects={[lightingEffect]} initialViewState={hxInitMapState} controller={true}>
+            <Map reuseMaps mapLib={maplibregl as unknown as undefined} mapStyle={vectorTileBaseMaps[3].style} />
           </DeckGL>
           <HexagonInfo />
         </>
-      }
+      )}
     </MapContainer>
   );
 };

@@ -3,7 +3,7 @@ run-name: Initiate Build & Deploy ${{ github.actor }}.
 
 on:
   push:
-    branches: [ 'develops' ]
+    branches: [ 'develop' ]
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -35,7 +35,7 @@ jobs:
         with:
           cluster_name: sph-geolabs-cluster
           location: ${{ vars.GCP_REGION }}
-        
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
@@ -47,7 +47,7 @@ jobs:
       - name: Authentication Google Artifact Registry
         run: |-
           gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin ${{ vars.GCP_REGION }}-docker.pkg.dev/
-  
+
       - name: Build the Docker image
         run: |-
           docker build -f Dockerfile -t ${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA \
@@ -58,7 +58,7 @@ jobs:
       - name: Check the built Docker image
         run: |-
           docker images
-        
+
       - name: Push Image to Artifact Registry
         run: |-
           docker push ${{ vars.GAR_LOCATION }}/geolabs-app:$GITHUB_SHA

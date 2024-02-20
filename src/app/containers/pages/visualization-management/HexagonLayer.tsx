@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { MapViewer } from 'app/components/pages/visualization-management/HexagonLayer/MapViewer';
+import { MapViewer } from 'app/components/pages/visualization-management/hexagon-layer/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 import { PageContainer } from 'shared/styles/styled/common';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { addHeatMap } from 'app/components/pages/visualization-management/HeatMap/heatmap.layer';
-import { HMLegend } from 'app/components/pages/visualization-management/HeatMap/HMLegend';
+import { addHeatMap } from 'app/components/pages/visualization-management/heat-map/heatmap.layer';
+import { HMLegend } from 'app/components/pages/visualization-management/heat-map/HMLegend';
 import { Map as AppMap } from 'maplibre-gl';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
@@ -8,13 +8,13 @@ import styled from 'styled-components';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.div`
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 const MapViewerWrapper = styled.div`
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 export const MapViewer = () => {
