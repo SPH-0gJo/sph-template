@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { SvcRequest } from 'shared/constants/types/mobile/openapi';
-import { NaverMapsIdKey, NaverMapsSecretKey } from 'shared/constants/varibales';
+import { vWorldKey } from 'shared/constants/varibales';
 
 const mobileApi = {
   openApi: async (request: SvcRequest) => {
-
     const openApiUrl = 'http://apis.data.go.kr/B500001/fcltySvc/getItkFclty';
     let queryParams = `?serviceKey=${encodeURIComponent(request.serviceKey)}`;
     queryParams += `&pageNo=${encodeURIComponent(request.pageNo)}`;
@@ -21,27 +20,20 @@ const mobileApi = {
     return response.data;
   },
 
-  naverApiRG: async (latitude: number, longitude: number) => {
-    const navereGeoCodingUrl = `/naverApi/map-reversegeocode/v2/gc?coords=${longitude},${latitude}&output=json&orders=addr`;
-    const { data } = await axios.get(navereGeoCodingUrl, {
-      headers: {
-        'X-NCP-APIGW-API-KEY-ID': NaverMapsIdKey,
-        'X-NCP-APIGW-API-KEY': NaverMapsSecretKey,
-      },
-    });
-    const fullAddr = [data.results[0].region['area1'].name, (data.results[0].region['area2'].name).split(' ')[0]];
+  vWorldApiRG: async (latitude: number, longitude: number) => {
+    const vWorldGeoCodingUrl = `/vWorld/api?service=address&request=getAddress&version=2.0&crs=epsg:4326&point=${longitude},${latitude}&format=json&type=both&zipcode=true&simple=false&key=${vWorldKey}`;
+    const { data } = await axios.get(vWorldGeoCodingUrl, {});
+    const fullAddr = [
+      data.response.result[0].structure['level1'],
+      data.response.result[0].structure['level2'].split(' ')[0],
+    ];
 
     return fullAddr;
   },
 
-  naverApiG: async (query: string, latitude: number, longitude: number) => {
-    const navereGeoCodingUrl = `/naverApi/map-geocode/v2/geocode?query=${query}&coordinate=${longitude},${latitude}&output=json&orders=addr`;
-    const { data } = await axios.get(navereGeoCodingUrl, {
-      headers: {
-        'X-NCP-APIGW-API-KEY-ID': NaverMapsIdKey,
-        'X-NCP-APIGW-API-KEY': NaverMapsSecretKey,
-      },
-    });
+  vWorldApiG: async (query: string) => {
+    const vWorldGeoCodingUrl = `/vWorld/api?service=address&request=getcoord&version=2.0&crs=epsg:4326&address=${query}&refine=true&simple=false&format=json&type=road&key=${vWorldKey}`;
+    const { data } = await axios.get(vWorldGeoCodingUrl, {});
 
     return data;
   },
