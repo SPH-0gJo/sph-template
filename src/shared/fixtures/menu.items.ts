@@ -65,7 +65,7 @@ export const MainMenus: MainMenu[] = [
     children: [
       {
         name: 'Heat map',
-        summary: '색상으로 표현한 통계 정보를 확인해 보세요',
+        summary: '2024 서울시 버스정류장 위치 정보',
         link: '/geolab/gv/hm',
         thumbnail: '/assets/images/img_4.png',
       },
@@ -77,7 +77,7 @@ export const MainMenus: MainMenu[] = [
       },
       {
         name: 'Screen Grid map',
-        summary: '격자안의 색상으로 정보의 밀집도를 확인 가능합니다.',
+        summary: '2024 서울시 공영주차장 금액 집계',
         link: '/geolab/gv/sg',
         thumbnail: '/assets/images/img_6.png',
       },

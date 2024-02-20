@@ -8,7 +8,7 @@ export interface ScreenGridState {
 }
 
 export const useScreenGridStore = create<ScreenGridState>()((set) => ({
-  cellSize: 10,
+  cellSize: 16,
   setCellSize: (cellSize) => set({ cellSize: cellSize }),
   gpuAggregation: true,
   setGpuAggregation: (gpuAggregation) => set({ gpuAggregation: gpuAggregation }),
