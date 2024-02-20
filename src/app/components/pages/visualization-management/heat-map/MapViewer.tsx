@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { addHeatMap } from 'app/components/pages/visualization-management/heat-map/heatmap.layer';
-import { HMLegend } from 'app/components/pages/visualization-management/heat-map/HMLegend';
+import { HeatMapInfo } from 'app/components/pages/visualization-management/heat-map/HeatMapInfo';
 import { Map as AppMap } from 'maplibre-gl';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
@@ -24,8 +24,8 @@ export const MapViewer = () => {
   useEffect(() => {
     if (map.current || !mapContainer) return;
     const container = mapContainer.current || '';
-    const center = [128.9742, 35.1636];
-    map.current = initMap(container, 9, 2, center);
+    const center = [126.9595, 37.5625];
+    map.current = initMap(container, 11, 2, center);
     map.current.on('load', () => {
       map.current && addHeatMap(map.current);
       return () => map.current?.remove();
@@ -35,7 +35,7 @@ export const MapViewer = () => {
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
-      <HMLegend />
+      <HeatMapInfo />
     </MapContainer>
   );
 };

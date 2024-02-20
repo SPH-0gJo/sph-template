@@ -73,7 +73,7 @@ export const MainMenus: MainMenu[] = [
         name: 'Hexagon Layer',
         summary: '2024 스타벅스 한국 매장 데이터 집계',
         link: '/geolab/gv/hl',
-        thumbnail: '/assets/images/img_4.png',
+        thumbnail: '/assets/images/img_5.png',
       },
       {
         name: 'Screen Grid map',
@@ -85,7 +85,7 @@ export const MainMenus: MainMenu[] = [
         name: 'Contour Layer',
         summary: '2021 미국 COVID-19 확진 사례',
         link: '/geolab/gv/cl',
-        thumbnail: '/assets/images/img_6.png',
+        thumbnail: '/assets/images/img_7.png',
       },
     ],
   },
