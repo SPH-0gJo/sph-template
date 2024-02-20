@@ -50,6 +50,7 @@ export const MapViewer = () => {
   }, [data, coverage, radius, upper]);
 
   return (
+
     <MapContainer ref={mapContainer}>
       {data && (
         <>

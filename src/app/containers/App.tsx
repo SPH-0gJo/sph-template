@@ -12,6 +12,7 @@ import { MobileMain } from 'app/containers/pages/MobileMain';
 import { ContourLayer } from 'app/containers/pages/visualization-management/ContourLayer';
 import { HeatMap } from 'app/containers/pages/visualization-management/HeatMap';
 import { HexagonLayer } from 'app/containers/pages/visualization-management/HexagonLayer';
+import { ScreenGrid } from 'app/containers/pages/visualization-management/ScreenGrid';
 import styled from 'styled-components';
 
 const AppPage = styled.div`
@@ -35,6 +36,7 @@ export const App = () => {
           <Route path='/geolab/lm/iw' element={<InfoWindow />} />
           <Route path='/geolab/gv/hm' element={<HeatMap />} />
           <Route path='/geolab/gv/hl' element={<HexagonLayer />} />
+          <Route path='/geolab/gv/sg' element={<ScreenGrid />} />
           <Route path='/geolab/gv/cl' element={<ContourLayer />} />
           <Route path='/geolab/m/mm' element={<MobileMain />} />
           <Route path='/geolab/layer/uploader' element={<GISFileUploader />} />
