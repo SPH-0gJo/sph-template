@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PipelineManagement } from 'app/containers/pages/facility-management/PipelineManagement';
 import { PipelineMonitoring } from 'app/containers/pages/facility-management/PipelineMonitoring';
+import { CoordinateSystemTrans } from 'app/containers/pages/file/CoordinateSystemTrans';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
 import { UIGuidePage } from 'app/containers/pages/guide/UIGuidePage';
 import { GISFileUploader } from 'app/containers/pages/layer-management/GISFileUploader';
@@ -40,6 +41,7 @@ export const App = () => {
           <Route path='/geolab/gv/cl' element={<ContourLayer />} />
           <Route path='/geolab/m/mm' element={<MobileMain />} />
           <Route path='/geolab/layer/uploader' element={<GISFileUploader />} />
+          <Route path='/geolab/file/coordinate-system/trans' element={<CoordinateSystemTrans />} />
         </Routes>
       </BrowserRouter>
     </AppPage>

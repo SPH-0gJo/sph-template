@@ -6,11 +6,15 @@ import path from 'path';
 export default defineConfig({
   server: {
     proxy: {
-      '/geolab/api/v1': 'http://localhost:9000',
-      '/naverApi': {
-        target:  "https://naveropenapi.apigw.ntruss.com",
+      '/geolab/api/v1': {
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/naverApi/, ""),
+        rewrite: (path) => path.replace(/^\/geolab\/api\/v1/, ''),
+      },
+      '/naverApi': {
+        target: 'https://naveropenapi.apigw.ntruss.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/naverApi/, ''),
       },
     },
   },
@@ -22,7 +26,7 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: 'axios',replacement: path.resolve(__dirname, './node_modules/axios/') },
+      { find: 'axios', replacement: path.resolve(__dirname, './node_modules/axios/') },
       { find: 'app', replacement: path.resolve(__dirname, './src/app/') },
       { find: 'assets', replacement: path.resolve(__dirname, './public/assets/') },
       { find: 'shared', replacement: path.resolve(__dirname, './src/shared/') },
