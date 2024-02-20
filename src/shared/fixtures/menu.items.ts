@@ -110,6 +110,17 @@ export const MainMenus: MainMenu[] = [
   },
   {
     id: '010',
+    name: '지도 파일 관리',
+    children: [
+      {
+        name: '좌표계 변환',
+        summary: 'geojosn파일 좌표계 변환',
+        link: '/geolab/file/coordinate-system/trans',
+      },
+    ],
+  },
+  {
+    id: '011',
     name: '모바일 현장 지원 시스템',
     children: [
       {
