@@ -11,10 +11,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/geolab\/api\/v1/, ''),
       },
-      '/naverApi': {
-        target: 'https://naveropenapi.apigw.ntruss.com',
+      '/vWorld/api': {
+        target: 'https://api.vworld.kr/req/address',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/naverApi/, ''),
+        rewrite: (path) => path.replace(/^\/vWorld\/api/, ''),
       },
     },
   },

@@ -16,16 +16,16 @@ import styled from 'styled-components';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.div`
-    width: 100%;
-    height: calc(100% - 3.625rem);
-    grid-area: content;
-    position: absolute;
-    top: 3.625rem;
+  width: 100%;
+  height: calc(100% - 3.625rem);
+  grid-area: content;
+  position: absolute;
+  top: 3.625rem;
 `;
 const MapViewerWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
 `;
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -49,8 +49,7 @@ export const MapViewer = () => {
     map.current = initMap(container, zoom, 0, undefined);
     map.current.on('load', () => {
       map.current?.fitBounds(bounds);
-      if (map.current)
-        addVectorTilesMobile(map.current);
+      if (map.current) addVectorTilesMobile(map.current);
       map.current?.on('move', saveCoordinate);
     });
     return () => map.current?.remove();
@@ -85,14 +84,14 @@ export const MapViewer = () => {
     const getInfo = async () => {
       if (mapInfoView && map.current) {
         if (map.current?.getZoom() > 12) {
-          const naverResult = await mobileApi.naverApiRG(map.current?.getCenter().lat, map.current?.getCenter().lng);
+          const vWorldResult = await mobileApi.vWorldApiRG(map.current?.getCenter().lat, map.current?.getCenter().lng);
           const request: SvcRequest = {
             serviceKey: OpenAPIKey,
             pageNo: '1',
             numOfRows: '999',
             viewType: 'json',
-            BSI: naverResult[0],
-            SIGUN: naverResult[1],
+            BSI: vWorldResult[0],
+            SIGUN: vWorldResult[1],
           };
           if (JSON.stringify(request) === JSON.stringify(requestInfo)) return;
           setRequestInfo(request);
@@ -155,8 +154,7 @@ export const MapViewer = () => {
     });
   }, [mapLayerView, mapLayerViewActiveList.size, pipelines, rglt, tbs, valves]);
   useEffect(() => {
-    if (!map.current)
-      return;
+    if (!map.current) return;
     switch (mapButtonAction) {
       case 'reset':
         map.current?.remove();
