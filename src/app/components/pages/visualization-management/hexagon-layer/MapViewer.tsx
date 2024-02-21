@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Map } from 'react-map-gl';
 import {
   addHexagonLayer,
@@ -13,7 +13,13 @@ import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { hexagonData } from 'shared/constants/types/visualization.layer';
 import styled from 'styled-components';
 
-const dataUrl = '/src/shared/fixtures/hexagon_test.json';
+const dataUrl = '/src/shared/fixtures/hexagon_data.json';
+
+const MapContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #141414;
+`;
 
 export const hxInitMapState = {
   longitude: 127.5,
@@ -23,14 +29,7 @@ export const hxInitMapState = {
   bearing: -20,
 };
 
-const MapContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #141414;
-`;
-
 export const MapViewer = () => {
-  const mapContainer = useRef<HTMLDivElement | null>(null);
   const [layers, setLayers] = useState<any[]>([]);
   const [data, setData] = useState<number[][] | null>(null);
   const { coverage, radius, upper } = useHexagonStore();
@@ -50,8 +49,7 @@ export const MapViewer = () => {
   }, [data, coverage, radius, upper]);
 
   return (
-
-    <MapContainer ref={mapContainer}>
+    <MapContainer>
       {data && (
         <>
           <DeckGL layers={layers} effects={[lightingEffect]} initialViewState={hxInitMapState} controller={true}>
