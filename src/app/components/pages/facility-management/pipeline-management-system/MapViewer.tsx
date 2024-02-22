@@ -6,7 +6,7 @@ import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { LayerStyle } from 'shared/fixtures/pipeline';
-import { drawNRemoveLayers, measureDistanceAction } from 'shared/modules/gis/measure.distance';
+import { addMeasureLayers, measureDistanceAction, removeMeasureLayers } from 'shared/modules/gis/measure.distance';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
@@ -28,7 +28,15 @@ const MapViewerWrapper = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const { measureType, style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
+  const {
+    measureType,
+    measureSource,
+    style,
+    zoomLevel: zoom,
+    setMeasureSource,
+    setMeasureLayer,
+    setStyleOption,
+  } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
   const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
@@ -43,6 +51,7 @@ export const MapViewer = () => {
         if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
         map.current && addVectorTiles(map.current);
+        map.current && addMeasureLayers(map.current, measureSource, measureType);
       });
       map.current?.fitBounds([
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
@@ -50,9 +59,12 @@ export const MapViewer = () => {
       ]);
     });
     return () => {
+      map.current && removeMeasureLayers(map.current);
+      setMeasureSource(null);
+      setMeasureLayer(null);
       setStyleOption(vectorTileBaseMaps[0].style);
       map.current?.remove();
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -72,10 +84,13 @@ export const MapViewer = () => {
     const measure = measureType !== 'none';
     const style = map.current.getCanvas().style;
     style.cursor = measureType !== 'none' ? 'crosshair' : 'default';
-    drawNRemoveLayers(map.current, measure);
-    measure && map.current.on('click', measureDistanceAction);
+
+    removeMeasureLayers(map.current);
+    addMeasureLayers(map.current, measureSource, measureType);
+
+    measureType === 'distance' && map.current.on('click', measureDistanceAction);
     !measure && map.current.off('click', measureDistanceAction);
-  }, [measureType]);
+  }, [measureSource, measureType]);
 
   useEffect(() => {
     if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;

@@ -2,34 +2,16 @@ import { Map as AppMap } from 'maplibre-gl';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 import { addVectorTiles, removeVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
 
-export type LayerGroupKeys = 'pipeline';
-
 export interface LayerGroup {
   layers: Array<string>;
   boundary: Array<Array<number>>;
 }
 
-export const LayerGroupData: { [key in LayerGroupKeys]: LayerGroup } = {
-  pipeline: {
-    layers: ['gsf_pl_mt', 'gsf_vv_mt', 'gsf_tb_mt', 'gsf_rglt_mt'],
-    boundary: [[126.51718139648438, 35.9637451171875], [127.57186889648438, 36.98272705078125]],
-  },
-};
-
-export const addGroupLayer = (map: AppMap, layerIdList: Array<LayerGroupKeys>) => {
-  const keyList = Object.keys(LayerGroupData) as Array<LayerGroupKeys>;
-  keyList.forEach(key => {
-    if (layerIdList.includes(key)) {
-      if (key === 'pipeline') addVectorTiles(map);
-    } else {
-      if (key === 'pipeline') removeVectorTiles(map);
-    }
-  });
-};
+export type LayerGroupKeys = 'pipeline';
 
 export const addClickLayer = (map: AppMap, layerId: LayerGroupKeys, layerGroupsList: Array<string>) => {
-  LayerGroupData[layerId].layers.forEach(layer => {
-    let data: { code: string; color: string; width?: number; lineStyle?: string; }[] = [];
+  LayerGroupData[layerId].layers.forEach((layer) => {
+    let data: { code: string; color: string; width?: number; lineStyle?: string }[] = [];
     switch (layer) {
       case 'gsf_pl_mt':
         data = pipelines;
@@ -54,8 +36,29 @@ export const addClickLayer = (map: AppMap, layerId: LayerGroupKeys, layerGroupsL
   });
 };
 
+export const addGroupLayer = (map: AppMap, layerIdList: Array<LayerGroupKeys>) => {
+  const keyList = Object.keys(LayerGroupData) as Array<LayerGroupKeys>;
+  keyList.forEach((key) => {
+    if (layerIdList.includes(key)) {
+      if (key === 'pipeline') addVectorTiles(map);
+    } else {
+      if (key === 'pipeline') removeVectorTiles(map);
+    }
+  });
+};
+
+export const LayerGroupData: { [key in LayerGroupKeys]: LayerGroup } = {
+  pipeline: {
+    layers: ['gsf_pl_mt', 'gsf_vv_mt', 'gsf_tb_mt', 'gsf_rglt_mt'],
+    boundary: [
+      [126.51718139648438, 35.9637451171875],
+      [127.57186889648438, 36.98272705078125],
+    ],
+  },
+};
+
 export const setFitBounds = (map: AppMap, layerIdList: Array<LayerGroupKeys>) => {
-  const tempBound = layerIdList.map(groupId => {
+  const tempBound = layerIdList.map((groupId) => {
     return LayerGroupData[groupId].boundary;
   });
 
@@ -67,5 +70,8 @@ export const setFitBounds = (map: AppMap, layerIdList: Array<LayerGroupKeys>) =>
     if (top > TOP) TOP = top;
   });
 
-  map.fitBounds([[LEFT, BOTTOM], [RIGHT, TOP]]);
+  map.fitBounds([
+    [LEFT, BOTTOM],
+    [RIGHT, TOP],
+  ]);
 };

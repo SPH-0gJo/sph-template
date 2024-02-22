@@ -6,7 +6,6 @@ import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { addClickLayer, addGroupLayer, setFitBounds } from 'shared/fixtures/layer.groups';
-import { drawNRemoveLayers, measureDistanceAction } from 'shared/modules/gis/measure.distance';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
@@ -29,7 +28,7 @@ export const MapViewer = () => {
   const map = useRef<AppMap | null>(null);
   const { setLayerGroup } = useGsfLayerStore();
   const { layerIdList, layerGroupsList } = useLayerGroupStore();
-  const { measureType, style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
+  const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -65,16 +64,6 @@ export const MapViewer = () => {
     if (!map.current || !zoom) return;
     map.current?.zoomTo(zoom, { duration: 1000 });
   }, [zoom]);
-
-  useEffect(() => {
-    if (!map.current) return;
-    const measure = measureType !== 'none';
-    const style = map.current.getCanvas().style;
-    style.cursor = measureType !== 'none' ? 'crosshair' : 'default';
-    drawNRemoveLayers(map.current, measure);
-    measure && map.current.on('click', measureDistanceAction);
-    !measure && map.current.off('click', measureDistanceAction);
-  }, [measureType]);
 
   useEffect(() => {
     if (!map.current || !map.current?.getStyle()) return;

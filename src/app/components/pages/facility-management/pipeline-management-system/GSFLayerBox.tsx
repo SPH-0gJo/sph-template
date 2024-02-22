@@ -6,7 +6,11 @@ import { Map as AppMap } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
-const LayerBoxWrapper = styled.div`
+interface LayerBoxProps {
+  visible: boolean;
+}
+
+const LayerBoxWrapper = styled.div<LayerBoxProps>`
   display: flex;
   width: 25.625rem;
   flex-direction: column;
@@ -19,15 +23,15 @@ const LayerBoxWrapper = styled.div`
   top: 7.25rem;
   left: 1.25rem;
   user-select: none;
-  padding-bottom: 1.87rem;
+  padding-bottom: ${(props) => (props.visible ? '0' : '1.87rem')};
 `;
-
-const LayerBoxHeader = styled.div`
+const LayerBoxHeader = styled.div<LayerBoxProps>`
   display: flex;
   padding: 0.9375rem;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--divider, rgba(0, 0, 0, 0.12));
+  border-bottom: ${(props) => (props.visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
+
   em {
     margin-left: auto;
     font-size: 1.5rem;
@@ -35,13 +39,11 @@ const LayerBoxHeader = styled.div`
     cursor: pointer;
   }
 `;
-
 const LayerGroupButtons = styled.div`
   display: flex;
   align-items: center;
   gap: 0.25rem;
 `;
-
 const LayerGroupButton = styled.button`
   display: flex;
   justify-content: center;
@@ -54,13 +56,16 @@ const LayerGroupButton = styled.button`
   border: 0;
   border-radius: 0.375rem;
   background-color: var(--white);
+
   em {
     font-size: 1.125rem;
   }
+
   &.selected {
     color: var(--white);
     background-color: var(--light-secondary-origin);
   }
+
   &:hover {
     color: var(--black);
     background: var(--light-secondary-a16);
@@ -77,6 +82,7 @@ interface GSFLayerBoxProps {
 
 export const GSFLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
+  const [visible, setVisible] = useState(false);
   const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
   useEffect(() => {
     setLayerGroupId('pl');
@@ -94,8 +100,8 @@ export const GSFLayerBox = (props: GSFLayerBoxProps) => {
 
   return (
     <>
-      <LayerBoxWrapper>
-        <LayerBoxHeader>
+      <LayerBoxWrapper visible={visible}>
+        <LayerBoxHeader visible={visible}>
           <LayerGroupButtons>
             {layerGroups &&
               layerGroups.map((group) => {
@@ -112,9 +118,9 @@ export const GSFLayerBox = (props: GSFLayerBoxProps) => {
                 );
               })}
           </LayerGroupButtons>
-          <em className='icon-chevron-right-large' />
+          <em className={`icon-chevron-${visible ? 'left' : 'right'}-large`} onClick={() => setVisible(!visible)} />
         </LayerBoxHeader>
-        <GSFLayerBoxContents data={{ appMap: props.data.appMap, layerGroupId }} />
+        {!visible && <GSFLayerBoxContents data={{ appMap: props.data.appMap, layerGroupId }} />}
       </LayerBoxWrapper>
       {layerStyleEditorId && <GSFLayerStyleEditor />}
     </>
