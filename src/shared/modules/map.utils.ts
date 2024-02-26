@@ -2,23 +2,6 @@ import maplibregl, { LngLatBounds } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { ImageExtent, WMSRequest } from 'shared/constants/types/types';
 import { initCoords } from 'shared/constants/varibales';
-export const initMap = (
-  container: HTMLDivElement | string,
-  zoom: number,
-  styleIdx: number,
-  $center: number[] | undefined,
-) => {
-  console.log('initMap');
-  const style = styleIdx ? vectorTileBaseMaps[styleIdx].style : vectorTileBaseMaps[0].style;
-  const [lng, lat] = $center ? $center : initCoords;
-  return new maplibregl.Map({
-    container,
-    hash: true,
-    style,
-    center: [lng, lat],
-    zoom,
-  });
-};
 
 export function getExtentCoordinatesFromBounds(bounds: LngLatBounds): ImageExtent {
   return [
@@ -41,4 +24,22 @@ export const getMapRequestParams = (params: WMSRequest) => {
     CRS: 'EPSG:4326',
   };
   return Object.assign(payload, params);
+};
+
+export const initMap = (
+  container: HTMLDivElement | string,
+  zoom: number,
+  styleIdx: number,
+  $center: number[] | undefined,
+) => {
+  console.log('initMap');
+  const style = styleIdx ? vectorTileBaseMaps[styleIdx].style : vectorTileBaseMaps[0].style;
+  const [lng, lat] = $center ? $center : initCoords;
+  return new maplibregl.Map({
+    container,
+    hash: true,
+    style,
+    center: [lng, lat],
+    zoom,
+  });
 };
