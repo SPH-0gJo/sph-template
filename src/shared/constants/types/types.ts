@@ -1,9 +1,12 @@
-export interface SubMenu {
-  name: string;
-  summary: string;
-  link: string;
-  thumbnail?: string;
+export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
+
+export interface LayerStyle {
+  'line-color'?: string;
+  'line-width'?: number;
+  'line-dasharray'?: Array<number>;
 }
+
+export type LayerStyleProperty = string | number | number[] | object | null;
 
 export interface MainMenu {
   id: string;
@@ -19,15 +22,12 @@ export interface MonitoringMenu {
   image: string;
 }
 
-export type LayerStyleProperty = string | number | number[] | object | null;
-
-export interface LayerStyle {
-  'line-color'?: string;
-  'line-width'?: number;
-  'line-dasharray'?: Array<number>;
+export interface SubMenu {
+  name: string;
+  summary: string;
+  link: string;
+  thumbnail?: string;
 }
-
-export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
 
 export interface WMSRequest {
   SERVICE?: string;

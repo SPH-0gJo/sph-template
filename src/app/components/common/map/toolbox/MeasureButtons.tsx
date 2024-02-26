@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'app/components/common-ui';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { measureTypes } from 'shared/constants/types/types';
 import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
@@ -11,34 +12,66 @@ interface StyledProps {
 const CalculationBox = styled.div<StyledProps>`
   position: fixed;
   top: ${(props) => (props.$position ? `${props.$position[0]}px` : 0)};
-  left: ${(props) => (props.$position ? `${props.$position[1]}px` : 0)};
+  right: ${(props) => (props.$position ? `${props.$position[1]}px` : 0)};
   border-radius: 0.3rem;
   padding: 1rem;
-  background-color: var(--light-surface-level-0);
-  border: 0.08rem solid gray;
-  width: 6rem;
-  height: 4rem;
-  display: ${(props) => (props.$position ? 'flex' : 'none')};
-  flex-direction: column;
-  justify-content: center;
+  width: auto;
+  height: 2rem;
+  display: flex;
   align-items: center;
+  gap: 0.8rem;
+  background-color: var(--light-surface-level-0);
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
 `;
 
 export const MeasureButtons = () => {
-  const { measureType, measuredValue, setMeasureType } = useMapOptionsStore();
+  const [width, setWidth] = useState(window.innerWidth - (window.innerWidth - 55));
   const [calculationBoxPosition, setCalculationBoxPosition] = useState<number[] | undefined>(undefined);
+  const [measureUnit, setMeasureUnit] = useState('');
+  const { measureType, measureValue, setMeasureType, setMeasureSource, setMeasureLayer, setMeasureValue } =
+    useMapOptionsStore();
 
   useEffect(() => {
-    measureType === 'none' && setCalculationBoxPosition(undefined);
+    const handleResize = () => {
+      setWidth(window.innerWidth - (window.innerWidth - 55));
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      setMeasureValue(0);
+      setMeasureType('none');
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (measureType === 'none' || !calculationBoxPosition) return;
+    setCalculationBoxPosition([calculationBoxPosition[0], width]);
+  }, [width]);
+
+  useEffect(() => {
+    const unitFunc: { [key: string]: string } = {
+      none: '',
+      radius: '',
+      distance: 'km',
+      area: '',
+    };
+    setMeasureUnit(unitFunc[measureType]);
   }, [measureType]);
 
-  function getCalculationBoxPosition(e: React.MouseEvent, measureType: measureTypes) {
-    if (!e.currentTarget || measureType === 'none') return;
-    const { top, left: currentLeft, width } = e.currentTarget.getBoundingClientRect();
-    console.log(currentLeft - width * 1.8);
-    const left = currentLeft - width * 1.55; // 0.5 is right margin
-    setCalculationBoxPosition([top, left]);
-    setMeasureType(measureType);
+  function getCalculationBoxPosition(e: React.MouseEvent, type: measureTypes) {
+    if (!e.currentTarget || type === 'none') return;
+    const { top } = e.currentTarget.getBoundingClientRect();
+    setCalculationBoxPosition([top, width]);
+    setMeasureType(type);
+  }
+
+  function resetClick() {
+    if (measureType === 'distance') {
+      setMeasureValue(0);
+      setMeasureSource(null);
+      setMeasureLayer(null);
+    }
   }
 
   return (
@@ -68,9 +101,16 @@ export const MeasureButtons = () => {
           <em className='icon-map-polygon' />
         </ToolboxButton>
       </ToolboxButtonWrapper>
-      {/* <CalculationBox className='body' $position={calculationBoxPosition}>*/}
-      {/*  <p>{measuredValue}</p>*/}
-      {/* </CalculationBox>*/}
+      {measureValue !== 0 && measureType !== 'none' && (
+        <CalculationBox className='body' $position={calculationBoxPosition}>
+          <p>
+            {measureValue.toFixed(3)} {measureUnit}
+          </p>
+          <Button size='xs' color='secondary' onClick={resetClick}>
+            초기화
+          </Button>
+        </CalculationBox>
+      )}
     </>
   );
 };
