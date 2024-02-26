@@ -7,7 +7,7 @@ import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
 interface LayerBoxProps {
-  visible: boolean;
+  $visible: boolean;
 }
 
 const LayerBoxWrapper = styled.div<LayerBoxProps>`
@@ -23,14 +23,14 @@ const LayerBoxWrapper = styled.div<LayerBoxProps>`
   top: 7.25rem;
   left: 1.25rem;
   user-select: none;
-  padding-bottom: ${(props) => (props.visible ? '0' : '1.87rem')};
+  padding-bottom: ${(props) => (props.$visible ? '0' : '1.87rem')};
 `;
 const LayerBoxHeader = styled.div<LayerBoxProps>`
   display: flex;
   padding: 0.9375rem;
   justify-content: space-between;
   align-items: center;
-  border-bottom: ${(props) => (props.visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
+  border-bottom: ${(props) => (props.$visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
 
   em {
     margin-left: auto;
@@ -100,8 +100,8 @@ export const GSFLayerBox = (props: GSFLayerBoxProps) => {
 
   return (
     <>
-      <LayerBoxWrapper visible={visible}>
-        <LayerBoxHeader visible={visible}>
+      <LayerBoxWrapper $visible={visible}>
+        <LayerBoxHeader $visible={visible}>
           <LayerGroupButtons>
             {layerGroups &&
               layerGroups.map((group) => {
