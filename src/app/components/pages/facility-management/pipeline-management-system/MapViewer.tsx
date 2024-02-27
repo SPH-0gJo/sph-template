@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
 import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { useMapMeasureStore } from 'app/stores/mapMeasure';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
@@ -28,16 +29,9 @@ const MapViewerWrapper = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const {
-    measureType,
-    measureSource,
-    style,
-    zoomLevel: zoom,
-    setMeasureSource,
-    setMeasureLayer,
-    setStyleOption,
-  } = useMapOptionsStore();
+  const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
+  const { measureType, distanceSource, setDistanceSource, setDistanceLayer } = useMapMeasureStore();
   const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
   useEffect(() => {
@@ -51,7 +45,7 @@ export const MapViewer = () => {
         if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
         map.current && addVectorTiles(map.current);
-        map.current && addMeasureLayers(map.current, measureSource, measureType);
+        map.current && addMeasureLayers(map.current, distanceSource, measureType);
       });
       map.current?.fitBounds([
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
@@ -60,8 +54,8 @@ export const MapViewer = () => {
     });
     return () => {
       map.current && removeMeasureLayers(map.current);
-      setMeasureSource(null);
-      setMeasureLayer(null);
+      setDistanceSource(null);
+      setDistanceLayer(null);
       setStyleOption(vectorTileBaseMaps[0].style);
       map.current?.remove();
     };
@@ -86,11 +80,11 @@ export const MapViewer = () => {
     style.cursor = measureType !== 'none' ? 'crosshair' : 'default';
 
     removeMeasureLayers(map.current);
-    addMeasureLayers(map.current, measureSource, measureType);
+    addMeasureLayers(map.current, distanceSource, measureType);
 
     measureType === 'distance' && map.current.on('click', measureDistanceAction);
     !measure && map.current.off('click', measureDistanceAction);
-  }, [measureSource, measureType]);
+  }, [distanceSource, measureType]);
 
   useEffect(() => {
     if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;
