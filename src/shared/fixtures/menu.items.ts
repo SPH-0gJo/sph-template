@@ -12,6 +12,11 @@ export const MainMenus: MainMenu[] = [
         thumbnail: '/assets/images/sample_map.png',
       },
       {
+        name: '시설물 지도(도면)관리 서비스',
+        summary: '배관, 밸브, Test box, 정압기 속성 데이터 수정 화면',
+        link: '/geolab/fm/mm',
+      },
+      {
         name: '실시간 시설물 모니터링',
         summary: '도로명 / 건물 / 좌표 등의 기준을 활용해 장소를 검색해 보세요',
         link: '/geolab/fm/rpm',
