@@ -55,14 +55,16 @@ const BlockDiv = styled.div`
 
 interface FileListItemProps {
   data: UploadGeoFile;
-  validationSelectValue: (arg0: string, arg1: string) => void;
+  validationSelectValue: (arg0: number, arg1: string, arg2: string) => void;
   trans: (arg0: number) => void;
   index: number;
   failedIndexes: number[];
   coordinateSystemList: Array<number>;
-  selectOrigin: string;
-  selectTarget: string;
-  allChange: boolean;
+  selectOrigin: string[];
+  selectTarget: string[];
+  allOrigin: string;
+  allTarget: string;
+  loadingIndex: Array<number>;
 }
 
 export const FileListItem = (props: FileListItemProps) => {
@@ -75,20 +77,21 @@ export const FileListItem = (props: FileListItemProps) => {
     coordinateSystemList,
     selectOrigin,
     selectTarget,
-    allChange,
+    allOrigin,
+    allTarget,
+    loadingIndex,
   } = props;
   const originRef = useRef<HTMLInputElement>(null);
   const targetRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!originRef.current || !targetRef.current) return;
-    if (allChange) {
-      validationSelectValue(selectOrigin, 'origin');
-      originRef.current.value = selectOrigin;
-      validationSelectValue(selectTarget, 'target');
-      targetRef.current.value = selectTarget;
-    }
-  }, [selectOrigin, selectTarget]);
+    if (!originRef.current || failedIndexes.includes(index) || allOrigin === '') return;
+    originRef.current.value = allOrigin;
+  }, [allOrigin]);
+  useEffect(() => {
+    if (!targetRef.current || failedIndexes.includes(index) || allOrigin === '') return;
+    targetRef.current.value = allTarget;
+  }, [allTarget]);
   return (
     <UploadedFileItem key={index}>
       <div
@@ -106,26 +109,30 @@ export const FileListItem = (props: FileListItemProps) => {
             type='text'
             list='list'
             placeholder='원본 좌표계'
-            onChange={(e) => validationSelectValue(e.currentTarget.value, 'origin')}
+            onChange={(e) => validationSelectValue(index, e.currentTarget.value, 'origin')}
           />
           <input
             ref={targetRef}
             type='text'
             list='list'
             placeholder='변환 좌표계'
-            onChange={(e) => validationSelectValue(e.currentTarget.value, 'target')}
+            onChange={(e) => validationSelectValue(index, e.currentTarget.value, 'target')}
           />
           <datalist id='list'>
             {!coordinateSystemList || coordinateSystemList.map((e) => <option key={e}>{e}</option>)}
           </datalist>
         </InputDiv>
         <Button
-          color='dark'
+          color={selectOrigin[index] !== '' && selectTarget[index] !== '' ? 'dark' : 'light'}
           size='md'
           rounded
           onClick={() => {
             trans(index);
           }}
+          disabled={
+            coordinateSystemList.includes(parseInt(selectOrigin[index])) &&
+            coordinateSystemList.includes(parseInt(selectTarget[index]))
+          }
         >
           파일 변환
         </Button>
@@ -133,6 +140,11 @@ export const FileListItem = (props: FileListItemProps) => {
       {!failedIndexes.includes(index) || (
         <BlockDiv>
           <span>잘 못 된 형식의 파일입니다.</span>
+        </BlockDiv>
+      )}
+      {!loadingIndex.includes(index) || (
+        <BlockDiv>
+          <span>다운로드 중</span>
         </BlockDiv>
       )}
     </UploadedFileItem>

@@ -35,8 +35,15 @@ export const FileTrans = () => {
 
   useEffect(() => {
     if (!geoFiles || !uploadBlobs) return;
-    setFileSelected(true);
-    uploadBlobs.forEach(async (file, index) => await readGeoJson(file, index));
+    const temp: number[] = [];
+    uploadBlobs.forEach(async (file, index) => {
+      const num = await readGeoJson(file, index);
+      if (num || num === 0) temp.push(num);
+      if (index === uploadBlobs.length - 1) {
+        setFileSelected(true);
+        setFailedIndexes(temp);
+      }
+    });
   }, [uploadBlobs]);
 
   async function readGeoJson(file: File, index: number) {
@@ -50,21 +57,19 @@ export const FileTrans = () => {
       Object.assign(geoFiles.files[index], { featureType, columns });
       setGeoFiles({ ...geoFiles });
     } catch (e) {
-      setFailedIndexes([...failedIndexes, index]);
+      return index;
     }
   }
 
+  const resetAll = () => {
+    setFileSelected(false);
+    setFailedIndexes([]);
+  };
   return (
     <FileUploaderContainer>
       {fileSelected ? (
         <UploadFileWrapper>
-          <FileList
-            fileList={geoFiles}
-            uploadBlobs={uploadBlobs}
-            setFileSelected={setFileSelected}
-            failedIndexes={failedIndexes}
-          />
-          {/* <SelectedFileButtons></SelectedFileButtons>*/}
+          <FileList fileList={geoFiles} uploadBlobs={uploadBlobs} resetAll={resetAll} failedIndexes={failedIndexes} />
         </UploadFileWrapper>
       ) : (
         <FileUploadSelector

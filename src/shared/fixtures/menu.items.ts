@@ -117,6 +117,11 @@ export const MainMenus: MainMenu[] = [
         summary: 'geojosn파일 좌표계 변환',
         link: '/geolab/file/coordinate-system/trans',
       },
+      {
+        name: '지도 파일 업로드',
+        summary: 'geojosn파일 업로드 및 Mbtiles 베이킹',
+        link: '/geolab/file/geojson/upload',
+      },
     ],
   },
   {
