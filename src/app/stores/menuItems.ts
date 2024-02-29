@@ -1,9 +1,9 @@
 import { commonApis } from 'app/api/common.api';
-import { MainMenu } from 'shared/constants/types/types';
+import { GeolabMenuItems } from 'shared/constants/types/types';
 import { create } from 'zustand';
 
 interface MenuItemState {
-  menuItems: MainMenu[];
+  menuItems: GeolabMenuItems[];
   fetch: () => void;
 }
 
@@ -11,7 +11,24 @@ export const useCommonStore = create<MenuItemState>()((set) => ({
   menuItems: [],
   fetch: async () => {
     try {
-      const menuItems = (await commonApis.menuItems()) as MainMenu[];
+      const result = (await commonApis.menuItems()) as GeolabMenuItems[];
+      const parents: Map<string, GeolabMenuItems> = new Map();
+      result.forEach((e) => {
+        const { id, parent_id: parentId } = e;
+        const key = id + '';
+        if (!parentId) {
+          parents.set(key, e);
+          return;
+        }
+        const parentKey = parentId + '';
+        const parent = parents.get(parentKey);
+        if (!parent) return;
+        if (parent.children === undefined) parent.children = [];
+        parent?.children.push(e);
+        parents.set(parentKey, parent);
+      });
+      console.log(parents);
+      const menuItems = [...parents].map((e) => e[1]);
       set({ menuItems });
     } catch (e) {
       console.error(e);

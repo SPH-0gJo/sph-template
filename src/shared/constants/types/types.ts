@@ -1,34 +1,25 @@
-export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
-
-export interface LayerStyle {
-  'line-color'?: string;
-  'line-width'?: number;
-  'line-dasharray'?: Array<number>;
-}
-
-export type LayerStyleProperty = string | number | number[] | object | null;
-
-export interface MainMenu {
-  id: string;
+export interface GeolabMenu {
+  id: number;
+  is_deleted?: boolean;
+  is_visible?: boolean;
+  list_order?: number;
+  parent_id?: number;
+  link?: string;
   name: string;
-  children?: SubMenu[];
+  summary?: string;
+  thumbnail?: string;
 }
-
+export interface GeolabMenuItems extends GeolabMenu {
+  children?: GeolabMenu[];
+}
+export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
+export type LayerStyleProperty = string | number | number[] | object | null;
 export type measureTypes = 'none' | 'distance' | 'radius' | 'area';
-
 export interface MonitoringMenu {
   id: number;
   name: string;
   image: string;
 }
-
-export interface SubMenu {
-  name: string;
-  summary: string;
-  link: string;
-  thumbnail?: string;
-}
-
 export interface WMSRequest {
   SERVICE?: string;
   VERSION?: string;
