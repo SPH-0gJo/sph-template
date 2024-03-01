@@ -23,7 +23,7 @@ export const GeolabMain = () => {
   const [searchText, setSearchText] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    fetch();
+    if (!menuItems.length) fetch();
     setSearchText('');
   }, []);
 

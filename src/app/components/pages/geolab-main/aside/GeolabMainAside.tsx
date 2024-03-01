@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GeolabMenu } from 'app/components/pages/geolab-main/aside/GeolabMenu';
-import { MainMenu } from 'shared/constants/types/types';
+import { GeolabMenuItems } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
 const Aside = styled.aside`
@@ -52,7 +52,7 @@ const AsideFooter = styled.div`
 `;
 
 interface GeolabMainAsideData {
-  menuItems: MainMenu[];
+  menuItems: GeolabMenuItems[];
 }
 
 interface GeolabMainAsideProps {

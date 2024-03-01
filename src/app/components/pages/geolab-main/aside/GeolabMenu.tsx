@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MainMenu, SubMenu } from 'shared/constants/types/types';
+import { GeolabMenuItems } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
 interface StyledProps {
@@ -41,7 +41,7 @@ const SubMenuItems = styled.ul<StyledProps>`
 `;
 
 interface GeolabMenuData {
-  menuItem: MainMenu;
+  menuItem: GeolabMenuItems;
 }
 
 interface GeolabMenuProps {
@@ -50,7 +50,7 @@ interface GeolabMenuProps {
 
 export const GeolabMenu = (props: GeolabMenuProps) => {
   const [subMenuActivate, setSubMenuActivate] = useState(false);
-  const [menuItems, setMenuItems] = useState<SubMenu[] | undefined>(undefined);
+  const [menuItems, setMenuItems] = useState<GeolabMenuItems[] | undefined>(undefined);
   const [hasMenus, setHasMenus] = useState(true);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export const GeolabMenu = (props: GeolabMenuProps) => {
         {!menuItems ||
           menuItems.map((e, index) => (
             <li className='subtitle' key={index}>
-              <Link to={e.link}>{e.name}</Link>
+              <Link to={e.link || ''}>{e.name}</Link>
             </li>
           ))}
       </SubMenuItems>

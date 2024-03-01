@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import { Simulate } from 'react-dom/test-utils';
 import { GeolabItemCard } from 'app/components/pages/geolab-main/contents/GeolabItemCard';
-import { MainMenu } from 'shared/constants/types/types';
+import { GeolabMenuItems } from 'shared/constants/types/types';
 import styled from 'styled-components';
-import load = Simulate.load;
 
 const Main = styled.main`
   background-color: var(--light-surface-level-2);
@@ -57,7 +55,7 @@ const ItemCardWrapper = styled.div`
 `;
 
 interface GeolabMainContentData {
-  menuItems: MainMenu[];
+  menuItems: GeolabMenuItems[];
   searchText?: string;
 }
 
@@ -69,7 +67,7 @@ export const GeolabMainContents = (props: GeolabMainContentsProps) => {
   const { menuItems, searchText } = props.data;
 
   const filteredMenuItems = useMemo(() => {
-    const copied: MainMenu[] = JSON.parse(JSON.stringify(menuItems));
+    const copied: GeolabMenuItems[] = JSON.parse(JSON.stringify(menuItems));
     if (!searchText) return copied.filter((e) => e.children);
     return copied
       .map((item) => {
@@ -79,7 +77,7 @@ export const GeolabMainContents = (props: GeolabMainContentsProps) => {
         if (!item.children.length) return undefined;
         return item;
       })
-      .filter(Boolean) as MainMenu[];
+      .filter(Boolean) as GeolabMenuItems[];
   }, [searchText, menuItems]);
 
   return (

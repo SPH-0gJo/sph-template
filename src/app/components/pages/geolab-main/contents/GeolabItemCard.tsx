@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SubMenu } from 'shared/constants/types/types';
+import { GeolabMenuItems } from 'shared/constants/types/types';
 import { NoImage } from 'shared/constants/varibales';
 import styled from 'styled-components';
 
@@ -61,7 +61,7 @@ const CardDescBox = styled.div`
 `;
 
 interface GeolabItemCardData {
-  subMenu: SubMenu;
+  subMenu: GeolabMenuItems;
 }
 
 interface GeolabItemCardProps {
@@ -71,6 +71,7 @@ interface GeolabItemCardProps {
 export const GeolabItemCard = (props: GeolabItemCardProps) => {
   const { subMenu } = props.data;
   const { name, summary, link, thumbnail } = subMenu;
+  if (!link) return <></>;
   return (
     <Link to={link}>
       <ItemCard>

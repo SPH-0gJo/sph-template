@@ -1,9 +1,9 @@
-import { MainMenus } from 'shared/fixtures/menu.items';
+import { GeolabMenus } from 'shared/fixtures/menu.items';
 const commonApis = {
   menuItems: () => {
     return new Promise((resolve, reject) => {
       try {
-        resolve(MainMenus);
+        resolve(GeolabMenus);
       } catch (e) {
         reject(e);
       }
