@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { MapDataManagement } from 'app/containers/pages/facility-management/MapDataManagement';
 import { PipelineManagement } from 'app/containers/pages/facility-management/PipelineManagement';
 import { PipelineMonitoring } from 'app/containers/pages/facility-management/PipelineMonitoring';
+import { ValveClusterMap } from 'app/containers/pages/facility-management/ValveClusterMap';
 import { CoordinateSystemTrans } from 'app/containers/pages/file/CoordinateSystemTrans';
 import { GeojsonUploadSystem } from 'app/containers/pages/file/GeojsonUploadSystem';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
@@ -46,6 +47,7 @@ export const App = () => {
           <Route path='/geolab/layer/uploader' element={<GISFileUploader />} />
           <Route path='/geolab/file/coordinate-system/trans' element={<CoordinateSystemTrans />} />
           <Route path='/geolab/file/geojson/upload' element={<GeojsonUploadSystem />} />
+          <Route path='/geolab/fm/valve-cluster' element={<ValveClusterMap />} />
         </Routes>
       </BrowserRouter>
     </AppPage>

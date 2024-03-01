@@ -1,12 +1,12 @@
 import { Map as AppMap } from 'maplibre-gl';
-import { GeolabVectorTileStyle } from 'shared/constants/varibales';
+import { GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 const circleSize = 1;
 const pointUnitValue = 100;
 const sourceLayerFromVectortile = 'Songdo_asc_step7_mv';
 export function addMassivePoints(map: AppMap, count: number) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource(sourceName);
-  if (!source) map.addSource(sourceName, { type: 'vector', url: GeolabVectorTileStyle });
+  if (!source) map.addSource(sourceName, { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
   const length = count / pointUnitValue;
   const arr = Array.from({ length }, (_, i) => i);
   console.time('Add Massive Points');
