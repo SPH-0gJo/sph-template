@@ -27,7 +27,6 @@ export const useCommonStore = create<MenuItemState>()((set) => ({
         parent?.children.push(e);
         parents.set(parentKey, parent);
       });
-      console.log(parents);
       const menuItems = [...parents].map((e) => e[1]);
       set({ menuItems });
     } catch (e) {

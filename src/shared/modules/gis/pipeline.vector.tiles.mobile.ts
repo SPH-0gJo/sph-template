@@ -1,12 +1,12 @@
 import { Map as AppMap } from 'maplibre-gl';
-import { CircleSize, GeolabVectorTileStyle } from 'shared/constants/varibales';
+import { CircleSize, GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 
 export function addVectorTilesMobile(map: AppMap) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource('geolab-layers');
   if (source) return;
-  map.addSource('geolab-layers', { type: 'vector', url: GeolabVectorTileStyle });
+  map.addSource('geolab-layers', { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
   pipelines.forEach((e) => {
     const { code, color, width, lineStyle } = e;
     const paint: { 'line-color': string; 'line-width': number; 'line-dasharray'?: Array<number> } = {
@@ -19,7 +19,7 @@ export function addVectorTilesMobile(map: AppMap) {
       type: 'line',
       source: 'geolab-layers',
       'source-layer': 'gsf_pl_mt',
-      layout: { 'line-join': 'round', 'line-cap': 'round', visibility:'none' },
+      layout: { 'line-join': 'round', 'line-cap': 'round', visibility: 'none' },
       paint,
       filter: ['==', 'GIS_PL_TY_', code],
     });
@@ -36,7 +36,7 @@ export function addVectorTilesMobile(map: AppMap) {
       // layout: { 'icon-image': 'shop-icon', 'icon-size': 0.4 },
       paint: { 'circle-color': color, 'circle-radius': CircleSize },
       filter: ['==', 'GIS_VV_TYP', code],
-      layout: { visibility:'none' },
+      layout: { visibility: 'none' },
     });
   });
 
@@ -49,7 +49,7 @@ export function addVectorTilesMobile(map: AppMap) {
       'source-layer': 'gsf_tb_mt',
       // minzoom: 13,
       paint: { 'circle-color': color, 'circle-radius': CircleSize },
-      layout: { visibility:'none' },
+      layout: { visibility: 'none' },
     });
   });
 
@@ -62,7 +62,7 @@ export function addVectorTilesMobile(map: AppMap) {
       'source-layer': 'gsf_rglt_mt',
       // minzoom: 13,
       paint: { 'circle-color': color, 'circle-radius': CircleSize },
-      layout: { visibility:'none' },
+      layout: { visibility: 'none' },
     });
   });
 }

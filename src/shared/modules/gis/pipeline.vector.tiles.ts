@@ -1,12 +1,12 @@
 import { Map as AppMap } from 'maplibre-gl';
-import { CircleSize, GeolabVectorTileStyle } from 'shared/constants/varibales';
+import { CircleSize, GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 
 export function addVectorTiles(map: AppMap) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource('geolab-layers');
   if (source) return;
-  map.addSource('geolab-layers', { type: 'vector', url: GeolabVectorTileStyle });
+  map.addSource('geolab-layers', { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
   pipelines.forEach((e) => {
     const { code, color, width, lineStyle } = e;
     const paint: { 'line-color': string; 'line-width': number; 'line-dasharray'?: Array<number> } = {

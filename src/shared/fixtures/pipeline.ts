@@ -1,11 +1,9 @@
-export type GeoDataKeys = 'pl' | 'vv' | 'tb' | 'rglt';
-export interface LayerStyle {
-  'line-color'?: string;
-  'line-width'?: string | number;
-  'line-dasharray'?: Array<number> | null;
-  'circle-color'?: string;
-  'circle-radius'?: number;
+export interface GeoDataGroup {
+  name: string;
+  layerId: string;
+  LayerGroups: GsfLayer[];
 }
+export type GeoDataKeys = 'pl' | 'vv' | 'tb' | 'rglt';
 
 export interface GsfLayer {
   name: string;
@@ -17,11 +15,15 @@ export interface GsfLayer {
   style?: LayerStyle;
 }
 
-export interface GeoDataGroup {
-  name: string;
-  layerId: string;
-  LayerGroups: GsfLayer[];
+export interface LayerStyle {
+  'line-color'?: string;
+  'line-width'?: string | number;
+  'line-dasharray'?: Array<number> | null;
+  'circle-color'?: string;
+  'circle-radius'?: number;
 }
+
+export type ValveFormCodeTypes = '10' | '20' | '30' | '40' | '50' | '60';
 
 // eslint-disable-next-line camelcase
 export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
@@ -79,6 +81,14 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
       },
     ],
   },
+  // 2320:MA 본관밸브
+  // 2321:MA 공급관밸브
+  // 2322:MA 사용자공급관밸브
+  // 2323:MA 내관밸브
+  // 2330:LP 본관밸브
+  // 2331:LP 공급관밸브
+  // 2332:LP 사용자공급관밸브
+  // 2333:LP 내관밸브
   vv: {
     name: '밸브',
     layerId: 'gsf_vv_mt',
@@ -90,15 +100,33 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
         style: { 'circle-color': '#fc03e3', 'circle-radius': 3 },
       },
       {
+        name: 'HP공급관 밸브',
+        key: 'GIS_VV_TYP',
+        code: '2311',
+        style: { 'circle-color': '#002869', 'circle-radius': 3 },
+      },
+      {
+        name: 'HP사용자공급관 밸브',
+        key: 'GIS_VV_TYP',
+        code: '2312',
+        style: { 'circle-color': '#002869', 'circle-radius': 3 },
+      },
+      {
         name: 'HP내관 밸브',
         key: 'GIS_VV_TYP',
-        code: '2310',
+        code: '2313',
         style: { 'circle-color': '#002869', 'circle-radius': 3 },
       },
       {
         name: 'MA본관 밸브',
         key: 'GIS_VV_TYP',
         code: '2320',
+        style: { 'circle-color': '#ff000d', 'circle-radius': 3 },
+      },
+      {
+        name: 'MA공급관 밸브',
+        key: 'GIS_VV_TYP',
+        code: '2321',
         style: { 'circle-color': '#ff000d', 'circle-radius': 3 },
       },
       {
@@ -115,6 +143,12 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
       },
       {
         name: 'LP본관 밸브',
+        key: 'GIS_VV_TYP',
+        code: '2330',
+        style: { 'circle-color': '#0800ff', 'circle-radius': 3 },
+      },
+      {
+        name: 'LP공급관 밸브',
         key: 'GIS_VV_TYP',
         code: '2331',
         style: { 'circle-color': '#0800ff', 'circle-radius': 3 },
@@ -178,21 +212,10 @@ export const pipelines = [
   { code: '2033', color: '#0037ff', width: 1, lineStyle: 'dashed' },
 ];
 
-export const valves = [
-  { code: '2310', color: '#fc03e3' },
-  { code: '2313', color: '#002869' },
-  { code: '2320', color: '#ff000d' },
-  { code: '2322', color: '#9d00ff' },
-  { code: '2323', color: '#ff6f00' },
-  { code: '2331', color: '#0800ff' },
-  { code: '2332', color: '#00b7ff' },
-  { code: '2333', color: '#0f0404' },
-];
-
-export const tbs = [
-  { code: '2240', color: '#fc03e3' },
-  { code: '2241', color: '#fc03e3' },
-  { code: '2242', color: '#fc03e3' },
+export const pipelineStrokeStyleOptions = [
+  { key: '1', label: 'solid', value: null },
+  { key: '2', label: 'dashed', value: [2.5, 2.5] },
+  { key: '3', label: 'dotted', value: [1.5, 1.5] },
 ];
 
 export const rglt = [
@@ -200,8 +223,31 @@ export const rglt = [
   { code: '2112', color: '#fc03e3' },
 ];
 
-export const pipelineStrokeStyleOptions = [
-  { key: '1', label: 'solid', value: null },
-  { key: '2', label: 'dashed', value: [2.5, 2.5] },
-  { key: '3', label: 'dotted', value: [1.5, 1.5] },
+export const tbs = [
+  { code: '2240', color: '#fc03e3' },
+  { code: '2241', color: '#fc03e3' },
+  { code: '2242', color: '#fc03e3' },
+];
+export const valveFormTypes: { [key in ValveFormCodeTypes]: string } = {
+  '10': '볼밸브(NONE-PURGE)',
+  '20': '용접형 매몰볼밸브(NONE-PURGE)',
+  '30': '용접형 매몰볼밸브(ONE-PURGE)',
+  '40': '용접형 매몰볼밸브(TWO-PURGE)',
+  '50': '절연 볼밸브',
+  '60': 'BOX 형 밸브',
+};
+
+export const valves: { code: string; color: string }[] = [
+  { code: '2310', color: '#fc03e3' },
+  { code: '2311', color: '#fc03e3' },
+  { code: '2312', color: '#fc03e3' },
+  { code: '2313', color: '#fc03e3' },
+  { code: '2320', color: '#ff000d' },
+  { code: '2321', color: '#ff000d' },
+  { code: '2322', color: '#ff000d' },
+  { code: '2323', color: '#ff000d' },
+  { code: '2330', color: '#0037ff' },
+  { code: '2331', color: '#0037ff' },
+  { code: '2332', color: '#0037ff' },
+  { code: '2333', color: '#0037ff' },
 ];

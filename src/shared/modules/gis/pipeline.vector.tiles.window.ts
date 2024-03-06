@@ -1,12 +1,12 @@
 import maplibregl, { Map as AppMap, MapMouseEvent } from 'maplibre-gl';
-import { CircleSize, GeolabVectorTileStyle } from 'shared/constants/varibales';
+import { CircleSize, GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 
 export function addVectorTiles(map: AppMap) {
   if (!map || !map.getStyle()) return;
   const source = map.getSource('geolab-layers');
   if (source) return;
-  map.addSource('geolab-layers', { type: 'vector', url: GeolabVectorTileStyle });
+  map.addSource('geolab-layers', { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
 
   pipelines.forEach((e) => {
     let highlightedLayerId: string | null = null;
@@ -27,7 +27,7 @@ export function addVectorTiles(map: AppMap) {
       filter: ['==', 'GIS_PL_TY_', code],
     });
 
-    map.on('click',`gsf_pl_mt_${code}`,(e:MapMouseEvent)=>{
+    map.on('click', `gsf_pl_mt_${code}`, (e: MapMouseEvent) => {
       if (e.originalEvent.cancelBubble) {
         return;
       }
@@ -42,40 +42,36 @@ export function addVectorTiles(map: AppMap) {
       highlightedLayerId = `gsf_pl_mt_${code}`;
       map.setPaintProperty(highlightedLayerId, 'line-color', 'yellow');
 
-
       const features = map.queryRenderedFeatures(e.point, { layers: [`gsf_pl_mt_${code}`] })[0].properties;
 
-      let k = '<table>'
-      k+= '<thead>';
-      Object.keys(features).map((key)=>{
-        k+= '<th>' + key + '</th>';
-      })
-      k+= '</thead>';
-      k+= '<tbody>';
-      k+= '<tr>';
-      Object.keys(features).map((key)=>{
-        k+= '<td>' + features[key] + '</td>';
-      })
-      k+= '</tr>';
-      k+= '</tbody>';
+      let k = '<table>';
+      k += '<thead>';
+      Object.keys(features).map((key) => {
+        k += '<th>' + key + '</th>';
+      });
+      k += '</thead>';
+      k += '<tbody>';
+      k += '<tr>';
+      Object.keys(features).map((key) => {
+        k += '<td>' + features[key] + '</td>';
+      });
+      k += '</tr>';
+      k += '</tbody>';
 
       const transposedTableString = transposeTable(k);
 
-      const popup = new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(transposedTableString);
+      const popup = new maplibregl.Popup().setLngLat(e.lngLat).setHTML(transposedTableString);
 
       popup.on('close', () => {
         // 팝업이 닫힐 때 다시 원래 색상으로 변경
-        if(highlightedLayerId){
+        if (highlightedLayerId) {
           map.setPaintProperty(highlightedLayerId, 'line-color', color);
           highlightedLayerId = null;
         }
       });
 
       popup.addTo(map);
-
-    })
+    });
   });
 
   valves.forEach((e) => {
@@ -179,7 +175,9 @@ function transposeTable(tableString: string): string {
   });
 
   // 새로운 행과 열을 이용하여 테이블 문자열 생성
-  const transposedTable = transposedRows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('');
+  const transposedTable = transposedRows
+    .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`)
+    .join('');
 
   return `<table>${transposedTable}</table>`;
 }

@@ -5,6 +5,7 @@ interface MapOptionState {
   zoomLevel: number;
   setStyleOption: (style: string) => void;
   setZoomLevel: (direction: number) => void;
+  setZoom: (zoom: number) => void;
 }
 
 export const useMapOptionsStore = create<MapOptionState>()((set, get) => ({
@@ -16,4 +17,5 @@ export const useMapOptionsStore = create<MapOptionState>()((set, get) => ({
     if (current === 22 || current < 1) return;
     set((state) => ({ zoomLevel: state.zoomLevel + direction }));
   },
+  setZoom: (zoom: number) => set({ zoomLevel: zoom }),
 }));
