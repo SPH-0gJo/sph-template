@@ -13,29 +13,17 @@ const UploadWrapper = styled.div`
   position: relative;
 `;
 
-const UploadTitle = styled.div`
-  width: 100%;
-  height: 3rem;
-  background-color: var(--white-a100);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 0.075rem solid var(--black-a8);
-`;
-
 interface GeojsonUploadBox {
   map: AppMap | null;
+  colorMap: Map<string, string>;
 }
 
 export const GeojsonUploadBox = (props: GeojsonUploadBox) => {
-  const { map } = props;
+  const { map, colorMap } = props;
 
   return (
     <UploadWrapper>
-      <UploadTitle>
-        <h5>GeoJson File Upload System</h5>
-      </UploadTitle>
-      <CurrentMapSection map={map} />
+      <CurrentMapSection map={map} colorMap={colorMap} />
       <FileUploadSection map={map} />
     </UploadWrapper>
   );

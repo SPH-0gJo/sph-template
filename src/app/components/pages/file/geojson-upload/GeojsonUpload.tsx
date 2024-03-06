@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GeojsonUploadBox } from 'app/components/pages/file/geojson-upload/GeojsonUploadBox';
+import axios from 'axios';
 import { Map as AppMap } from 'maplibre-gl';
-import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
+import { GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 import { initMap } from 'shared/modules/map.utils';
+import { makeRandomColor } from 'shared/util/util';
 import styled from 'styled-components';
 
 const MapContainer = styled.div`
@@ -13,14 +15,70 @@ const MapContainer = styled.div`
 `;
 
 const MapViewerWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+    width: 100%;: 1 0 %
 `;
+
+interface Layer {
+  geometry: string;
+  layer: string;
+}
 
 export const GeojsonUpload = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const [map, setMap] = useState<AppMap | null>(null);
   const [mapFlag, setMapFlag] = useState<boolean>(false);
+  const [colorMap, setColorMap] = useState<Map<string, string>>(new Map());
+
+  const sourceCallback = () => {
+    if (map?.getSource('geolab-layers') && map?.isSourceLoaded('geolab-layers')) {
+      const tempMap = new Map();
+      axios.get(GEOLAB_VECTOR_TILE_STYLE).then((response) => {
+        response.data.tilestats.layers.forEach((layer: Layer) => {
+          const color = makeRandomColor();
+          tempMap.set(layer.layer, color);
+          switch (layer.geometry) {
+            case 'Point':
+              map?.addLayer({
+                id: layer.layer,
+                type: 'circle',
+                source: 'geolab-layers',
+                'source-layer': layer.layer,
+                paint: {
+                  'circle-radius': 2,
+                  'circle-color': color,
+                },
+              });
+              break;
+            case 'LineString':
+              map?.addLayer({
+                id: layer.layer,
+                type: 'line',
+                source: 'geolab-layers',
+                'source-layer': layer.layer,
+                paint: {
+                  'line-color': color,
+                },
+              });
+              break;
+            default:
+              map?.addLayer({
+                id: layer.layer,
+                type: 'fill',
+                source: 'geolab-layers',
+                'source-layer': layer.layer,
+                paint: {
+                  'fill-color': color,
+                  'fill-opacity': 0.3,
+                },
+              });
+              break;
+          }
+        });
+        setColorMap(tempMap);
+      });
+      map.off('sourcedata', sourceCallback);
+    }
+  };
 
   useEffect(() => {
     if (map || !mapContainer) return;
@@ -35,7 +93,9 @@ export const GeojsonUpload = () => {
           [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
           [127.57186889648438, 36.98272705078125], // northeastern corner of the bounds
         ]);
-        addVectorTiles(map);
+        map.addSource('geolab-layers', { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
+        map.on('sourcedata', sourceCallback);
+        // addVectorTiles(map);
         return () => map.remove();
       });
 
@@ -44,12 +104,11 @@ export const GeojsonUpload = () => {
       });
     }
   }, [map]);
-  useEffect(() => {});
 
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer}></MapViewerWrapper>
-      {mapFlag && <GeojsonUploadBox map={map}></GeojsonUploadBox>}
+      {mapFlag && <GeojsonUploadBox colorMap={colorMap} map={map}></GeojsonUploadBox>}
     </MapContainer>
   );
 };

@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/geolab/api/v1': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5000/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/geolab\/api\/v1/, ''),
       },

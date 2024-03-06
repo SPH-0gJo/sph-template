@@ -1,28 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { Map as AppMap } from 'maplibre-gl';
-import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
 const CurrentMapWrapper = styled.div`
   width: 100%;
-  height: 11rem;
+  height: 30%;
   background-color: white;
   display: flex;
   flex-direction: column;
-
-  h6 {
-    align-self: center;
-  }
 `;
 
-const InputWrapper = styled.div`
+const DefaultTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  width: 100%;
+  border-bottom: 0.075rem solid var(--black-a8);
+`;
+
+interface ColorProps {
+  $color: string;
+}
+
+const InputWrapper = styled.div<ColorProps>`
   display: flex;
   justify-content: start;
   align-items: center;
 
   label {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
   }
 
@@ -51,19 +59,25 @@ const InputWrapper = styled.div`
   }
 
   &.sub {
-    padding: 0 0 0.2rem 1rem;
+    padding: 0 0 0.4rem 1rem;
 
     &.block {
       opacity: 0.2;
     }
 
     label {
-      color: var(--black-a24);
+      opacity: 0.2;
+      background-color: ${(props) => props.$color};
+      width: 100%;
+      color: var(--white);
+      border-radius: 0.625rem;
+      padding: 0.25rem;
     }
 
     input:checked + label {
+      background-color: ${(props) => props.$color};
       opacity: 0.8;
-      color: var(--black);
+      color: var(--white);
     }
 
     input {
@@ -73,50 +87,39 @@ const InputWrapper = styled.div`
   }
 `;
 
+const ListWrapper = styled.div`
+  height: 100%;
+  overflow: scroll;
+  padding: 0 0.625rem 0;
+`;
+
 interface GeojsonUploadBox {
   map: AppMap | null;
+  colorMap: Map<string, string>;
 }
 
 export const CurrentMapSection = (props: GeojsonUploadBox) => {
-  const { map } = props;
-  const LayerList = ['gas-pipe', 'gas-valve', 'gas-tb', 'gas-gauge'];
+  const { map, colorMap } = props;
+  const [layerList, setLayerList] = useState<string[]>([]);
   const [checkMap, setCheckMap] = useState<Map<string, string>>();
   const [mainFlag, setMainFlag] = useState<boolean>(true);
 
   useEffect(() => {
-    const tempMap = new Map<string, string>();
-    tempMap.set('gas-pipe', 'visible');
-    tempMap.set('gas-valve', 'visible');
-    tempMap.set('gas-tb', 'visible');
-    tempMap.set('gas-gauge', 'visible');
-    setCheckMap(tempMap);
-  }, []);
+    if (colorMap) {
+      const tempList: string[] = [];
+      const tempMap = new Map<string, string>();
+      Array.from(colorMap).map((data) => {
+        tempList.push(data[0]);
+        tempMap.set(data[0], 'visible');
+      });
+      setLayerList(tempList);
+      setCheckMap(tempMap);
+    }
+  }, [colorMap]);
 
   const layerTrigger = (layer: string, visibility: string) => {
     if (!checkMap) return;
-
-    switch (layer) {
-      case 'gas-pipe':
-        pipelines.map((val) => {
-          map?.setLayoutProperty(`gsf_pl_mt_${val.code}`, 'visibility', visibility);
-        });
-        break;
-      case 'gas-valve':
-        valves.map((val) => {
-          map?.setLayoutProperty(`gsf_vv_mt_${val.code}`, 'visibility', visibility);
-        });
-        break;
-      case 'gas-tb':
-        tbs.map((val) => {
-          map?.setLayoutProperty(`gsf_tb_mt_${val.code}`, 'visibility', visibility);
-        });
-        break;
-      case 'gas-gauge':
-        rglt.map((val) => {
-          map?.setLayoutProperty(`gsf_rglt_mt_${val.code}`, 'visibility', visibility);
-        });
-        break;
-    }
+    map?.setLayoutProperty(layer, 'visibility', visibility);
   };
 
   const checkHandler = (layer: string, flag: boolean, type = 'single') => {
@@ -137,7 +140,7 @@ export const CurrentMapSection = (props: GeojsonUploadBox) => {
         });
       }
     } else {
-      LayerList.map((layer) => {
+      layerList.map((layer) => {
         checkHandler(layer, false, 'all');
       });
     }
@@ -145,27 +148,29 @@ export const CurrentMapSection = (props: GeojsonUploadBox) => {
 
   return (
     <CurrentMapWrapper>
-      <h6>Default Map</h6>
-      <InputWrapper className={'main'}>
+      <DefaultTitle>
+        <h6>Default Map</h6>
+      </DefaultTitle>
+      <InputWrapper className={'main'} $color={'var(--black-a16)'}>
         <input type='checkbox' id='main_layer' defaultChecked={mainFlag} onChange={() => setMainFlag(!mainFlag)} />
-        <label htmlFor='main_layer'>
-          geolab_map<span>{mainFlag ? 'on' : 'off'}</span>
-        </label>
+        <label htmlFor='main_layer'>geolab_map</label>
       </InputWrapper>
-      {LayerList.map((layer, index) => (
-        <InputWrapper key={index} className={`sub ${mainFlag ? '' : 'block'}`}>
-          <input
-            type='checkbox'
-            id={`${index}_layer`}
-            defaultChecked={true}
-            onChange={(e) => checkHandler(layer, e.currentTarget.checked)}
-          />
-          <label htmlFor={`${index}_layer`}>
-            <em className={checkMap?.get(layer) === 'visible' ? 'icon-check-circle' : 'icon-check-circle-o'} />
-            &nbsp;{layer}
-          </label>
-        </InputWrapper>
-      ))}
+      <ListWrapper>
+        {layerList.map((layer, index) => (
+          <InputWrapper key={index} className={`sub ${mainFlag ? '' : 'block'}`} $color={`${colorMap.get(layer)}`}>
+            <input
+              type='checkbox'
+              id={`${index}_layer`}
+              defaultChecked={true}
+              onChange={(e) => checkHandler(layer, e.currentTarget.checked)}
+            />
+            <label htmlFor={`${index}_layer`}>
+              <em className={checkMap?.get(layer) === 'visible' ? 'icon-check-circle' : 'icon-check-circle-o'} />
+              &nbsp;{layer}
+            </label>
+          </InputWrapper>
+        ))}
+      </ListWrapper>
     </CurrentMapWrapper>
   );
 };
