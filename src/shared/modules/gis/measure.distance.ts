@@ -7,7 +7,7 @@ import { measureTypes } from 'shared/constants/types/types';
 const distanceLayers = ['distance-points', 'distance-lines', 'distance-labels'];
 const distanceSource = 'distance-geo-source';
 
-export function addMeasureLayers(map: AppMap, source: FeatureCollection, measureType: measureTypes) {
+export function addDistanceLayers(map: AppMap, source: FeatureCollection, measureType: measureTypes) {
   if (!map || !map.getStyle()) return;
   if (!map.getSource(distanceSource)) {
     map.addSource(distanceSource, { type: 'geojson', data: source });
@@ -92,7 +92,7 @@ export const measureDistanceAction = (e: MapMouseEvent) => {
   (map.getSource(distanceSource) as GeoJSONSource).setData(source);
 };
 
-export function removeMeasureLayers(map: AppMap) {
+export function removeDistanceLayers(map: AppMap) {
   if (!map || !map.getStyle() || !map.getSource(distanceSource)) return;
 
   distanceLayers.forEach((id) => map.removeLayer(id));

@@ -29,8 +29,18 @@ export const MeasureButtons = () => {
   const [calculationBoxPosition, setCalculationBoxPosition] = useState<number[] | undefined>(undefined);
   const [measureSum, setMeasureSum] = useState(0);
   const [measureUnit, setMeasureUnit] = useState('');
-  const { measureType, distanceValue, setMeasureType, setDistanceSource, setDistanceLayer, setDistanceValue } =
-    useMapMeasureStore();
+  const {
+    measureType,
+    distanceValue,
+    areaValue,
+    setMeasureType,
+    setDistanceSource,
+    setDistanceLayer,
+    setDistanceValue,
+    setAreaSource,
+    setAreaLayer,
+    setAreaValue,
+  } = useMapMeasureStore();
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,25 +62,28 @@ export const MeasureButtons = () => {
   }, [width]);
 
   useEffect(() => {
-    const valueFunc: { [key: string]: Array<number> } = {
-      none: [],
-      radius: [],
-      distance: distanceValue,
-      area: [],
-    };
-
-    let value = 0;
-    valueFunc[measureType].forEach((n) => (value += n));
-    setMeasureSum(value);
+    getMeasureValue();
 
     const unitFunc: { [key: string]: string } = {
       none: '',
       radius: '',
       distance: 'km',
-      area: '',
+      area: 'km²',
     };
     setMeasureUnit(unitFunc[measureType]);
-  }, [distanceValue, measureType]);
+  }, [distanceValue, areaValue, measureType]);
+
+  function getMeasureValue() {
+    let value = 0;
+
+    if (measureType === 'distance') {
+      distanceValue.forEach((n) => (value += n));
+    } else if (measureType === 'area') {
+      value = areaValue;
+    }
+
+    setMeasureSum(value);
+  }
 
   function getCalculationBoxPosition(e: React.MouseEvent, type: measureTypes) {
     if (!e.currentTarget || type === 'none') return;
@@ -81,9 +94,13 @@ export const MeasureButtons = () => {
 
   function resetClick() {
     if (measureType === 'distance') {
-      setDistanceValue([]);
       setDistanceSource(null);
       setDistanceLayer(null);
+      setDistanceValue([]);
+    } else if (measureType === 'area') {
+      setAreaSource(null);
+      setAreaLayer(null);
+      setAreaValue(0);
     }
   }
 
@@ -109,7 +126,6 @@ export const MeasureButtons = () => {
           className={`${measureType === 'area' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'area')}
           title='면적'
-          disabled
         >
           <em className='icon-map-polygon' />
         </ToolboxButton>
