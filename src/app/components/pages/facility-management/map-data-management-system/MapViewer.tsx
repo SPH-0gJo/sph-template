@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
+import { FacilityLayerBox } from 'app/components/pages/facility-management/map-data-management-system/FacilityLayerBox';
 import { MapSearch } from 'app/components/pages/facility-management/map-data-management-system/MapSearch';
+import { OptionBox } from 'app/components/pages/facility-management/map-data-management-system/OptionBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useMapMeasureStore } from 'app/stores/mapMeasure';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
@@ -14,15 +16,15 @@ import styled from 'styled-components';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 const MapContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  grid-area: content;
+    width: 100%;
+    height: 100%;
+    grid-area: content;
 `;
 
 const MapViewerWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  cursor: crosshair;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
 `;
 
 export const MapViewer = () => {
@@ -82,6 +84,8 @@ export const MapViewer = () => {
       <MapViewerWrapper ref={mapContainer} />
       <MapSearch />
       <MapToolbox />
+      <OptionBox></OptionBox>
+      <FacilityLayerBox data={{ appMap: map.current }} />
     </MapContainer>
   );
 };
