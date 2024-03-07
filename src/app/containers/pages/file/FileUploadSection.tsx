@@ -9,10 +9,13 @@ import styled from 'styled-components';
 
 const FileUploadWrapper = styled.div`
   width: 100%;
-  height: calc(100% - 14rem);
   display: flex;
   position: relative;
   flex-direction: column;
+
+  &.load {
+    height: 100%;
+  }
 `;
 
 const FileSelectBox = styled.div`
@@ -97,19 +100,29 @@ export const FileUploadSection = (props: FileUploadSectionProps) => {
     if (!files.length) return;
     setGeoFiles(files);
 
+    const sameLayerList: string[] = [];
     const newLayerList: string[] = [];
     const newColorMap = new Map();
 
     Promise.all(
-      [...files].map((file) => {
+      [...files].map(async (file) => {
         const fileUrl = URL.createObjectURL(file);
-        addGeoJsonMap(map, fileUrl, file.name).then(() => {
-          const color = addLayer(file.name);
+
+        const obj = JSON.parse(await file.text());
+        addGeoJsonMap(map, fileUrl, file.name).then(async () => {
+          // const geojson = JSON.parse(await file.text());
+          // console.log(geojson);
+          if (map?.getSource('geolab-layers')?.vectorLayerIds?.includes(file.name.replaceAll('.geojson', ''))) {
+            sameLayerList.push(file.name);
+          } else {
+            newLayerList.push(file.name);
+          }
+          const color = addLayer(file.name, obj.features[0].geometry.type);
           newColorMap.set(file.name, color);
-          newLayerList.push(file.name);
         });
       }),
     ).then(() => {
+      if (sameLayerList.length > 0) alert(sameLayerList.toString() + '는 중복된 레이어 입니다.');
       setLayerList(newLayerList);
       setLayerColor(newColorMap);
     });
@@ -124,19 +137,43 @@ export const FileUploadSection = (props: FileUploadSectionProps) => {
     setCheckMap(tempMap);
   }, [layerList]);
 
-  const addLayer = (fileName: string) => {
+  const addLayer = (fileName: string, type: string) => {
     const color = makeRandomColor();
-    map?.addLayer({
-      id: fileName,
-      type: 'circle',
-      source: fileName,
-      paint: {
-        'circle-radius': 4,
-        'circle-stroke-width': 2,
-        'circle-color': color,
-        'circle-stroke-color': 'white',
-      },
-    });
+
+    switch (type) {
+      case 'Point':
+        map?.addLayer({
+          id: fileName,
+          type: 'circle',
+          source: fileName,
+          paint: {
+            'circle-radius': 2,
+            'circle-color': color,
+          },
+        });
+        break;
+      case 'LineString':
+        map?.addLayer({
+          id: fileName,
+          type: 'line',
+          source: fileName,
+          paint: {
+            'line-color': color,
+          },
+        });
+        break;
+      default:
+        map?.addLayer({
+          id: fileName,
+          type: 'fill',
+          source: fileName,
+          paint: {
+            'fill-color': color,
+            'fill-opacity': 0.3,
+          },
+        });
+        break;
+    }
     return color;
   };
 
@@ -218,7 +255,7 @@ export const FileUploadSection = (props: FileUploadSectionProps) => {
   };
 
   return (
-    <FileUploadWrapper>
+    <FileUploadWrapper className={layerList.length <= 0 ? 'load' : ''}>
       <UploadTitle>
         <h6>Select Files</h6>
       </UploadTitle>

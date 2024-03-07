@@ -7,7 +7,7 @@ const UploadFileListWrapper = styled.div`
   justify-content: start;
   align-items: center;
   background-color: var(--white-a100);
-  height: calc(90vh - 17rem);
+  height: calc(90vh - 23rem);
   overflow: scroll;
 `;
 
