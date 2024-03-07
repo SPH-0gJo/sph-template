@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GeolabMenu } from 'app/components/pages/geolab-main/aside/GeolabMenu';
+import { GeolabMenuBox } from 'app/components/pages/geolab-main/aside/GeolabMenuBox';
 import { GeolabMenuItems } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
@@ -73,7 +73,7 @@ export const GeolabMainAside = (props: GeolabMainAsideProps) => {
           {menuItems.map((menuItem) => {
             const { id, children } = menuItem;
             if (!children) return;
-            return <GeolabMenu data={{ menuItem }} key={id} />;
+            return <GeolabMenuBox data={{ menuItem }} key={id} />;
           })}
         </MenuItems>
       </MenuItemBar>

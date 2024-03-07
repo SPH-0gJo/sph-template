@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GeolabMenuItems } from 'shared/constants/types/types';
+import { GeolabMenu, GeolabMenuItems } from 'shared/constants/types/types';
 import styled from 'styled-components';
 
 interface StyledProps {
@@ -40,24 +40,24 @@ const SubMenuItems = styled.ul<StyledProps>`
   }
 `;
 
-interface GeolabMenuData {
+interface GeolabMenuBoxData {
   menuItem: GeolabMenuItems;
 }
 
 interface GeolabMenuProps {
-  data: GeolabMenuData;
+  data: GeolabMenuBoxData;
 }
 
-export const GeolabMenu = (props: GeolabMenuProps) => {
+export const GeolabMenuBox = (props: GeolabMenuProps) => {
   const [subMenuActivate, setSubMenuActivate] = useState(false);
-  const [menuItems, setMenuItems] = useState<GeolabMenuItems[] | undefined>(undefined);
+  const [subMenus, setSubmenus] = useState<GeolabMenu[] | undefined>(undefined);
   const [hasMenus, setHasMenus] = useState(true);
 
   useEffect(() => {
     const { children } = menuItem;
     if (!children) return;
     setHasMenus(!children);
-    setMenuItems(children);
+    setSubmenus(children);
   }, []);
 
   const { menuItem } = props.data;
@@ -69,8 +69,8 @@ export const GeolabMenu = (props: GeolabMenuProps) => {
         <em className='icon-chevron-right-large' />
       </MenuTitle>
       <SubMenuItems $isActive={subMenuActivate}>
-        {!menuItems ||
-          menuItems.map((e, index) => (
+        {!subMenus ||
+          subMenus.map((e, index) => (
             <li className='subtitle' key={index}>
               <Link to={e.link || ''}>{e.name}</Link>
             </li>
