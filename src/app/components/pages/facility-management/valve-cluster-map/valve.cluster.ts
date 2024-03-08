@@ -12,7 +12,7 @@ import { GEOLAB_VECTOR_TILE_STYLE, VALVE_CLASS_TYPES } from 'shared/constants/va
 import { ValveFormCodeTypes, valveFormTypes, valves as valveColorsForCode } from 'shared/fixtures/pipeline';
 
 export async function addValveClusterLayers(map: AppMap) {
-  const { data: valves } = await facilityManagementApi.valves();
+  const valves = await facilityManagementApi.valves();
   const sourceId = 'geolab-valve-clusters';
   if (!map || !map.getStyle()) return;
   const source = map.getSource(sourceId);

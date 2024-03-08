@@ -14,7 +14,8 @@ export const useCommonStore = create<MenuItemState>()((set) => ({
       const result = (await commonApis.menuItems()) as GeolabMenuItems[];
       const parents: Map<string, GeolabMenuItems> = new Map();
       result.forEach((e) => {
-        const { id, parent_id: parentId } = e;
+        const { id, parent_id: parentId, is_visible: isVisible } = e;
+        if (!isVisible) return;
         const key = id + '';
         if (!parentId) {
           parents.set(key, e);

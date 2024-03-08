@@ -81,14 +81,6 @@ export const geo_data: { [key in GeoDataKeys]: GeoDataGroup } = {
       },
     ],
   },
-  // 2320:MA 본관밸브
-  // 2321:MA 공급관밸브
-  // 2322:MA 사용자공급관밸브
-  // 2323:MA 내관밸브
-  // 2330:LP 본관밸브
-  // 2331:LP 공급관밸브
-  // 2332:LP 사용자공급관밸브
-  // 2333:LP 내관밸브
   vv: {
     name: '밸브',
     layerId: 'gsf_vv_mt',

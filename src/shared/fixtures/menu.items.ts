@@ -100,7 +100,7 @@ export const GeolabMenus: GeolabMenuItems[] = [
   {
     id: 12,
     is_deleted: false,
-    is_visible: false,
+    is_visible: true,
     list_order: 5,
     parent_id: 1,
     link: '/geolab/fm/valve-cluster',

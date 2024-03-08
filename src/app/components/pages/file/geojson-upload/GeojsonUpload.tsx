@@ -3,8 +3,8 @@ import { GeojsonUploadBox } from 'app/components/pages/file/geojson-upload/Geojs
 import axios from 'axios';
 import { Map as AppMap } from 'maplibre-gl';
 import { GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
+import { makeRandomColor } from 'shared/modules/app.utils';
 import { initMap } from 'shared/modules/map.utils';
-import { makeRandomColor } from 'shared/util/util';
 import styled from 'styled-components';
 
 const MapContainer = styled.div`
