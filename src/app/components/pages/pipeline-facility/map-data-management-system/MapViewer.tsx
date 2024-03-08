@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
-import { GSFLayerBox } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBox';
+import { FacilityLayerBox } from 'app/components/pages/pipeline-facility/map-data-management-system/FacilityLayerBox';
+import { MapSearch } from 'app/components/pages/pipeline-facility/map-data-management-system/MapSearch';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useMapMeasureStore } from 'app/stores/mapMeasure';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
-import { LayerStyle } from 'shared/fixtures/pipeline';
 import { measureControl } from 'shared/modules/gis/measure';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
 import { initMap } from 'shared/modules/map.utils';
@@ -33,7 +33,6 @@ export const MapViewer = () => {
   const { setLayerGroup } = useGsfLayerStore();
   const { measureType, distanceSource, areaSource, setDistanceSource, setDistanceLayer, setAreaSource, setAreaLayer } =
     useMapMeasureStore();
-  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -79,23 +78,12 @@ export const MapViewer = () => {
     measureControl(map.current);
   }, [distanceSource, areaSource, measureType]);
 
-  useEffect(() => {
-    if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;
-    const layer = gsfLayerGroups.get(layerStyleEditorId);
-    const { style } = layer!;
-    if (!style) return;
-    const paintProperties = Object.keys(style);
-    paintProperties.forEach(
-      (propertyName) =>
-        map.current?.setPaintProperty(layerStyleEditorId, propertyName, style[propertyName as keyof LayerStyle]),
-    );
-  }, [gsfLayerGroups, layerStyleEditorId]);
-
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
+      <MapSearch />
       <MapToolbox />
-      <GSFLayerBox data={{ appMap: map.current }} />
+      <FacilityLayerBox data={{ appMap: map.current }} />
     </MapContainer>
   );
 };

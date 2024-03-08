@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { GSFLayerData } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerData';
-import { MapViewer } from 'app/components/pages/facility-management/pipeline-management-system/MapViewer';
+import { GSFLayerData } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerData';
+import { MapViewer } from 'app/components/pages/pipeline-facility/pipeline-map-styler/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { PageContainer } from 'shared/styles/styled/common';

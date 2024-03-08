@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColorBar } from 'app/components/pages/facility-management/map-data-management-system/contents/ColorBar';
+import { ColorBar } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/ColorBar';
 import { Feature } from 'geojson';
 import styled from 'styled-components';
 

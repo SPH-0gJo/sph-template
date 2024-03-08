@@ -1,8 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { MapDataManagement } from 'app/containers/pages/facility-management/MapDataManagement';
-import { PipelineManagement } from 'app/containers/pages/facility-management/PipelineManagement';
-import { ValveClusterMap } from 'app/containers/pages/facility-management/ValveClusterMap';
 import { CoordinateSystemTrans } from 'app/containers/pages/file/CoordinateSystemTrans';
 import { GeojsonUploadSystem } from 'app/containers/pages/file/GeojsonUploadSystem';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
@@ -12,6 +9,9 @@ import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
 import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
 import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
 import { MobileMain } from 'app/containers/pages/MobileMain';
+import { MapDataManagement } from 'app/containers/pages/pipeline-facility/MapDataManagement';
+import { PipelineManagement } from 'app/containers/pages/pipeline-facility/PipelineManagement';
+import { ValveClusterMap } from 'app/containers/pages/pipeline-facility/ValveClusterMap';
 import { ContourLayer } from 'app/containers/pages/visualization-management/ContourLayer';
 import { HeatMap } from 'app/containers/pages/visualization-management/HeatMap';
 import { HexagonLayer } from 'app/containers/pages/visualization-management/HexagonLayer';

@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { ClusterMapLegends } from 'app/components/pages/facility-management/valve-cluster-map/ClusterMapLegends';
-import { MapViewer } from 'app/components/pages/facility-management/valve-cluster-map/MapViewer';
+import { MapViewer } from 'app/components/pages/pipeline-facility/map-data-management-system/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 import { PageContainer } from 'shared/styles/styled/common';
 
-export const ValveClusterMap = () => {
+export const MapDataManagement = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
+
   useEffect(() => {
-    setBreadcrumb(['Main', '배관시설물 관리', '밸브 클러스터맵']);
+    setBreadcrumb(['Main', '시설물 관리', '시설물 지도(도면)관리 서비스']);
   }, []);
+
   return (
     <PageContainer>
       <AppHeader />
       <MapViewer />
-      <ClusterMapLegends />
     </PageContainer>
   );
 };
