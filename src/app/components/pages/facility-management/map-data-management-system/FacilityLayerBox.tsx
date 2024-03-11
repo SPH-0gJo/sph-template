@@ -1,18 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'app/components/common-ui';
-import {
-  GovernorContents,
-} from 'app/components/pages/facility-management/map-data-management-system/contents/GovernorContents';
+import { GovernorContents } from 'app/components/pages/facility-management/map-data-management-system/contents/GovernorContents';
 import { InfoContent } from 'app/components/pages/facility-management/map-data-management-system/contents/InfoContents';
-import {
-  PipeContents,
-} from 'app/components/pages/facility-management/map-data-management-system/contents/PipeContents';
-import {
-  TestBoxContents,
-} from 'app/components/pages/facility-management/map-data-management-system/contents/TestBoxContents';
-import {
-  ValveContents,
-} from 'app/components/pages/facility-management/map-data-management-system/contents/ValveContents';
+import { PipeContents } from 'app/components/pages/facility-management/map-data-management-system/contents/PipeContents';
+import { TestBoxContents } from 'app/components/pages/facility-management/map-data-management-system/contents/TestBoxContents';
+import { ValveContents } from 'app/components/pages/facility-management/map-data-management-system/contents/ValveContents';
+import { OptionBox } from 'app/components/pages/facility-management/map-data-management-system/OptionBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import axios from 'axios';
 import { Feature } from 'geojson';
@@ -24,56 +17,59 @@ interface LayerBoxProps {
   $visible: boolean;
 }
 
-
 const SearchWrapper = styled.div`
-    display: flex;
-    width: 25.625rem;
-    flex-direction: row;
-    flex-shrink: 0;
-    gap: 0.9375rem;
-    border-radius: 0.625rem;
-    background: var(--white);
-    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 7.25rem;
-    left: 1.25rem;
-    user-select: none;
+  display: flex;
+  width: 25.625rem;
+  flex-direction: row;
+  flex-shrink: 0;
+  gap: 0.9375rem;
+  border-radius: 0.625rem;
+  background: var(--white);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 7.25rem;
+  left: 1.25rem;
+  user-select: none;
+
+  padding: 0.25rem 0.25rem 0.25rem 1.25rem;
+  //gap: 0.25rem;
 `;
 
 const SearchInput = styled.input`
-    width: 20rem;
-    padding-left: 1rem`;
-
+  border: none;
+  width: 20rem;
+  padding-left: 1rem;
+`;
 
 const LayerBoxWrapper = styled.div<LayerBoxProps>`
-    display: flex;
-    width: 25.625rem;
-    flex-direction: column;
-    flex-shrink: 0;
-    gap: 0.9375rem;
-    border-radius: 0.625rem;
-    background: var(--white);
-    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 12.25rem;
-    left: 1.25rem;
-    user-select: none;
-    padding-bottom: ${(props) => (props.$visible ? '0' : '1.87rem')};
+  display: flex;
+  width: 25.625rem;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 0.9375rem;
+  border-radius: 0.625rem;
+  background: var(--white);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 12.25rem;
+  left: 1.25rem;
+  user-select: none;
+  padding-bottom: ${(props) => (props.$visible ? '0' : '1.87rem')};
 `;
 
 const LayerBoxHeader = styled.div<LayerBoxProps>`
-    display: flex;
-    padding: 0.9375rem;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: ${(props) => (props.$visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
+  display: flex;
+  padding: 0.9375rem;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: ${(props) => (props.$visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
 
-    em {
-        margin-left: auto;
-        font-size: 1.5rem;
-        transform: rotate(-90deg);
-        cursor: pointer;
-    }
+  em {
+    margin-left: auto;
+    font-size: 1.5rem;
+    transform: rotate(-90deg);
+    cursor: pointer;
+  }
 `;
 const LayerBoxTitle = styled.div`
   display: flex;
@@ -92,36 +88,36 @@ const ContentWrapper = styled.div`
   flex-shrink: 0;
 `;
 const LayerGroupButtons = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 `;
 const LayerGroupButton = styled.button`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--black);
+  font-size: 0.875rem;
+  font-weight: var(--text-weight-bold);
+  border: 0;
+  border-radius: 0.375rem;
+  background-color: var(--white);
+
+  em {
+    font-size: 1.125rem;
+  }
+
+  &.selected {
+    color: var(--white);
+    background-color: var(--light-secondary-origin);
+  }
+
+  &:hover {
     color: var(--black);
-    font-size: 0.875rem;
-    font-weight: var(--text-weight-bold);
-    border: 0;
-    border-radius: 0.375rem;
-    background-color: var(--white);
-
-    em {
-        font-size: 1.125rem;
-    }
-
-    &.selected {
-        color: var(--white);
-        background-color: var(--light-secondary-origin);
-    }
-
-    &:hover {
-        color: var(--black);
-        background: var(--light-secondary-a16);
-    }
+    background: var(--light-secondary-a16);
+  }
 `;
 
 interface GSFLayerBoxData {
@@ -132,7 +128,6 @@ interface GSFLayerBoxProps {
   data: GSFLayerBoxData;
 }
 
-// 추후 파람
 export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
   const [contentList, setContentList] = useState<Array<Feature>>([]);
@@ -164,7 +159,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     const ne = bounds.getNorthEast(); // 북동쪽 좌표
     const sw = bounds.getSouthWest(); // 남서쪽 좌표
     const bbox = `${sw.lat},${sw.lng},${ne.lat},${ne.lng}`;
-// bbox 요청 임시 (api 로 변경 예정)
+    // bbox 요청 임시 (api 로 변경 예정)
     const WFS_URL = 'https://geo.sphinfo.co.kr/geoserver/geolab/wfs';
     const WFS_VERSION = 'version=2.0.0';
     const REQUEST = 'request=GetFeature';
@@ -182,11 +177,9 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
       console.log(url);
       const response = await axios.get(url);
       setContentList(response.data.features);
-
     } catch (error) {
       console.error('에러', error);
     }
-
   };
 
   const layerGroups = useMemo(() => {
@@ -218,7 +211,8 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
                     key={layerId}
                     onClick={() => {
                       setLayerGroupId(key as GeoDataKeys);
-                    }}>
+                    }}
+                  >
                     <em className={`icon-${icon}`} />
                     <span>{name}</span>
                   </LayerGroupButton>
@@ -243,6 +237,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           {!visible && !showInfo && layerGroupId === 'rglt' && <GovernorContents contentList={contentList} />}
         </ContentWrapper>
       </LayerBoxWrapper>
+      <OptionBox layerGroupId={layerGroupId} />
     </>
   );
 };
