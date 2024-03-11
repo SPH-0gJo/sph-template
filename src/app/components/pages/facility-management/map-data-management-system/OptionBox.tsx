@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
 const OptionLayout = styled.div`
   display: flex;
   width: 18.75rem;
-  height: 33.0625rem;
+  height: 40rem;
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
@@ -72,32 +73,128 @@ const CheckBoxContainer = styled.div`
 
 const CategoryWrapper = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  align-self: stretch;
-`;
-const CheckBoxColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* 왼쪽 정렬 설정 */
+  flex-direction: row;
   gap: 1rem;
   flex: 1 0 0;
 `;
-const CheckBoxItem = styled.div`
+const CheckBoxWrapper = styled.div`
+  width: calc(50% - 10px);
+  align-items: flex-start;
   display: flex;
-  align-items: center;
   gap: 0.625rem;
-  align-self: stretch;
 `;
 const CheckBox = styled.input.attrs(() => ({ type: 'checkbox' }))`
   width: 1.125rem;
   height: 1.125rem;
-  flex-shrink: 0;
 `;
-export const OptionBox = () => {
-  const [drawingType, setDrawingType] = useState('radius');
 
+const pipeOptions: Array<OptionContent> = [
+  {
+    category: '구분',
+    items: ['공급관', '본관', '내관', '사용자 공급관'],
+  },
+  {
+    category: '압력',
+    items: ['고압', '중압', '저압'],
+  },
+  {
+    category: '재질',
+    items: ['PE', 'PLP본관', 'SP'],
+  },
+];
+
+const valveOptions: Array<OptionContent> = [
+  {
+    category: '구분',
+    items: ['공급관', '본관', '내관', '사용자 공급관'],
+  },
+  {
+    category: '압력',
+    items: ['고압', '중압', '저압'],
+  },
+  {
+    category: '형식',
+    items: [
+      '볼밸드',
+      '용접형 매몰볼밸드',
+      '용접형 매몰볼밸드(ONE-PURGE)',
+      '용접형 매몰볼밸드(TWO-PURGE)',
+      '절연 매몰볼밸드',
+      'BOX형 매몰볼밸드',
+    ],
+  },
+];
+const governorOptions: Array<OptionContent> = [
+  {
+    category: '구분',
+    items: ['공급관', '본관', '내관', '사용자 공급관'],
+  },
+  {
+    category: '압력',
+    items: ['고압', '중압', '저압'],
+  },
+  {
+    category: '재질',
+    items: ['PE', 'PLP본관', 'SP'],
+  },
+];
+
+const testBoxOptions: Array<OptionContent> = [
+  {
+    category: '구분',
+    items: ['공급관', '본관', '내관', '사용자 공급관'],
+  },
+  {
+    category: '압력',
+    items: ['고압', '중압', '저압'],
+  },
+  {
+    category: '방식',
+    items: ['희생양극식', '외부전원식'],
+  },
+];
+
+interface OptionBoxProps {
+  layerGroupId: GeoDataKeys | undefined;
+}
+
+interface OptionContent {
+  category: string;
+  items: Array<string>;
+}
+
+const OptionCategory = ({ category, items }: OptionContent) => {
+  return (
+    <CheckBoxContainer>
+      <b>{category}</b>
+      <CategoryWrapper>
+        {items.map((item, index) => (
+          <CheckBoxWrapper key={index}>
+            <CheckBox />
+            <label>{item}</label>
+          </CheckBoxWrapper>
+        ))}
+      </CategoryWrapper>
+    </CheckBoxContainer>
+  );
+};
+
+export const OptionBox = (props: OptionBoxProps) => {
+  const [drawingType, setDrawingType] = useState('radius');
+  const [optionList, setOptionList] = useState<Array<OptionContent>>(pipeOptions);
+
+  useEffect(() => {
+    const optionSelect = {
+      pl: pipeOptions,
+      vv: valveOptions,
+      rglt: governorOptions,
+      tb: testBoxOptions,
+    };
+    const currentOption = optionSelect[props.layerGroupId as GeoDataKeys];
+    setOptionList(currentOption);
+  }, [props]);
   return (
     <OptionLayout>
       <OptionHeader>상세 옵션</OptionHeader>
@@ -122,73 +219,9 @@ export const OptionBox = () => {
         </DrawButton>
       </ButtonWrapper>
       <OptionBody>
-        <CheckBoxContainer>
-          <b>구분</b>
-          <CategoryWrapper>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                공급관
-              </CheckBoxItem>
-              <CheckBoxItem>
-                <CheckBox />
-                내관
-              </CheckBoxItem>
-            </CheckBoxColumn>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                본관
-              </CheckBoxItem>
-              <CheckBoxItem>
-                <CheckBox />
-                사용자 공급관
-              </CheckBoxItem>
-            </CheckBoxColumn>
-          </CategoryWrapper>
-        </CheckBoxContainer>
-        <CheckBoxContainer>
-          <b>압력</b>
-          <CategoryWrapper>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                고압
-              </CheckBoxItem>
-              <CheckBoxItem>
-                <CheckBox />
-                저압
-              </CheckBoxItem>
-            </CheckBoxColumn>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                중압
-              </CheckBoxItem>
-            </CheckBoxColumn>
-          </CategoryWrapper>
-        </CheckBoxContainer>
-        <CheckBoxContainer>
-          <b>재질</b>
-          <CategoryWrapper>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                PE
-              </CheckBoxItem>
-              <CheckBoxItem>
-                <CheckBox />
-                SP
-              </CheckBoxItem>
-            </CheckBoxColumn>
-            <CheckBoxColumn>
-              <CheckBoxItem>
-                <CheckBox />
-                PLP 본관
-              </CheckBoxItem>
-            </CheckBoxColumn>
-          </CategoryWrapper>
-        </CheckBoxContainer>
+        {optionList?.map((option, index) => (
+          <OptionCategory category={option.category} items={option.items} key={index} />
+        ))}
       </OptionBody>
     </OptionLayout>
   );
