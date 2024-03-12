@@ -4,11 +4,13 @@ const {
   VITE_NO_IMAGE,
   VITE_OPEN_API_KEY,
   VITE_VWORLD_KEY,
+  VITE_NAVER_CLIENT_ID,
 } = import.meta.env;
 export const CircleSize = 3;
 export const GEOLAB_VECTOR_TILE_STYLE = VITE_GEOLAB_VECTOR_TILE_STYLE;
 export const GeoserverWMSRequestURL = VITE_GEOSERVER_WMS_REQUEST_URL;
 export const initCoords = [127.0535312, 37.2893525];
+export const NAVER_MAP_API_URL = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${VITE_NAVER_CLIENT_ID}&submodules=panorama`;
 export const NoImage = VITE_NO_IMAGE;
 export const OpenAPIKey = VITE_OPEN_API_KEY;
 export const PipelineLayerIdsInGeoserver = [

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { GSFLayerBoxContents } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerBoxContents';
-import { GSFLayerStyleEditor } from 'app/components/pages/facility-management/pipeline-management-system/GSFLayerStyleEditor';
+import { GSFLayerBoxContents } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerBoxContents';
+import { GSFLayerStyleEditor } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerStyleEditor';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { Map as AppMap } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
@@ -25,13 +25,13 @@ const LayerBoxWrapper = styled.div<LayerBoxProps>`
   user-select: none;
   padding-bottom: ${(props) => (props.$visible ? '0' : '1.87rem')};
 `;
+
 const LayerBoxHeader = styled.div<LayerBoxProps>`
   display: flex;
   padding: 0.9375rem;
   justify-content: space-between;
   align-items: center;
   border-bottom: ${(props) => (props.$visible ? '0' : '1px solid var(--divider, rgba(0, 0, 0, 0.12))')};
-
   em {
     margin-left: auto;
     font-size: 1.5rem;
@@ -39,11 +39,13 @@ const LayerBoxHeader = styled.div<LayerBoxProps>`
     cursor: pointer;
   }
 `;
+
 const LayerGroupButtons = styled.div`
   display: flex;
   align-items: center;
   gap: 0.25rem;
 `;
+
 const LayerGroupButton = styled.button`
   display: flex;
   justify-content: center;
@@ -56,16 +58,13 @@ const LayerGroupButton = styled.button`
   border: 0;
   border-radius: 0.375rem;
   background-color: var(--white);
-
   em {
     font-size: 1.125rem;
   }
-
   &.selected {
     color: var(--white);
     background-color: var(--light-secondary-origin);
   }
-
   &:hover {
     color: var(--black);
     background: var(--light-secondary-a16);

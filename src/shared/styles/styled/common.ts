@@ -41,11 +41,10 @@ export const ToolboxButton = styled.button`
   font-size: 1.5rem;
   color: var(--dark-text-disabled);
   background-color: var(--white-a100);
-
   &.selected {
     background-color: var(--light-secondary-light);
+    color: var(--white);
   }
-
   &:hover {
     background-color: var(--light-secondary-a16);
   }

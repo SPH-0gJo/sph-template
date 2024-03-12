@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["es7","dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "resolveJsonModule": true,
     "moduleResolution": "node",

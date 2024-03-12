@@ -3439,6 +3439,13 @@
     "@types/mapbox__point-geometry" "*"
     "@types/pbf" "*"
 
+"@types/navermaps@^3.7.4":
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/@types/navermaps/-/navermaps-3.7.4.tgz#84bfcfba4457f83f5b4eb7f7c6738b568e14d485"
+  integrity sha512-fAazswZgl/l/1Mw375hJcNAC244SiTA0+Y6HE8atkVAtrdawlpgpkaRMCpFX+15iDiQzTfO0MmE+y1+6NpWFuQ==
+  dependencies:
+    "@types/geojson" "*"
+
 "@types/node@^20.10.6":
   version "20.11.16"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.11.16.tgz"

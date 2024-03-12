@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_NO_IMAGE: string;
   readonly VITE_OPEN_API_KEY: string;
   readonly VITE_VWORLD_KEY: string;
+  readonly VITE_NAVER_CLIENT_ID: string;
 }
 
 interface ImportMeta {

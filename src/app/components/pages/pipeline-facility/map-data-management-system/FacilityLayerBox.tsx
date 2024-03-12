@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'app/components/common-ui';
-import { GovernorContents } from 'app/components/pages/facility-management/map-data-management-system/contents/GovernorContents';
-import { InfoContent } from 'app/components/pages/facility-management/map-data-management-system/contents/InfoContents';
-import { PipeContents } from 'app/components/pages/facility-management/map-data-management-system/contents/PipeContents';
-import { TestBoxContents } from 'app/components/pages/facility-management/map-data-management-system/contents/TestBoxContents';
-import { ValveContents } from 'app/components/pages/facility-management/map-data-management-system/contents/ValveContents';
-import { OptionBox } from 'app/components/pages/facility-management/map-data-management-system/OptionBox';
+import { GovernorContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/GovernorContents';
+import { InfoContent } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/InfoContents';
+import { PipeContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/PipeContents';
+import { TestBoxContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TestBoxContents';
+import { ValveContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/ValveContents';
+import { OptionBox } from 'app/components/pages/pipeline-facility/map-data-management-system/OptionBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import axios from 'axios';
 import { Feature } from 'geojson';
@@ -170,7 +170,9 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
       rglt: 'typeName=geolab:GSF_RGLT_MT',
     };
 
-    const url = `${WFS_URL}?service=WFS&${WFS_VERSION}&${REQUEST}&${TYPE_NAME[layerGroupId as GeoDataKeys]}&bbox=${bbox}&outputFormat=application/json`;
+    const url = `${WFS_URL}?service=WFS&${WFS_VERSION}&${REQUEST}&${
+      TYPE_NAME[layerGroupId as GeoDataKeys]
+    }&bbox=${bbox}&outputFormat=application/json`;
 
     try {
       console.log(bbox);

@@ -9,6 +9,14 @@ export const bytesToSize = (bytes: number | string) => {
   return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)} ${units[i]}`;
 };
 
+export const importExternalScript = (src: string, callback: () => void) => {
+  const element = document.createElement('script');
+  element.type = 'text/javascript';
+  element.src = src;
+  if (callback) element.onload = () => callback();
+  document.head.appendChild(element);
+};
+
 export const makeRandomColor = () => {
   const r = Math.floor(Math.random() * 255);
   const g = Math.floor(Math.random() * 255);

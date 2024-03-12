@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addValveClusterLayers } from 'app/components/pages/facility-management/valve-cluster-map/valve.cluster';
+import { addValveClusterLayers } from 'app/components/pages/pipeline-facility/valve-cluster-map/valve.cluster';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { initMap } from 'shared/modules/map.utils';

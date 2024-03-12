@@ -110,7 +110,7 @@ export const MeasureButtons = () => {
         <ToolboxButton
           className={`${measureType === 'radius' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'radius')}
-          title='반경'
+          name='반경'
           disabled
         >
           <em className='icon-map-circle' />
@@ -118,14 +118,14 @@ export const MeasureButtons = () => {
         <ToolboxButton
           className={`${measureType === 'distance' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'distance')}
-          title='거리'
+          name='거리'
         >
           <em className='icon-map-ruler' />
         </ToolboxButton>
         <ToolboxButton
           className={`${measureType === 'area' ? 'selected' : ''}`}
           onClick={(e) => getCalculationBoxPosition(e, 'area')}
-          title='면적'
+          name='면적'
         >
           <em className='icon-map-polygon' />
         </ToolboxButton>

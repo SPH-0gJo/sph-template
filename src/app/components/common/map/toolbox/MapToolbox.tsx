@@ -1,8 +1,8 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { BaseMapButtons } from 'app/components/common/map/toolbox/BaseMapButtons';
 import { MeasureButtons } from 'app/components/common/map/toolbox/MeasureButtons';
+import { ThematicButtons } from 'app/components/common/map/toolbox/ThematicButtons';
 import { ZoomButtons } from 'app/components/common/map/toolbox/ZoomButtons';
-import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
 import styled from 'styled-components';
 
 const ToolboxContainer = styled.div`
@@ -22,6 +22,7 @@ interface StyledProps {
 }
 
 const ToolboxTip = styled.div<StyledProps>`
+  width: 3.5rem;
   position: fixed;
   top: ${(props) => (props.$position ? `${props.$position[0]}px` : 0)};
   left: ${(props) => (props.$position ? `${props.$position[1]}px` : 0)};
@@ -75,36 +76,29 @@ export const MapToolbox = () => {
     if (!e.currentTarget) return;
     const target = e.currentTarget as HTMLButtonElement;
     const { top, left: currentLeft, width } = target.getBoundingClientRect();
-    const left = currentLeft - width * 1.8; // 0.5 is right margin
-    setToolboxButtonTitle(target.title);
+    const left = currentLeft - width * 2.2; // 0.5 is right margin
+    setToolboxButtonTitle(target.name || '');
     setCalculationBoxPosition([top, left]);
   };
-  const eventHandleRemove = () => setCalculationBoxPosition(undefined);
+  const removeEventHandler = () => setCalculationBoxPosition(undefined);
 
   function buttonEvent(elements: NodeListOf<HTMLButtonElement>, eventAction: boolean) {
     elements.forEach((button) => {
       if (eventAction) {
         button.addEventListener('mouseover', eventHandler as EventListener);
-        button.addEventListener('mouseout', eventHandleRemove);
+        button.addEventListener('mouseout', removeEventHandler);
         return;
       }
       setToolboxButtonTitle('');
       button.removeEventListener('mouseover', eventHandler as EventListener);
-      button.removeEventListener('mouseout', eventHandleRemove);
+      button.removeEventListener('mouseout', removeEventHandler);
     });
   }
 
   return (
     <ToolboxContainer ref={toolboxContainer}>
       <BaseMapButtons />
-      <ToolboxButtonWrapper>
-        <ToolboxButton title='주제도'>
-          <em className='icon-layers' />
-        </ToolboxButton>
-        <ToolboxButton title='거리뷰'>
-          <em className='icon-map-street' />
-        </ToolboxButton>
-      </ToolboxButtonWrapper>
+      <ThematicButtons />
       <MeasureButtons />
       <ZoomButtons />
       {calculationBoxPosition?.length && (
