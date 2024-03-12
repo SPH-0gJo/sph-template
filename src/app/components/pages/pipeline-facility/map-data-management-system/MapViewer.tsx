@@ -44,7 +44,7 @@ export const MapViewer = () => {
         if (error) throw error;
         if (!image) return;
         map.current?.addImage('shop-icon', image, { sdf: true });
-        map.current && addVectorTiles(map.current);
+        // map.current && addVectorTiles(map.current);
       });
       map.current?.fitBounds([
         [126.51718139648438, 35.9637451171875], // southwestern corner of the bounds
@@ -64,7 +64,7 @@ export const MapViewer = () => {
   useEffect(() => {
     if (!map.current || !style) return;
     map.current.setStyle(style, { diff: false });
-    map.current.once('styledata', () => map.current && addVectorTiles(map.current));
+    // map.current.once('styledata', () => map.current && addVectorTiles(map.current));
   }, [style]);
 
   useEffect(() => {
