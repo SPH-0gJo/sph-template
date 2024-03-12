@@ -11,7 +11,7 @@ import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useLoadingStore } from 'app/stores/loading';
 import axios from 'axios';
 import { Feature } from 'geojson';
-import { LngLatBounds, Map as AppMap } from 'maplibre-gl';
+import maplibregl, { LngLatBounds, Map as AppMap } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
@@ -145,42 +145,35 @@ interface GSFLayerBoxProps {
   data: GSFLayerBoxData;
 }
 
-interface PipeInfo {
-  pipe_id: string;
-  gis_pl_ty_cd: string;
-  gis_pres_cd: string;
-  gis_pl_div_cd: string;
-  pl_mtrqlt_cd: string;
-}
-
 export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
   // const [contentList, setContentList] = useState<Array<Feature>>([]);
-  const [pipeList, setPipeList] = useState<Array<PipeInfo>>([]);
+  const [featureList, setFeatureList] = useState<Array<Feature>>([]);
   const [visible, setVisible] = useState(false);
   // const [showInfo, setShowInfo] = useState(true);
   // const [currentZoomLevel, setZoomLevel] = useState<number | undefined>(0);
   const { gsfLayerGroups } = useGsfLayerStore();
   const { setLoading } = useLoadingStore();
+  const [selectLayer, setSelectLayer] = useState<number>(0);
 
   useEffect(() => {
     setLayerGroupId('pl');
   }, []);
 
-  useEffect(() => {
-    getFeatures();
-  }, [layerGroupId]);
+  // useEffect(() => {
+  //   getFeatures();
+  // }, [layerGroupId]);
   const getFeatures = async () => {
     setLoading(true);
-    const zoomLevel: number | undefined = props.data.appMap?.getZoom();
+    setSelectLayer(-1);
+    // const zoomLevel: number | undefined = props.data.appMap?.getZoom();
     // setZoomLevel(zoomLevel);
 
-    console.log(zoomLevel);
-    if (zoomLevel == undefined || zoomLevel < 13) {
-      // setShowInfo(true);
-      setLoading(false);
-      return;
-    }
+    // if (zoomLevel == undefined || zoomLevel < 13) {
+    //   // setShowInfo(true);
+    //   setLoading(false);
+    //   return;
+    // }
     // setShowInfo(false);
 
     const bounds: LngLatBounds | undefined = props.data.appMap?.getBounds();
@@ -200,21 +193,29 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           props.data.appMap?.removeLayer(`${sourceId}_ly`) &&
           props.data.appMap?.removeSource(sourceId);
 
+        if (!data.features) {
+          setFeatureList([]);
+          return;
+        }
+
         props.data.appMap?.addSource(sourceId, { type: 'geojson', data: data });
         props.data.appMap?.addLayer({
           id: `${sourceId}_ly`,
           type: 'line',
           source: sourceId,
           paint: {
-            'line-color': 'black',
+            'line-width': 4,
+            'line-color': '#808080', // 위에 해당하지 않는 경우 기본 색상 설정
           },
         });
+        props.data.appMap?.on('click', `${sourceId}_ly`, (e) => {
+          e.preventDefault();
 
-        setPipeList(
-          data.features.map((feature: Feature) => {
-            return feature.properties;
-          }),
-        );
+          if (e.features) {
+            changeColor(`${sourceId}_ly`, e.features[0]);
+          }
+        });
+        setFeatureList(data.features);
       });
       setLoading(false);
     } catch (error) {
@@ -223,6 +224,46 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     }
   };
 
+  const changeColor = (layerId: string, feature: Feature) => {
+    if (!feature.properties) return;
+    props.data.appMap?.setPaintProperty(layerId, 'line-color', [
+      'case',
+      ['==', ['get', 'pipe_id'], feature.properties.pipe_id.toString()],
+      '#EE6D6DFF',
+      '#808080',
+    ]);
+    setSelectLayer(feature.properties.pipe_id);
+    zoomToLayer(feature);
+  };
+
+  const zoomToLayer = (feature: Feature) => {
+    if ('coordinates' in feature.geometry) {
+      const coordinates: number[][] = feature.geometry.coordinates as number[][];
+
+      let minLng = coordinates[0][0];
+      let minLat = coordinates[0][1];
+      let maxLng = coordinates[0][0];
+      let maxLat = coordinates[0][1];
+
+      coordinates.forEach((coord) => {
+        const lng = coord[0];
+        const lat = coord[1];
+        minLng = Math.min(minLng, lng);
+        minLat = Math.min(minLat, lat);
+        maxLng = Math.max(maxLng, lng);
+        maxLat = Math.max(maxLat, lat);
+      });
+
+      // 경계 상자 생성
+      const sw = new maplibregl.LngLat(minLng, minLat);
+      const ne = new maplibregl.LngLat(maxLng, maxLat);
+
+      props.data.appMap?.fitBounds(new maplibregl.LngLatBounds(sw, ne), {
+        padding: 300,
+        // zoom: 16,
+      });
+    }
+  };
   const layerGroups = useMemo(() => {
     if (!gsfLayerGroups) return;
     return [
@@ -267,7 +308,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
             {/* {!showInfo && (*/}
             {/*  <>*/}
             <span>리스트</span>
-            <span>{pipeList.length}개</span>
+            <span>{featureList.length}개</span>
             {/* </>*/}
             {/* )}*/}
           </LayerBoxTitle>
@@ -276,7 +317,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           {/* {!visible && !showInfo && layerGroupId === 'vv' && <ValveContents contentList={contentList} />}*/}
           {/* {!visible && !showInfo && layerGroupId === 'tb' && <TestBoxContents contentList={contentList} />}*/}
           {/* {!visible && !showInfo && layerGroupId === 'rglt' && <GovernorContents contentList={contentList} />}*/}
-          <VirtualContents pipeList={pipeList} />
+          <VirtualContents featureList={featureList} selectLayer={selectLayer} changeColor={changeColor} />
         </ContentWrapper>
       </LayerBoxWrapper>
       <OptionBox layerGroupId={layerGroupId} />
