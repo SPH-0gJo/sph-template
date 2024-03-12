@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Spinner } from 'app/components/common-ui/Spinner';
 import { App } from 'app/containers/App';
 
 // import { ReactQueryDevtools } from 'react-query/devtools';
@@ -15,6 +16,7 @@ const queryClient = new QueryClient();
 root.render(
   <QueryClientProvider client={queryClient}>
     {/* {!reactQueryDevTools || <ReactQueryDevtools initialIsOpen={true} />}*/}
+    <Spinner />
     <App />
   </QueryClientProvider>,
 );

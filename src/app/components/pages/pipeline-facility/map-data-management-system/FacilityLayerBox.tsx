@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'app/components/common-ui';
-import { GovernorContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/GovernorContents';
-import { InfoContent } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/InfoContents';
-import { PipeContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/PipeContents';
-import { TestBoxContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TestBoxContents';
-import { ValveContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/ValveContents';
+// import { GovernorContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/GovernorContents';
+// import { InfoContent } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/InfoContents';
+// import { PipeContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/PipeContents';
+// import { TestBoxContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TestBoxContents';
+// import { ValveContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/ValveContents';
+import { VirtualContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/VirtualContents';
 import { OptionBox } from 'app/components/pages/pipeline-facility/map-data-management-system/OptionBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { useLoadingStore } from 'app/stores/loading';
 import axios from 'axios';
 import { Feature } from 'geojson';
 import { LngLatBounds, Map as AppMap } from 'maplibre-gl';
@@ -39,6 +41,21 @@ const SearchInput = styled.input`
   border: none;
   width: 20rem;
   padding-left: 1rem;
+`;
+
+const LoadButton = styled.button`
+  position: absolute;
+  border: none;
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+  background-color: var(--white-a100);
+  border-radius: 0.625rem;
+  width: 10rem;
+  height: 2rem;
+  bottom: 5rem;
+  left: calc(50% - 5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LayerBoxWrapper = styled.div<LayerBoxProps>`
@@ -128,13 +145,24 @@ interface GSFLayerBoxProps {
   data: GSFLayerBoxData;
 }
 
+interface PipeInfo {
+  pipe_id: string;
+  gis_pl_ty_cd: string;
+  gis_pres_cd: string;
+  gis_pl_div_cd: string;
+  pl_mtrqlt_cd: string;
+}
+
 export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
-  const [contentList, setContentList] = useState<Array<Feature>>([]);
+  // const [contentList, setContentList] = useState<Array<Feature>>([]);
+  const [pipeList, setPipeList] = useState<Array<PipeInfo>>([]);
   const [visible, setVisible] = useState(false);
-  const [showInfo, setShowInfo] = useState(true);
-  const [currentZoomLevel, setZoomLevel] = useState<number | undefined>(0);
+  // const [showInfo, setShowInfo] = useState(true);
+  // const [currentZoomLevel, setZoomLevel] = useState<number | undefined>(0);
   const { gsfLayerGroups } = useGsfLayerStore();
+  const { setLoading } = useLoadingStore();
+
   useEffect(() => {
     setLayerGroupId('pl');
   }, []);
@@ -143,15 +171,17 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     getFeatures();
   }, [layerGroupId]);
   const getFeatures = async () => {
+    setLoading(true);
     const zoomLevel: number | undefined = props.data.appMap?.getZoom();
-    setZoomLevel(zoomLevel);
+    // setZoomLevel(zoomLevel);
 
     console.log(zoomLevel);
     if (zoomLevel == undefined || zoomLevel < 13) {
-      setShowInfo(true);
+      // setShowInfo(true);
+      setLoading(false);
       return;
     }
-    setShowInfo(false);
+    // setShowInfo(false);
 
     const bounds: LngLatBounds | undefined = props.data.appMap?.getBounds();
     if (!bounds) return;
@@ -159,27 +189,36 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     const ne = bounds.getNorthEast(); // 북동쪽 좌표
     const sw = bounds.getSouthWest(); // 남서쪽 좌표
     const bbox = `${sw.lat},${sw.lng},${ne.lat},${ne.lng}`;
-    // bbox 요청 임시 (api 로 변경 예정)
-    const WFS_URL = 'https://geo.sphinfo.co.kr/geoserver/geolab/wfs';
-    const WFS_VERSION = 'version=2.0.0';
-    const REQUEST = 'request=GetFeature';
-    const TYPE_NAME = {
-      pl: 'typeName=geolab:GSF_PL_MT',
-      vv: 'typeName=geolab:GSF_VV_MT',
-      tb: 'typeName=geolab:GSF_TB_MT',
-      rglt: 'typeName=geolab:GSF_RGLT_MT',
-    };
 
-    const url = `${WFS_URL}?service=WFS&${WFS_VERSION}&${REQUEST}&${
-      TYPE_NAME[layerGroupId as GeoDataKeys]
-    }&bbox=${bbox}&outputFormat=application/json`;
-
+    const sourceId = layerGroupId === 'pl' ? 'pipes' : 'none';
+    const url = `/geolab/api/v1/${sourceId}?bbox=${bbox}`;
     try {
-      console.log(bbox);
-      console.log(url);
-      const response = await axios.get(url);
-      setContentList(response.data.features);
+      await axios.get(url).then((res) => {
+        const data = JSON.parse(res.data.geojson_data);
+
+        props.data.appMap?.getSource(sourceId) &&
+          props.data.appMap?.removeLayer(`${sourceId}_ly`) &&
+          props.data.appMap?.removeSource(sourceId);
+
+        props.data.appMap?.addSource(sourceId, { type: 'geojson', data: data });
+        props.data.appMap?.addLayer({
+          id: `${sourceId}_ly`,
+          type: 'line',
+          source: sourceId,
+          paint: {
+            'line-color': 'black',
+          },
+        });
+
+        setPipeList(
+          data.features.map((feature: Feature) => {
+            return feature.properties;
+          }),
+        );
+      });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('에러', error);
     }
   };
@@ -225,21 +264,25 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
         </LayerBoxHeader>
         <ContentWrapper>
           <LayerBoxTitle>
-            {!showInfo && (
-              <>
-                <span>리스트</span>
-                <span>{contentList.length}개</span>
-              </>
-            )}
+            {/* {!showInfo && (*/}
+            {/*  <>*/}
+            <span>리스트</span>
+            <span>{pipeList.length}개</span>
+            {/* </>*/}
+            {/* )}*/}
           </LayerBoxTitle>
-          {!visible && showInfo && <InfoContent zoomLevel={currentZoomLevel} />}
-          {!visible && !showInfo && layerGroupId === 'pl' && <PipeContents contentList={contentList} />}
-          {!visible && !showInfo && layerGroupId === 'vv' && <ValveContents contentList={contentList} />}
-          {!visible && !showInfo && layerGroupId === 'tb' && <TestBoxContents contentList={contentList} />}
-          {!visible && !showInfo && layerGroupId === 'rglt' && <GovernorContents contentList={contentList} />}
+          {/* {!visible && showInfo && <InfoContent zoomLevel={currentZoomLevel} />}*/}
+          {/* {!visible && !showInfo && layerGroupId === 'pl' && <PipeContents contentList={contentList} />}*/}
+          {/* {!visible && !showInfo && layerGroupId === 'vv' && <ValveContents contentList={contentList} />}*/}
+          {/* {!visible && !showInfo && layerGroupId === 'tb' && <TestBoxContents contentList={contentList} />}*/}
+          {/* {!visible && !showInfo && layerGroupId === 'rglt' && <GovernorContents contentList={contentList} />}*/}
+          <VirtualContents pipeList={pipeList} />
         </ContentWrapper>
       </LayerBoxWrapper>
       <OptionBox layerGroupId={layerGroupId} />
+      <LoadButton onClick={getFeatures}>
+        <h6>현재 지도 재검색</h6>
+      </LoadButton>
     </>
   );
 };
