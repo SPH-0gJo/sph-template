@@ -82,7 +82,7 @@ export const MapViewer = () => {
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
       <MapSearch />
-      <MapToolbox />
+      <MapToolbox data={{ appMap: map.current }} />
       <FacilityLayerBox data={{ appMap: map.current }} />
     </MapContainer>
   );

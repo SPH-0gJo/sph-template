@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLoadingStore } from 'app/stores/loading';
 import styled from 'styled-components';
 
 interface SpinnerWrapperProps {
-  loading: boolean;
+  $loading: boolean;
 }
 
 const SpinnerWrapper = styled.div<SpinnerWrapperProps>`
   position: fixed;
   z-index: 1000;
-  display: ${(props) => (props.loading ? 'flex' : 'none')};
+  display: ${(props) => (props.$loading ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   background-color: var(--black-a32);
@@ -39,7 +39,7 @@ export const Spinner = () => {
   const { loading } = useLoadingStore();
 
   return (
-    <SpinnerWrapper className='pos-center' loading={loading}>
+    <SpinnerWrapper className='pos-center' $loading={loading}>
       <Loader></Loader>;
     </SpinnerWrapper>
   );
