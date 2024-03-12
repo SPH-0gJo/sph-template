@@ -1,9 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { Map as AppMap } from 'maplibre-gl';
 import { ToolboxButton, ToolboxButtonWrapper } from 'shared/styles/styled/common';
 
-export const ZoomButtons = () => {
-  const { setZoomLevel } = useMapOptionsStore();
+interface ZoomButtonData {
+  appMap: AppMap | null;
+}
+
+interface ZoomButtonProps {
+  data: ZoomButtonData;
+}
+
+export const ZoomButtons = (props: ZoomButtonProps) => {
+  const { zoomLevel: zoom, setZoom, setZoomLevel } = useMapOptionsStore();
+  const { appMap } = props.data;
+
+  useEffect(() => {
+    if (!appMap) return;
+    appMap.on('zoomend', (e) => {
+      const currentZoom = e.target.getZoom();
+      setZoom(currentZoom);
+    });
+  }, [appMap]);
+
+  useEffect(() => {
+    if (!appMap || !zoom) return;
+    const currentZoom = appMap.getZoom();
+    if (zoom === currentZoom) return;
+    appMap.zoomTo(zoom, { duration: 1000 });
+  }, [zoom]);
+
   return (
     <ToolboxButtonWrapper>
       <ToolboxButton name='초기화'>
