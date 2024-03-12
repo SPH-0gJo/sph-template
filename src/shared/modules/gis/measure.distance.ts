@@ -57,6 +57,7 @@ export const measureDistanceAction = (e: MapMouseEvent) => {
   const { lng, lat } = e.lngLat;
   const features = map.queryRenderedFeatures(e.point, { layers: [distanceLayers[0]] }) || [];
   source.features.length > 1 && source.features.pop();
+  console.log('source.features >>>', source.features)
   if (features.length) {
     const id = features[0].properties.id;
     source.features = source.features.filter((point: Feature) => point.properties?.id !== id);

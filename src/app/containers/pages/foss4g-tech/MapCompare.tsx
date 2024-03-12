@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { MapViewer } from 'app/components/pages/layer-management/MapCompare/MapViewer';
+import { MapViewer } from 'app/components/pages/foss4g-tech/MapCompare/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
 import styled from 'styled-components';
 
@@ -29,8 +29,8 @@ const MapWrapper = styled.div`
 `;
 export const MapCompare = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
-  const [ curPosition, setCurPosition] = useState<Array<Array<number>>>([[]]);
-  const [ isMove, setIsMove] = useState<number>(0)
+  const [curPosition, setCurPosition] = useState<Array<Array<number>>>([[]]);
+  const [isMove, setIsMove] = useState<number>(0);
   useEffect(() => {
     setBreadcrumb(['Main', 'Layer 관리', 'WMS & Vector tile']);
   }, []);
@@ -39,10 +39,24 @@ export const MapCompare = () => {
       <AppHeader />
       <Maps>
         <MapWrapper>
-          <MapViewer isMove={isMove} num={1} setIsMove={setIsMove} curPosition={curPosition} setCurPosition={setCurPosition} data={{ requestType: 'wms' }} />
+          <MapViewer
+            isMove={isMove}
+            num={1}
+            setIsMove={setIsMove}
+            curPosition={curPosition}
+            setCurPosition={setCurPosition}
+            data={{ requestType: 'wms' }}
+          />
         </MapWrapper>
         <MapWrapper>
-          <MapViewer isMove={isMove} num={2} setIsMove={setIsMove} curPosition={curPosition} setCurPosition={setCurPosition} data={{ requestType: 'vector-tile' }} />
+          <MapViewer
+            isMove={isMove}
+            num={2}
+            setIsMove={setIsMove}
+            curPosition={curPosition}
+            setCurPosition={setCurPosition}
+            data={{ requestType: 'vector-tile' }}
+          />
         </MapWrapper>
       </Maps>
     </MapCompareContainer>
