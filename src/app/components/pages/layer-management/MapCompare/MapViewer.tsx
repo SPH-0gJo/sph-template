@@ -23,8 +23,8 @@ interface MapViewerProps {
     requestType: 'wms' | 'vector-tile';
   };
   num?: number;
-  isMove? : number;
-  setIsMove? : React.Dispatch<React.SetStateAction<number>>;
+  isMove?: number;
+  setIsMove?: React.Dispatch<React.SetStateAction<number>>;
   curPosition?: Array<Array<number>>;
   setCurPosition?: React.Dispatch<React.SetStateAction<Array<Array<number>>>>;
 }
@@ -54,73 +54,76 @@ export const MapViewer = (props: MapViewerProps) => {
     });
     map.current.dragRotate.disable();
     map.current.touchZoomRotate.disableRotation();
-  },[zoom]);
+  }, [zoom]);
 
   useEffect(() => {
-    if(map.current){
+    if (map.current) {
       const onDrag = () => {
-        if(props.setIsMove && props.num){
+        if (props.setIsMove && props.num) {
           props.setIsMove(props.num);
         }
       };
       const onDragEnd = () => {
-        if(props.setIsMove){
+        if (props.setIsMove) {
           props.setIsMove(0);
         }
       };
       const dblclick = () => {
-        if(props.setIsMove && props.num){
+        if (props.setIsMove && props.num) {
           props.setIsMove(props.num);
         }
       };
 
-      const wheel = () =>{
-        if(props.setIsMove && props.num){
+      const wheel = () => {
+        if (props.setIsMove && props.num) {
           props.setIsMove(props.num);
         }
-      }
-      const rotate = () =>{
-        if(props.setIsMove && props.num){
+      };
+      const rotate = () => {
+        if (props.setIsMove && props.num) {
           props.setIsMove(props.num);
         }
-      }
+      };
 
       const move = () => {
         if (props.setCurPosition && map.current?.getBounds().toArray() && props.num && props.setIsMove) {
           // console.log(map.current?.getBounds().toArray());
-          if(props.isMove === props.num) {
+          if (props.isMove === props.num) {
             props.setCurPosition(map.current?.getBounds().toArray());
           }
         }
       };
 
-      if(props.isMove!==0){
-        map.current.on('move',move)
+      if (props.isMove !== 0) {
+        map.current.on('move', move);
       }
-      map.current.on('rotate',rotate)
-      map.current.on('wheel',wheel)
-      map.current.on('drag',onDrag)
-      map.current.on('dragend',onDragEnd)
-      map.current.on('dblclick',dblclick)
+      map.current.on('rotate', rotate);
+      map.current.on('wheel', wheel);
+      map.current.on('drag', onDrag);
+      map.current.on('dragend', onDragEnd);
+      map.current.on('dblclick', dblclick);
 
-      if(props.curPosition && props.curPosition.length===2){
-        if(props.isMove !== props.num){
-          map.current?.fitBounds([props.curPosition[0][0],props.curPosition[0][1],props.curPosition[1][0],props.curPosition[1][1]], {duration: 0});
+      if (props.curPosition && props.curPosition.length === 2) {
+        if (props.isMove !== props.num) {
+          map.current?.fitBounds(
+            [props.curPosition[0][0], props.curPosition[0][1], props.curPosition[1][0], props.curPosition[1][1]],
+            { duration: 0 },
+          );
         }
       }
 
       return () => {
-        if(map.current) {
-          map.current.off('rotate',rotate)
-          map.current.off('wheel',wheel)
+        if (map.current) {
+          map.current.off('rotate', rotate);
+          map.current.off('wheel', wheel);
           map.current.off('drag', onDrag);
           map.current.off('dragend', onDragEnd);
-          map.current.off('dblclick',dblclick)
-          map.current.off('move',move)
+          map.current.off('dblclick', dblclick);
+          map.current.off('move', move);
         }
       };
     }
-  }, [map,props.isMove,props.num,props.curPosition]);
+  }, [map, props.isMove, props.num, props.curPosition]);
 
   return (
     <MapContainer>

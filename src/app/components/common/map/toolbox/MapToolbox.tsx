@@ -3,6 +3,8 @@ import { BaseMapButtons } from 'app/components/common/map/toolbox/BaseMapButtons
 import { MeasureButtons } from 'app/components/common/map/toolbox/MeasureButtons';
 import { ThematicButtons } from 'app/components/common/map/toolbox/ThematicButtons';
 import { ZoomButtons } from 'app/components/common/map/toolbox/ZoomButtons';
+import { useMapOptionsStore } from 'app/stores/mapOptions';
+import { Map as AppMap } from 'maplibre-gl';
 import styled from 'styled-components';
 
 const ToolboxContainer = styled.div`
@@ -51,10 +53,19 @@ const ToolboxTip = styled.div<StyledProps>`
   }
 `;
 
-export const MapToolbox = () => {
+interface MapToolboxData {
+  appMap: AppMap | null;
+}
+
+interface MapToolboxProps {
+  data: MapToolboxData;
+}
+
+export const MapToolbox = (props: MapToolboxProps) => {
   const toolboxContainer = useRef<HTMLDivElement | null>(null);
   const [calculationBoxPosition, setCalculationBoxPosition] = useState<number[] | undefined>(undefined);
   const [toolboxButtonTitle, setToolboxButtonTitle] = useState('');
+  const { appMap } = props.data;
 
   useEffect(() => {
     const toolbox = toolboxContainer.current;
@@ -100,7 +111,7 @@ export const MapToolbox = () => {
       <BaseMapButtons />
       <ThematicButtons />
       <MeasureButtons />
-      <ZoomButtons />
+      <ZoomButtons data={{ appMap }} />
       {calculationBoxPosition?.length && (
         <ToolboxTip $position={calculationBoxPosition}>
           <span>{toolboxButtonTitle}</span>

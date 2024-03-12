@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GeolabNaverRoadView } from 'app/components/common/map/GeolabNaverRoadView';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
 import { Button } from 'app/components/common-ui';
@@ -54,7 +54,7 @@ const NaverRoadViewContainer = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
+  const { style, zoomLevel: zoom, setStyleOption, setZoom } = useMapOptionsStore();
   const { naverRoadViewMap, naverRoadViewCoords, setNaverRoadViewCoords, setNaverRoadViewMap } =
     useNaverRoadViewStore();
   const { setLayerGroup } = useGsfLayerStore();
@@ -63,7 +63,6 @@ export const MapViewer = () => {
   const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
 
   const handler = (e: MapMouseEvent) => {
-    console.log('handler');
     const { lng, lat } = e.lngLat;
     setNaverRoadViewCoords({ lng, lat });
   };
@@ -102,11 +101,6 @@ export const MapViewer = () => {
   }, [naverRoadViewMap]);
 
   useEffect(() => {
-    if (!map.current || !zoom) return;
-    map.current?.zoomTo(zoom, { duration: 1000 });
-  }, [zoom]);
-
-  useEffect(() => {
     if (!map.current) return;
     measureControl(map.current);
   }, [distanceSource, areaSource, measureType]);
@@ -126,7 +120,7 @@ export const MapViewer = () => {
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
-      <MapToolbox />
+      <MapToolbox data={{ appMap: map.current }} />
       <GSFLayerBox data={{ appMap: map.current }} />
       {!naverRoadViewMap || (
         <NaverRoadViewContainer className={`${naverRoadViewCoords ? '' : 'visible'}`}>
