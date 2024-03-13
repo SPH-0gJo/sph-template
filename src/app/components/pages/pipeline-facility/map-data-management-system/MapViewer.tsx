@@ -7,8 +7,6 @@ import { useMapMeasureStore } from 'app/stores/mapMeasure';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
-import { measureControl } from 'shared/modules/gis/measure';
-import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
@@ -29,10 +27,9 @@ const MapViewerWrapper = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
+  const { zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
   const { setLayerGroup } = useGsfLayerStore();
-  const { measureType, distanceSource, areaSource, setDistanceSource, setDistanceLayer, setAreaSource, setAreaLayer } =
-    useMapMeasureStore();
+  const { setDistanceSource, setDistanceLayer, setAreaSource, setAreaLayer } = useMapMeasureStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -60,23 +57,6 @@ export const MapViewer = () => {
       map.current?.remove();
     };
   }, []);
-
-  useEffect(() => {
-    if (!map.current || !style) return;
-    map.current.setStyle(style, { diff: false });
-    // map.current.once('styledata', () => map.current && addVectorTiles(map.current));
-  }, [style]);
-
-  useEffect(() => {
-    if (!map.current || !zoom) return;
-    map.current?.zoomTo(zoom, { duration: 1000 });
-    console.log(map.current?.getStyle());
-  }, [zoom]);
-
-  useEffect(() => {
-    if (!map.current) return;
-    measureControl(map.current);
-  }, [distanceSource, areaSource, measureType]);
 
   return (
     <MapContainer>
