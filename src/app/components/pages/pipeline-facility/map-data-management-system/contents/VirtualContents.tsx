@@ -1,21 +1,17 @@
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
+import { TypeHeader } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TypeHeader';
+import { TypeRow } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TypeRow';
 import { Feature } from 'geojson';
+import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
-
-interface PipeInfo {
-  pipe_id: string;
-  gis_pl_ty_cd: string;
-  gis_pres_cd: string;
-  gis_pl_div_cd: string;
-  pl_mtrqlt_cd: string;
-}
 
 interface VirtualContentsProps {
   featureList: Array<Feature>;
   selectLayer: number;
-  changeColor: (sourceId: string, feature: Feature) => void;
+  changeColor: (feature: Feature, layerGroupId: GeoDataKeys) => void;
+  layerGroupId: GeoDataKeys | undefined;
 }
 
 const Container = styled.div`
@@ -75,15 +71,25 @@ const CustomHeader = styled.div`
 
 export const VirtualContents = (props: VirtualContentsProps) => {
   const listRef = useRef<List>(null);
-  const { featureList, selectLayer, changeColor } = props;
+  const { featureList, selectLayer, changeColor, layerGroupId } = props;
   const [highlight, setHighlight] = useState<number>(-1);
 
   useEffect(() => {
     for (let i = 0; i < featureList.length; i++) {
-      const currentObject: PipeInfo = featureList[i].properties as PipeInfo;
-      if (currentObject.pipe_id === selectLayer.toString()) {
-        setHighlight(i);
-        break; // 원하는 object를 찾았으므로 반복문 종료
+      let id;
+      switch (layerGroupId) {
+        case 'pl':
+          id = featureList[i].properties?.pipe_id;
+          break;
+        case 'vv':
+          id = featureList[i].properties?.vv_no;
+          break;
+      }
+      if (id) {
+        if (id.toString() === selectLayer.toString()) {
+          setHighlight(i);
+          break;
+        }
       }
     }
   }, [selectLayer]);
@@ -94,37 +100,27 @@ export const VirtualContents = (props: VirtualContentsProps) => {
 
   useEffect(() => {
     setHighlight(-1);
+    listRef.current?.scrollToItem(0);
   }, [featureList]);
   const Row = ({ index, style }: { index: number; style: CSSProperties }) => {
-    const info: PipeInfo = featureList[index]?.properties as PipeInfo;
+    const info = featureList[index]?.properties;
     return (
       <div
         key={index}
         style={style}
         className={highlight === index ? 'highlight' : ''}
         onClick={() => {
-          changeColor('pipes_ly', featureList[index]);
+          layerGroupId && changeColor(featureList[index], layerGroupId);
         }}
       >
-        <span>
-          {/* <ColorBar color={pipeList[index]?.gis_pl_ty_cd] || 'white'} />)*/}
-          <span> {info?.pipe_id ? info.pipe_id : '-'}</span>
-        </span>
-        <span>{info?.gis_pl_ty_cd ? info.gis_pl_ty_cd : '-'}</span>
-        <span>{info?.gis_pres_cd ? info.gis_pres_cd : '-'}</span>
-        <span>{info?.gis_pl_div_cd ? info.gis_pl_div_cd : '-'}</span>
-        <span>{info?.pl_mtrqlt_cd ? info.pl_mtrqlt_cd : '-'}</span>
+        <TypeRow info={info} layerGroupId={layerGroupId} />
       </div>
     );
   };
   return (
     <Container>
       <CustomHeader>
-        <span>배관 ID</span>
-        <span>유형</span>
-        <span>압력</span>
-        <span>재질</span>
-        <span>연장</span>
+        <TypeHeader layerGroupId={layerGroupId} />
       </CustomHeader>
       <AutoSizer>
         {({ width, height }) => (
