@@ -357,7 +357,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           )}
         </ContentWrapper>
       </LayerBoxWrapper>
-      <OptionBox layerGroupId={layerGroupId} />
+      <OptionBox layerGroupId={layerGroupId} appMap={props.data.appMap} />
       <LoadButton onClick={getFeatures}>
         <h6>현재 지도 재검색</h6>
       </LoadButton>

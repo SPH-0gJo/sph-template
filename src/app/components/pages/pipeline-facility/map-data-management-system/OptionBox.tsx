@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import * as domain from 'domain';
+import { Map } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
@@ -90,100 +92,239 @@ const CheckBox = styled.input.attrs(() => ({ type: 'checkbox' }))`
   height: 1.125rem;
 `;
 
+interface CheckBoxItem {
+  id: string;
+  name: string;
+}
+
 const pipeOptions: Array<OptionContent> = [
   {
     category: '구분',
-    items: ['공급관', '본관', '내관', '사용자 공급관'],
+    items: [
+      { id: 'supply', name: '공급관' },
+      { id: 'main', name: '본관' },
+      { id: 'inner', name: '내관' },
+      { id: 'user', name: '사용자 공급관' },
+    ],
   },
   {
     category: '압력',
-    items: ['고압', '중압', '저압'],
+    items: [
+      { id: 'HP', name: '고압' },
+      { id: 'MA', name: '중압' },
+      { id: 'LP', name: '저압' },
+    ],
   },
   {
     category: '재질',
-    items: ['PE', 'PLP본관', 'SP'],
+    items: [
+      { id: '20', name: 'PE' },
+      { id: '30', name: 'PLP본관' },
+      { id: '40', name: 'SP' },
+    ],
   },
 ];
 
 const valveOptions: Array<OptionContent> = [
   {
     category: '구분',
-    items: ['공급관', '본관', '내관', '사용자 공급관'],
+    items: [
+      { id: 'supply', name: '공급관' }, // supply
+      { id: 'main', name: '본관' }, // main
+      { id: 'inner', name: '내관' }, // inner
+      { id: 'user', name: '사용자 공급관' }, // user
+    ],
   },
   {
     category: '압력',
-    items: ['고압', '중압', '저압'],
+    items: [
+      { id: 'HP', name: '고압' },
+      { id: 'MA', name: '중압' },
+      { id: 'LP', name: '저압' },
+    ],
   },
   {
     category: '형식',
     items: [
-      '볼밸드',
-      '용접형 매몰볼밸드',
-      '용접형 매몰볼밸드(ONE-PURGE)',
-      '용접형 매몰볼밸드(TWO-PURGE)',
-      '절연 매몰볼밸드',
-      'BOX형 매몰볼밸드',
+      // Todo : id 확인 필요/GIS_VV_FORM_CD
+      { id: '10', name: '볼밸드' },
+      { id: '20', name: '용접형 매몰볼밸드' },
+      { id: '30', name: '용접형 매몰볼밸드(ONE-PURGE)' },
+      { id: '40', name: '용접형 매몰볼밸드(TWO-PURGE)' },
+      { id: '50', name: '절연 매몰볼밸드' },
+      { id: '60', name: 'BOX형 매몰볼밸드' },
     ],
   },
 ];
 const governorOptions: Array<OptionContent> = [
   {
     category: '구분',
-    items: ['공급관', '본관', '내관', '사용자 공급관'],
-  },
-  {
-    category: '압력',
-    items: ['고압', '중압', '저압'],
-  },
-  {
-    category: '재질',
-    items: ['PE', 'PLP본관', 'SP'],
+    items: [
+      // Todo : id 확인 필요
+      { id: '2331', name: '공급관' },
+      { id: '2320', name: '본관' },
+      { id: '2323', name: '내관' },
+      { id: '2322', name: '사용자 공급관' },
+    ],
   },
 ];
 
 const testBoxOptions: Array<OptionContent> = [
   {
     category: '구분',
-    items: ['공급관', '본관', '내관', '사용자 공급관'],
+    items: [
+      // Todo : id 확인 필요
+      { id: '2331', name: '공급관' },
+      { id: '2320', name: '본관' },
+      { id: '2323', name: '내관' },
+      { id: '2322', name: '사용자 공급관' },
+    ],
   },
   {
     category: '압력',
-    items: ['고압', '중압', '저압'],
+    items: [
+      { id: '2240', name: '고압' },
+      { id: '2241', name: '중압' },
+      { id: '2242', name: '저압' },
+      { id: '2243', name: '통합' },
+      { id: '224', name: '본딩' },
+      { id: '2245', name: '케이싱' },
+      { id: '2246', name: '사용시설' },
+    ],
   },
   {
     category: '방식',
-    items: ['희생양극식', '외부전원식'],
+    items: [
+      // Todo : id 확인 필요
+      { id: '2240', name: '희생양극식' },
+      { id: '2240', name: '외부전원식' },
+    ],
   },
 ];
 
 interface OptionBoxProps {
   layerGroupId: GeoDataKeys | undefined;
+  appMap: Map | undefined;
 }
 
 interface OptionContent {
   category: string;
-  items: Array<string>;
+  items: Array<CheckBoxItem>;
 }
 
-const OptionCategory = ({ category, items }: OptionContent) => {
-  return (
-    <CheckBoxContainer>
-      <b>{category}</b>
-      <CategoryWrapper>
-        {items.map((item, index) => (
-          <CheckBoxWrapper key={index}>
-            <CheckBox />
-            <label>{item}</label>
-          </CheckBoxWrapper>
-        ))}
-      </CategoryWrapper>
-    </CheckBoxContainer>
-  );
-};
+const pipeCheckIds = [
+  'supply',
+  'main',
+  'inner',
+  'user',
+  '2011',
+  '2021',
+  '2031',
+  '2010',
+  '2020',
+  '2030',
+  '2013',
+  '2323',
+  '2023',
+  '2012',
+  '2022',
+  '2032',
+  'LP',
+  'MA',
+  'HP',
+  '20',
+  '30',
+  '40',
+];
+
+const valveCheckIds = [
+  'supply',
+  'main',
+  'inner',
+  'user',
+  '2311',
+  '2321',
+  '2331',
+  '2310',
+  '2320',
+  '2330',
+  '2313',
+  '2323',
+  '2333',
+  '2312',
+  '2322',
+  '2332',
+  '10',
+  '20',
+  '30',
+  '40',
+  '50',
+  '60',
+  'LP',
+  'MA',
+  'HP',
+];
 
 export const OptionBox = (props: OptionBoxProps) => {
   const [drawingType, setDrawingType] = useState('radius');
   const [optionList, setOptionList] = useState<Array<OptionContent>>(pipeOptions);
+  const [checkedIds, setCheckedIds] = useState<string[]>(pipeCheckIds);
+
+  const handleCheckBox = (id: string) => {
+    const isChecked = checkedIds.includes(id);
+    let updatedIds = isChecked ? checkedIds.filter((checkedId) => checkedId !== id) : [...checkedIds, id];
+    const main = ['supply', 'main', 'inner', 'user'];
+    if (props.layerGroupId == 'pl') {
+      const pipeMainCode: { [key: string]: string[] } = {
+        supply: ['2011', '2021', '2031'],
+        main: ['2010', '2020', '2030'],
+        inner: ['2013', '2323', '2023'],
+        user: ['2012', '2022', '2032'],
+      };
+
+      if (main.includes(id)) {
+        updatedIds = isChecked
+          ? updatedIds.filter((checkedId) => !pipeMainCode[id].includes(checkedId))
+          : [...updatedIds, ...pipeMainCode[id]];
+      }
+      console.log(updatedIds);
+      props.appMap?.setFilter('pl_ly', [
+        'all',
+        ['match', ['get', 'gis_pl_ty_cd'], [...updatedIds], true, false],
+        [
+          'any',
+          ['match', ['get', 'gis_pres_cd'], [...updatedIds], true, false],
+          ['match', ['get', 'gis_pl_div_cd'], [...updatedIds], true, false],
+        ],
+      ]);
+    }
+    if (props.layerGroupId == 'vv') {
+      const valveMainCode: { [key: string]: string[] } = {
+        supply: ['2311', '2321', '2331'],
+        main: ['2310', '2320', '2330'],
+        inner: ['2313', '2323', '2333'],
+        user: ['2312', '2322', '2332'],
+      };
+
+      if (main.includes(id)) {
+        updatedIds = isChecked
+          ? updatedIds.filter((checkedId) => !valveMainCode[id].includes(checkedId))
+          : [...updatedIds, ...valveMainCode[id]];
+      }
+
+      props.appMap?.setFilter('vv_ly', [
+        'all',
+        ['match', ['get', 'gis_vv_typ_cd'], [...updatedIds], true, false],
+        [
+          'any',
+          ['match', ['get', 'gis_vv_form_cd'], [...updatedIds], true, false],
+          ['match', ['get', 'pres_cd'], [...updatedIds], true, false],
+        ],
+      ]);
+    }
+
+    setCheckedIds(updatedIds);
+  };
 
   useEffect(() => {
     const optionSelect = {
@@ -192,9 +333,19 @@ export const OptionBox = (props: OptionBoxProps) => {
       rglt: governorOptions,
       tb: testBoxOptions,
     };
+
+    const checkOptionSelect = {
+      pl: pipeCheckIds,
+      vv: valveCheckIds,
+      rglt: pipeCheckIds,
+      tb: valveCheckIds,
+    };
     const currentOption = optionSelect[props.layerGroupId as GeoDataKeys];
+    const currentCheckList = checkOptionSelect[props.layerGroupId as GeoDataKeys];
     setOptionList(currentOption);
+    setCheckedIds(currentCheckList);
   }, [props]);
+
   return (
     <OptionLayout>
       <OptionHeader>상세 옵션</OptionHeader>
@@ -220,7 +371,23 @@ export const OptionBox = (props: OptionBoxProps) => {
       </ButtonWrapper>
       <OptionBody>
         {optionList?.map((option, index) => (
-          <OptionCategory category={option.category} items={option.items} key={index} />
+          <>
+            <CheckBoxContainer key={index}>
+              <b>{option.category}</b>
+              <CategoryWrapper>
+                {option.items.map((item, innerIndex) => (
+                  <CheckBoxWrapper key={innerIndex}>
+                    <CheckBox
+                      id={item.id}
+                      checked={checkedIds.includes(item.id)}
+                      onChange={() => handleCheckBox(item.id)}
+                    />
+                    <label>{item.name}</label>
+                  </CheckBoxWrapper>
+                ))}
+              </CategoryWrapper>
+            </CheckBoxContainer>
+          </>
         ))}
       </OptionBody>
     </OptionLayout>
