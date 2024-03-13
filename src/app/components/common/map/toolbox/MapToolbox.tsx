@@ -1,5 +1,6 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { BaseMapButtons } from 'app/components/common/map/toolbox/BaseMapButtons';
+import { ChangeMap } from 'app/components/common/map/toolbox/ChangeMap';
 import { MeasureButtons } from 'app/components/common/map/toolbox/MeasureButtons';
 import { ThematicButtons } from 'app/components/common/map/toolbox/ThematicButtons';
 import { ZoomButtons } from 'app/components/common/map/toolbox/ZoomButtons';
@@ -17,6 +18,7 @@ const ToolboxContainer = styled.div`
   align-items: flex-end;
   gap: 0.625rem;
   user-select: none;
+  z-index: 1;
 `;
 
 interface StyledProps {
@@ -35,6 +37,7 @@ const ToolboxTip = styled.div<StyledProps>`
   gap: 0.625rem;
   border-radius: 0.375rem;
   background-color: var(--light-secondary-dark);
+
   ::after {
     content: '';
     position: absolute;
@@ -46,6 +49,7 @@ const ToolboxTip = styled.div<StyledProps>`
     border-bottom: 5px solid transparent;
     border-left: 5px solid var(--light-secondary-dark);
   }
+
   span {
     color: var(--white, #fff);
     font-size: 0.75rem;
@@ -109,6 +113,7 @@ export const MapToolbox = (props: MapToolboxProps) => {
   return (
     <ToolboxContainer ref={toolboxContainer}>
       <BaseMapButtons />
+      <ChangeMap data={{ appMap }} />
       <ThematicButtons />
       <MeasureButtons />
       <ZoomButtons data={{ appMap }} />
