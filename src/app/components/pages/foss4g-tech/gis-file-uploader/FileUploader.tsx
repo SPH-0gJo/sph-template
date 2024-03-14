@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'app/components/common-ui/index';
-import { UploadGeoFile, UploadGeoFiles } from 'app/components/pages/layer-management/gis-file-uploader/file-types';
-import { FileUploadSelector } from 'app/components/pages/layer-management/gis-file-uploader/FileUploadSelector';
-import { UploadFileBox } from 'app/components/pages/layer-management/gis-file-uploader/UploadFileBox';
+import { UploadGeoFile, UploadGeoFiles } from 'app/components/pages/foss4g-tech/gis-file-uploader/file-types';
+import { FileUploadSelector } from 'app/components/pages/foss4g-tech/gis-file-uploader/FileUploadSelector';
+import { UploadFileBox } from 'app/components/pages/foss4g-tech/gis-file-uploader/UploadFileBox';
 import { bytesToSize } from 'shared/modules/app.utils';
 import { validateGeojson } from 'shared/modules/geojson.utils';
 import styled from 'styled-components';

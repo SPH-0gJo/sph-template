@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'app/components/common-ui/index';
-import { UploadGeoFiles } from 'app/components/pages/layer-management/gis-file-uploader/file-types';
+import { UploadGeoFiles } from 'app/components/pages/foss4g-tech/gis-file-uploader/file-types';
 import styled from 'styled-components';
 
 const UploadFileOrdered = styled.ul`

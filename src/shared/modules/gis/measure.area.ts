@@ -109,6 +109,7 @@ export const measureAreaDeAction = (e: MapMouseEvent) => {
 
   useMapMeasureStore.getState().setAreaSource(source);
   (map.getSource(areaSource) as GeoJSONSource).setData(source);
+  console.log(source)
 };
 
 export function removeAreaLayers(map: AppMap) {

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { Button } from 'app/components/common-ui';
 import { FileListItem } from 'app/components/pages/file/FileListItem';
-import { UploadGeoFiles } from 'app/components/pages/layer-management/gis-file-uploader/file-types';
+import { UploadGeoFiles } from 'app/components/pages/foss4g-tech/gis-file-uploader/file-types';
 import { useCoordinateSystemStore } from 'app/stores/coordinateSystem';
 import axios from 'axios';
 import styled from 'styled-components';

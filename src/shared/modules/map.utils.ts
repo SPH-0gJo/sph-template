@@ -32,7 +32,6 @@ export const initMap = (
   styleIdx: number,
   $center: number[] | undefined,
 ) => {
-  console.log('initMap');
   const style = styleIdx ? vectorTileBaseMaps[styleIdx].style : vectorTileBaseMaps[0].style;
   const [lng, lat] = $center ? $center : initCoords;
   return new maplibregl.Map({

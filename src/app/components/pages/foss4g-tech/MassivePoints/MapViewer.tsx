@@ -3,8 +3,8 @@ import {
   addMassivePoints,
   removeMassivePoints,
   sourceName,
-} from 'app/components/pages/layer-management/MassivePoints/songdo.asc_step7.mv';
-import { StyleEditor } from 'app/components/pages/layer-management/MassivePoints/StyleEditor';
+} from 'app/components/pages/foss4g-tech/MassivePoints/songdo.asc_step7.mv';
+import { StyleEditor } from 'app/components/pages/foss4g-tech/MassivePoints/StyleEditor';
 import { Map as AppMap } from 'maplibre-gl';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';

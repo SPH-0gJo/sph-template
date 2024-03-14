@@ -2,12 +2,13 @@ import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CoordinateSystemTrans } from 'app/containers/pages/file/CoordinateSystemTrans';
 import { GeojsonUploadSystem } from 'app/containers/pages/file/GeojsonUploadSystem';
+import { GeoDrawingCanvas } from 'app/containers/pages/foss4g-tech/GeoDrawingCanvas';
+import { GISFileUploader } from 'app/containers/pages/foss4g-tech/GISFileUploader';
+import { InfoWindow } from 'app/containers/pages/foss4g-tech/InfoWindow';
+import { MapCompare } from 'app/containers/pages/foss4g-tech/MapCompare';
+import { MassivePoints } from 'app/containers/pages/foss4g-tech/MassivePoints';
 import { GeolabMain } from 'app/containers/pages/GeolabMain';
 import { UIGuidePage } from 'app/containers/pages/guide/UIGuidePage';
-import { GISFileUploader } from 'app/containers/pages/layer-management/GISFileUploader';
-import { InfoWindow } from 'app/containers/pages/layer-management/InfoWindow';
-import { MapCompare } from 'app/containers/pages/layer-management/MapCompare';
-import { MassivePoints } from 'app/containers/pages/layer-management/MassivePoints';
 import { MobileMain } from 'app/containers/pages/MobileMain';
 import { MapDataManagement } from 'app/containers/pages/pipeline-facility/MapDataManagement';
 import { PipelineManagement } from 'app/containers/pages/pipeline-facility/PipelineManagement';
@@ -46,6 +47,7 @@ export const App = () => {
           <Route path='/geolab/file/coordinate-system/trans' element={<CoordinateSystemTrans />} />
           <Route path='/geolab/file/geojson/upload' element={<GeojsonUploadSystem />} />
           <Route path='/geolab/fm/valve-cluster' element={<ValveClusterMap />} />
+          <Route path='/geolab/foss4g-tech/drawing' element={<GeoDrawingCanvas />} />
         </Routes>
       </BrowserRouter>
     </AppPage>
