@@ -10,7 +10,6 @@ import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap, MapMouseEvent } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { LayerStyle } from 'shared/fixtures/pipeline';
-import { measureControl } from 'shared/modules/gis/measure';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
 import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
@@ -54,7 +53,7 @@ const NaverRoadViewContainer = styled.div`
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
-  const { style, zoomLevel: zoom, setStyleOption, setZoom } = useMapOptionsStore();
+  const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
   const { naverRoadViewMap, naverRoadViewCoords, setNaverRoadViewCoords, setNaverRoadViewMap } =
     useNaverRoadViewStore();
   const { setLayerGroup } = useGsfLayerStore();
@@ -99,11 +98,6 @@ export const MapViewer = () => {
     if (naverRoadViewMap) map.current?.on('click', handler);
     else map.current?.off('click', handler);
   }, [naverRoadViewMap]);
-
-  useEffect(() => {
-    if (!map.current) return;
-    measureControl(map.current);
-  }, [distanceSource, areaSource, measureType]);
 
   useEffect(() => {
     if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;

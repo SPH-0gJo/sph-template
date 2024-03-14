@@ -1,16 +1,16 @@
 import { Feature, FeatureCollection, LineString } from 'geojson';
-import { measureTypes } from 'shared/constants/types/types';
+import { MeasureTypes } from 'shared/constants/types/types';
 import { create } from 'zustand';
 
 interface MapMeasureState {
-  measureType: measureTypes;
+  measureType: MeasureTypes;
   distanceSource: FeatureCollection;
   distanceLayer: Feature<LineString>;
   distanceValue: Array<number>;
   areaSource: FeatureCollection;
   areaLayer: Feature<LineString>;
   areaValue: number;
-  setMeasureType: (measure: measureTypes) => void;
+  setMeasureType: (measure: MeasureTypes) => void;
   setDistanceSource: (source: FeatureCollection | null) => void;
   setDistanceLayer: (layer: Feature<LineString> | null) => void;
   setDistanceValue: (value: Array<number>) => void;
@@ -41,7 +41,7 @@ export const useMapMeasureStore = create<MapMeasureState>()((set, get) => ({
     properties: {},
   },
   areaValue: 0,
-  setMeasureType: (measure: measureTypes) => {
+  setMeasureType: (measure: MeasureTypes) => {
     const current = get().measureType;
     const changed = current === measure ? 'none' : measure;
     set({ measureType: changed });

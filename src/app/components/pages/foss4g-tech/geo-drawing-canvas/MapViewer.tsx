@@ -30,7 +30,7 @@ export const MapViewer = () => {
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
       <MapToolbox data={{ appMap: map.current }} />
-      <DrawingControl data={{ appMap: map.current }} />
+      {/* <DrawingControl data={{ appMap: map.current }} />*/}
     </MapContainer>
   );
 };
