@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import * as domain from 'domain';
 import { Map } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
@@ -204,7 +203,7 @@ const testBoxOptions: Array<OptionContent> = [
 
 interface OptionBoxProps {
   layerGroupId: GeoDataKeys | undefined;
-  appMap: Map | undefined;
+  appMap: Map | null;
 }
 
 interface OptionContent {
