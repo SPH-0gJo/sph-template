@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { GSFLayerBoxContents } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerBoxContents';
-import { GSFLayerStyleEditor } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerStyleEditor';
-import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { GasLayerBoxContents } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerBoxContents';
+import { GasLayerStyleEditor } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerStyleEditor';
+import { useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
 import { Map as AppMap } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
@@ -79,23 +79,24 @@ interface GSFLayerBoxProps {
   data: GSFLayerBoxData;
 }
 
-export const GSFLayerBox = (props: GSFLayerBoxProps) => {
+export const GasLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
   const [visible, setVisible] = useState(false);
-  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
+  // const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
+  const { gasLayerGroups, layerStyleEditorId } = useGasLayerGropuStore();
   useEffect(() => {
     setLayerGroupId('pl');
   }, []);
 
   const layerGroups = useMemo(() => {
-    if (!gsfLayerGroups) return;
+    if (!gasLayerGroups) return;
     return [
       { name: '배관', layerId: 'gsf_pl_mt', key: 'pl', icon: 'gas-pipe' },
       { name: '밸브', layerId: 'gsf_vv_mt', key: 'vv', icon: 'gas-valve' },
       { name: 'TB', layerId: 'gsf_tb_mt', key: 'tb', icon: 'gas-tb' },
       { name: '정압기', layerId: 'gsf_rglt_mt', key: 'rglt', icon: 'gas-gauge' },
     ];
-  }, [gsfLayerGroups]);
+  }, [gasLayerGroups]);
 
   return (
     <>
@@ -119,9 +120,9 @@ export const GSFLayerBox = (props: GSFLayerBoxProps) => {
           </LayerGroupButtons>
           <em className={`icon-chevron-${visible ? 'left' : 'right'}-large`} onClick={() => setVisible(!visible)} />
         </LayerBoxHeader>
-        {!visible && <GSFLayerBoxContents data={{ appMap: props.data.appMap, layerGroupId }} />}
+        {!visible && <GasLayerBoxContents data={{ appMap: props.data.appMap, layerGroupId }} />}
       </LayerBoxWrapper>
-      {layerStyleEditorId && <GSFLayerStyleEditor />}
+      {layerStyleEditorId && <GasLayerStyleEditor />}
     </>
   );
 };

@@ -29,7 +29,7 @@ const LayerStyleEditForm = styled.div`
   }
 `;
 
-export const GSFLayerStyleEditor = () => {
+export const GasLayerStyleEditor = () => {
   const { gsfLayerGroups, layerStyleEditorId, upsertItem } = useGsfLayerStore();
   const [groupId, setGroupId] = useState<GeoDataKeys>();
   const [lineStrokeStyle, setLineStrokeStyle] = useState<string | undefined>(undefined);

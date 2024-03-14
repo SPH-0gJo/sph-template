@@ -6,7 +6,7 @@ const {
   VITE_VWORLD_KEY,
   VITE_NAVER_CLIENT_ID,
 } = import.meta.env;
-export const CircleSize = 3;
+export const CircleSize = 5;
 export const GEOLAB_VECTOR_TILE_STYLE = VITE_GEOLAB_VECTOR_TILE_STYLE;
 export const GeoserverWMSRequestURL = VITE_GEOSERVER_WMS_REQUEST_URL;
 export const initCoords = [127.0535312, 37.2893525];

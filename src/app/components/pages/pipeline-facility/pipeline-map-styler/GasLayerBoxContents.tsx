@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { useGsfLayerStore } from 'app/stores/gsfLayers';
+import { GasLayer, GeoDataKeys, useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
+// import { usePipelineStylerStore } from 'app/stores/pipeline.styler';
 import { Map as AppMap } from 'maplibre-gl';
-import { GeoDataKeys, GsfLayer } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
 
 const LayerBoxContents = styled.ul`
@@ -66,26 +66,20 @@ interface GSFLayerBoxContentProps {
   data: GSFLayerBoxContentData;
 }
 
-export const GSFLayerBoxContents = (props: GSFLayerBoxContentProps) => {
-  const {
-    gsfLayerGroups,
-    layerDataTableId,
-    layerStyleEditorId,
-    setLayerDataTableId,
-    setLayerStyleEditorId,
-    upsertItem,
-  } = useGsfLayerStore();
-  const { layerGroupId } = props.data;
+export const GasLayerBoxContents = (props: GSFLayerBoxContentProps) => {
+  const { gasLayerGroups, layerStyleEditorId, setLayerStyleEditorId, upsertItem } = useGasLayerGropuStore();
+  // const { layerGroup:\\ pipelineLayerGroup } = usePipelineStylerStore();
+  const { appMap, layerGroupId } = props.data;
 
-  const layerGroup: GsfLayer[] = useMemo(() => {
-    if (!gsfLayerGroups || !layerGroupId) return [];
-    const data: GsfLayer[] = [];
-    gsfLayerGroups.forEach((gsfLayer) => {
-      const { groupId } = gsfLayer;
-      groupId === layerGroupId && data.push(gsfLayer);
+  const layerGroup = useMemo(() => {
+    if (!gasLayerGroups || !layerGroupId) return [];
+    const data: GasLayer[] = [];
+    gasLayerGroups.forEach((layer) => {
+      const { groupId } = layer;
+      groupId === layerGroupId && data.push(layer);
     });
     return data;
-  }, [gsfLayerGroups, layerGroupId]);
+  }, [gasLayerGroups, layerGroupId]);
 
   useEffect(() => {
     setLayerStyleEditorId(undefined);
@@ -100,33 +94,22 @@ export const GSFLayerBoxContents = (props: GSFLayerBoxContentProps) => {
             key={index}
             onClick={() => {
               const { sourceLayerId } = layer;
-              if (!props.data.appMap || !sourceLayerId) return;
+              if (!appMap || !sourceLayerId) return;
               layer.hidden = !layer.hidden;
               upsertItem(layer);
               const visible = layer.hidden ? 'none' : 'visible';
-              props.data.appMap?.setLayoutProperty(sourceLayerId, 'visibility', visible);
+              appMap.setLayoutProperty(sourceLayerId, 'visibility', visible);
             }}
           >
             <em className='icon-drag-line-horizontal' />
             <span>{layer.name}</span>
             <LayerButtons>
               <LayerButton
-                className={layer.sourceLayerId === layerDataTableId ? 'selected' : ''}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const { sourceLayerId } = layer;
-                  setLayerDataTableId(sourceLayerId);
-                }}
-              >
-                <em className='icon-format-list-group' />
-                <span className='subtitle_sm'>속성</span>
-              </LayerButton>
-              <LayerButton
                 className={layer.sourceLayerId === layerStyleEditorId ? 'selected' : ''}
                 onClick={(e) => {
                   e.stopPropagation();
-                  const { style, sourceLayerId } = layer;
-                  if (!style || !sourceLayerId) return;
+                  const { sourceLayerId } = layer;
+                  // if (!style || !sourceLayerId) return;
                   setLayerStyleEditorId(sourceLayerId);
                 }}
               >

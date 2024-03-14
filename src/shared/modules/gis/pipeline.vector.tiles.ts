@@ -1,109 +1,101 @@
-import { Map as AppMap } from 'maplibre-gl';
-import { CircleSize, GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
+import { generatePipelineLayerOption, usePipelineStylerStore } from 'app/stores/gas-layers/pipeline.styler';
+import { generateTestboxLayerOption, useTestboxStylerStore } from 'app/stores/gas-layers/testbox.styler';
+import { generateValveLayerOption, useValveStylerStore } from 'app/stores/gas-layers/valve.styler';
+import { CircleLayerSpecification, LineLayerSpecification, Map as AppMap, SymbolLayerSpecification } from 'maplibre-gl';
+import { GEOLAB_VECTOR_TILE_STYLE } from 'shared/constants/varibales';
 import { pipelines, rglt, tbs, valves } from 'shared/fixtures/pipeline';
 
 export function addVectorTiles(map: AppMap) {
   if (!map || !map.getStyle()) return;
-  const source = map.getSource('geolab-layers');
+  const sourceId = 'geolab-layers';
+  const source = map.getSource(sourceId);
   if (source) return;
-  map.addSource('geolab-layers', { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
-  pipelines.forEach((e) => {
-    const { code, color, width, lineStyle } = e;
-    const paint: { 'line-color': string; 'line-width': number; 'line-dasharray'?: Array<number> } = {
-      'line-color': color,
-      'line-width': width,
-    };
-    if (lineStyle === 'dashed') paint['line-dasharray'] = [2.5, 2.5];
-    map.addLayer({
-      id: `gsf_pl_mt_${code}`,
-      type: 'line',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_pl_mt',
-      layout: { 'line-join': 'round', 'line-cap': 'round' },
-      paint,
-      filter: ['==', 'GIS_PL_TY_', code],
-    });
+  map.addSource(sourceId, { type: 'vector', url: GEOLAB_VECTOR_TILE_STYLE });
+  const pipelinePaints = usePipelineStylerStore.getState().paints;
+  Object.keys(pipelinePaints).forEach((key) => {
+    const option = generatePipelineLayerOption(key, sourceId);
+    map.addLayer(option as LineLayerSpecification);
   });
 
-  valves.forEach((e) => {
-    const { code, color } = e;
-    map.addLayer({
-      id: `gsf_vv_mt_${code}`,
-      type: 'circle',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_vv_mt',
-      // minzoom: 13,
-      // layout: { 'icon-image': 'shop-icon', 'icon-size': 0.4 },
-      paint: { 'circle-color': color, 'circle-radius': CircleSize },
-      filter: ['==', 'GIS_VV_TYP', code],
-    });
+  const valvePaints = useValveStylerStore.getState().paints;
+  Object.keys(valvePaints).forEach((key) => {
+    const option = generateValveLayerOption(key, sourceId);
+    map.addLayer(option as CircleLayerSpecification);
   });
 
-  tbs.forEach((e) => {
-    const { code, color } = e;
-    map.addLayer({
-      id: `gsf_tb_mt_${code}`,
-      type: 'circle',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_tb_mt',
-      // minzoom: 13,
-      paint: { 'circle-color': color, 'circle-radius': CircleSize },
-    });
-  });
-
-  rglt.forEach((e) => {
-    const { code, color } = e;
-    map.addLayer({
-      id: `gsf_rglt_mt_${code}`,
-      type: 'circle',
-      source: 'geolab-layers',
-      'source-layer': 'gsf_rglt_mt',
-      // minzoom: 13,
-      paint: { 'circle-color': color, 'circle-radius': CircleSize },
-    });
+  const testboxLayouts = useTestboxStylerStore.getState().layouts;
+  Object.keys(testboxLayouts).forEach((key) => {
+    const options = generateTestboxLayerOption(key, sourceId);
+    map.addLayer(options[1] as SymbolLayerSpecification);
+    map.addLayer(options[0] as SymbolLayerSpecification);
   });
 
   map.addLayer({
-    id: 'gsf_vv_mt_labels',
+    id: 'gsf_pl_mt_labels',
     type: 'symbol',
     source: 'geolab-layers',
-    'source-layer': 'gsf_vv_mt',
+    'source-layer': 'gsf_pl_mt',
     minzoom: 16,
     layout: {
-      'text-field': ['get', 'GIS_VV_TYP'],
+      'symbol-placement': 'line',
+      'text-field': ['format', ['get', 'PL_MNGNO'], '/'],
       'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
       'text-radial-offset': 0.5,
       'text-justify': 'auto',
     },
   });
 
-  map.addLayer({
-    id: 'gsf_tb_mt_labels',
-    type: 'symbol',
-    source: 'geolab-layers',
-    'source-layer': 'gsf_tb_mt',
-    minzoom: 16,
-    layout: {
-      'text-field': ['get', 'GIS_VV_TYP'],
-      'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-      'text-radial-offset': 0.5,
-      'text-justify': 'auto',
-    },
-  });
+  // tbs.forEach((e) => {
+  //   const { code, color } = e;
+  //   map.addLayer({
+  //     id: `gsf_tb_mt_${code}`,
+  //     type: 'circle',
+  //     source: 'geolab-layers',
+  //     'source-layer': 'gsf_tb_mt',
+  //     // minzoom: 13,
+  //     paint: { 'circle-color': color, 'circle-radius': CircleSize },
+  //   });
+  // });
 
-  map.addLayer({
-    id: 'gsf_rglt_mt_labels',
-    type: 'symbol',
-    source: 'geolab-layers',
-    'source-layer': 'gsf_rglt_mt',
-    minzoom: 16,
-    layout: {
-      'text-field': ['get', 'GIS_VV_TYP'],
-      'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-      'text-radial-offset': 0.5,
-      'text-justify': 'auto',
-    },
-  });
+  // rglt.forEach((e) => {
+  //   const { code, color } = e;
+  //   map.addLayer({
+  //     id: `gsf_rglt_mt_${code}`,
+  //     type: 'circle',
+  //     source: 'geolab-layers',
+  //     'source-layer': 'gsf_rglt_mt',
+  //     // minzoom: 13,
+  //     paint: { 'circle-color': color, 'circle-radius': CircleSize },
+  //   });
+  // });
+
+  // map.addLayer({
+  //   id: 'gsf_vv_mt_labels',
+  //   type: 'symbol',
+  //   source: 'geolab-layers',
+  //   'source-layer': 'gsf_vv_mt',
+  //   minzoom: 16,
+  //   layout: {
+  //     'text-field': ['get', 'GIS_VV_TYP'],
+  //     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+  //     'text-radial-offset': 0.5,
+  //     'text-justify': 'auto',
+  //   },
+  // });
+
+  // map.addLayer({
+  //   id: 'gsf_tb_mt_labels',
+  //   type: 'symbol',
+  //   source: 'geolab-layers',
+  //   'source-layer': 'gsf_tb_mt',
+  //   minzoom: 16,
+  //   layout: {
+  //     'text-field': ['get', 'GIS_VV_TYP'],
+  //     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+  //     'text-radial-offset': 0.5,
+  //     'text-justify': 'auto',
+  //   },
+  // });
 }
 
 export function removeVectorTiles(map: AppMap) {

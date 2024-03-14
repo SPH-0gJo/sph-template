@@ -2,6 +2,16 @@ import React, { useEffect } from 'react';
 import { useNaverRoadViewStore } from 'app/stores/map/naverRoadView';
 import { NAVER_MAP_API_URL } from 'shared/constants/varibales';
 import { importExternalScript } from 'shared/modules/app.utils';
+import styled from 'styled-components';
+
+const NaverRoadViewMap = styled.div`
+  position: relative;
+  background-color: rgb(28, 32, 37);
+  border-radius: 8px;
+  border: 1px solid rgb(67, 77, 91);
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
+  padding: 24px;
+`;
 
 /*
  * To-do
@@ -31,11 +41,14 @@ export const GeolabNaverRoadView = () => {
   useEffect(() => {
     if (naverMap) initNaverMap();
     else importExternalScript(NAVER_MAP_API_URL, initNaverMap);
+  }, [naverRoadViewMap, naverRoadViewCoords]);
+
+  useEffect(() => {
     return () => {
       setNaverRoadViewCoords(undefined);
       setNaverRoadViewSize(undefined);
     };
-  }, [naverRoadViewMap, naverRoadViewCoords]);
+  }, []);
 
-  return <div id='naverMap' />;
+  return <NaverRoadViewMap id='naverMap' />;
 };
