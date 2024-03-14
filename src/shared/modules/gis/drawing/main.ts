@@ -1,35 +1,44 @@
 import { Feature, FeatureCollection, LineString, Point, Polygon } from 'geojson';
 import { GeoJSONSource, Map as AppMap } from 'maplibre-gl';
 
-export interface GeolabDrawModelTypes {
-  map: AppMap | null;
-}
+import { GeolabDrawFeatureType, GeolabDrawModelTypes } from './drawing.tool.types';
 
-export const featureCollection: FeatureCollection = {
-  type: 'FeatureCollection',
-  features: [],
-};
-
-export class GeolabDrawingModel {
+export class GeolabDrawingTool {
   map: AppMap | null;
+  featureType: GeolabDrawFeatureType | undefined;
   source: FeatureCollection;
   sourceId: string;
   vertexLayerId: string;
   arcLayerId: string;
   fillLayerId: string;
+  callback: () => void;
 
+  #lineFeatureIdx = 1;
+  #polygonFeatureIdx = 0;
   constructor() {
     this.map = null;
-    this.source = featureCollection;
+    this.featureType = undefined;
+    this.source = {
+      type: 'FeatureCollection',
+      features: [],
+    };
     this.sourceId = 'geolab-draw-source';
     this.vertexLayerId = 'polygon-vertices';
     this.arcLayerId = 'polygon-arcs';
     this.fillLayerId = 'polygon-fill';
+    this.callback = () => {};
   }
 
   main(payload: GeolabDrawModelTypes) {
     if (!payload.map) return;
     this.map = payload.map;
+    if (payload.callback) this.callback = payload.callback;
+    const style = this.map.getCanvas().style;
+    style.cursor = 'crosshair';
+  }
+
+  setFeatureType(ftype: GeolabDrawFeatureType) {
+    this.featureType = ftype;
   }
 
   getVertices() {
@@ -41,7 +50,7 @@ export class GeolabDrawingModel {
 
   addLine(idx: number) {
     const { source } = this;
-    (source.features[idx].geometry as LineString).coordinates = [...this.getVertices()];
+    if (source) (source.features[idx].geometry as LineString).coordinates = [...this.getVertices()];
   }
 
   addPolygon(idx: number) {
@@ -54,7 +63,7 @@ export class GeolabDrawingModel {
     (map?.getSource(sourceId) as GeoJSONSource).setData(source);
   }
 
-  addFeatureLayers(featureType: string) {
+  initFeatureLayers(featureType: string) {
     const { map, sourceId, arcLayerId, vertexLayerId, fillLayerId } = this;
     if (!map) return;
     map.addLayer({
@@ -70,10 +79,11 @@ export class GeolabDrawingModel {
       type: 'circle',
       source: sourceId,
       paint: {
-        'circle-radius': 5,
+        'circle-radius': ['get', 'radius'],
         'circle-color': '#119229',
         'circle-stroke-color': '#fff',
         'circle-stroke-width': 2,
+        'circle-opacity': ['get', 'opacity'],
       },
       filter: ['in', '$type', 'Point'],
     });
@@ -85,15 +95,23 @@ export class GeolabDrawingModel {
         paint: { 'fill-color': '#000', 'fill-opacity': 0.1 },
         filter: ['in', '$type', 'Polygon'],
       });
-    // console.log(map?.getStyle());
-  }
-  #draw() {
-    throw new Error('You have to implement the method.');
   }
 
   destroy() {
-    console.log('destroy', this.map?.getStyle());
-    this.map?.removeSource(this.sourceId);
+    const { map, vertexLayerId, arcLayerId, fillLayerId } = this;
+    if (!map) return;
+    [vertexLayerId, arcLayerId, fillLayerId].forEach((layerId) => {
+      map.getLayer(layerId) && map.removeLayer(layerId);
+    });
+    map.removeSource(this.sourceId);
+    const style = map.getCanvas().style;
+    style.cursor = 'default';
+    this.map = null;
+  }
+
+  getGeojson() {
+    const idx = this.featureType === 'Polygon' ? this.#polygonFeatureIdx : this.#lineFeatureIdx;
+    return this.source.features[idx];
   }
 }
 

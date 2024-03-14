@@ -14,7 +14,7 @@ export interface GeolabMenuItems extends GeolabMenu {
 }
 export type ImageExtent = [[number, number], [number, number], [number, number], [number, number]];
 export type LayerStyleProperty = string | number | number[] | object | null;
-export type measureTypes = 'none' | 'distance' | 'radius' | 'area';
+export type MeasureTypes = 'none' | 'distance' | 'radius' | 'area';
 export interface MonitoringMenu {
   id: number;
   name: string;

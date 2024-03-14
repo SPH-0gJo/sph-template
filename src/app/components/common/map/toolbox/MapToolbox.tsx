@@ -4,7 +4,6 @@ import { ChangeMap } from 'app/components/common/map/toolbox/ChangeMap';
 import { MeasureButtons } from 'app/components/common/map/toolbox/MeasureButtons';
 import { ThematicButtons } from 'app/components/common/map/toolbox/ThematicButtons';
 import { ZoomButtons } from 'app/components/common/map/toolbox/ZoomButtons';
-import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import styled from 'styled-components';
 
@@ -115,7 +114,7 @@ export const MapToolbox = (props: MapToolboxProps) => {
       <BaseMapButtons />
       <ChangeMap data={{ appMap }} />
       <ThematicButtons />
-      <MeasureButtons />
+      <MeasureButtons data={{ appMap }} />
       <ZoomButtons data={{ appMap }} />
       {calculationBoxPosition?.length && (
         <ToolboxTip $position={calculationBoxPosition}>

@@ -1,9 +1,13 @@
+import { distance as TurfMeasureLineDistance } from '@turf/turf';
 import { Feature, LineString, Point } from 'geojson';
 import { MapMouseEvent } from 'maplibre-gl';
-import { GeolabDrawingModel, GeolabDrawModelTypes, lineFeature } from 'shared/modules/gis/drawing/main';
 
-export class GeolabLineDraw extends GeolabDrawingModel {
+import { GeolabDrawModelTypes } from './drawing.tool.types';
+import { GeolabDrawingTool, lineFeature } from './main';
+
+export class GeolabLineDraw extends GeolabDrawingTool {
   #lineFeatureIdx = 0;
+  #startPointFeatureIds = 1;
   constructor() {
     super();
   }
@@ -15,11 +19,13 @@ export class GeolabLineDraw extends GeolabDrawingModel {
   }
 
   #initMap() {
-    if (!this.map) return;
-    const { source, sourceId } = this;
-    source.features = [lineFeature];
-    this.map?.addSource(sourceId, { type: 'geojson', data: source });
-    this.addFeatureLayers('line');
+    const { map, source, sourceId } = this;
+    if (!map) return;
+    this.setFeatureType('LineString');
+    const line = JSON.parse(JSON.stringify(lineFeature));
+    source.features = [line];
+    map.addSource(sourceId, { type: 'geojson', data: source });
+    this.initFeatureLayers('line');
   }
 
   #events() {
@@ -32,11 +38,11 @@ export class GeolabLineDraw extends GeolabDrawingModel {
       if (!features.length) this.#draw(lng, lat);
     };
     const mousemoveHandler = (e: MapMouseEvent) => {
-      const source = this.source;
+      const { source } = this;
       const { lng, lat } = e.lngLat;
       const vertices = this.getVertices();
       if (!vertices.length) return;
-      (source.features[0].geometry as LineString).coordinates = [...this.getVertices(), [lng, lat]];
+      (source.features[this.#lineFeatureIdx].geometry as LineString).coordinates = [...this.getVertices(), [lng, lat]];
       this.redraw();
     };
 
@@ -47,6 +53,7 @@ export class GeolabLineDraw extends GeolabDrawingModel {
       map.off('contextmenu', contextmenuHandler);
       const { lng, lat } = e.lngLat;
       this.#draw(lng, lat);
+      this.callback();
     };
 
     map.on('click', clickHandler);
@@ -58,7 +65,7 @@ export class GeolabLineDraw extends GeolabDrawingModel {
     const point: Feature<Point> = {
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [lng, lat] },
-      properties: { id: String(new Date().getTime()) },
+      properties: { id: String(new Date().getTime()), radius: 5, opacity: 1 },
     };
     const { source } = this;
     source?.features.push(point);
@@ -66,14 +73,13 @@ export class GeolabLineDraw extends GeolabDrawingModel {
     this.redraw();
   }
 
-  getLine() {
-    return this.source.features[this.#lineFeatureIdx];
-  }
-
-  remove() {
-    console.log('destroy');
-    this.map?.removeLayer(this.vertexLayerId);
-    this.map?.removeLayer(this.arcLayerId);
-    super.destroy();
+  getDistance() {
+    const { source } = this;
+    const from = source.features[this.#startPointFeatureIds] as Feature<Point>;
+    const to = source.features.at(-1) as Feature<Point>;
+    const distance = TurfMeasureLineDistance(from, to, 'meters');
+    return distance;
   }
 }
+
+export const LineDraw = new GeolabLineDraw();
