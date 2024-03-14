@@ -43,7 +43,7 @@ export const DefaultStyleByType = (layerGroupId: GeoDataKeys) => {
         source: layerGroupId,
         paint: {
           'circle-color': '#808080',
-          'circle-radius': 5,
+          'circle-radius': 3,
         },
       };
       break;
@@ -54,7 +54,7 @@ export const DefaultStyleByType = (layerGroupId: GeoDataKeys) => {
         source: layerGroupId,
         paint: {
           'circle-color': '#808080',
-          'circle-radius': 5,
+          'circle-radius': 3,
         },
       };
       break;
@@ -65,7 +65,7 @@ export const DefaultStyleByType = (layerGroupId: GeoDataKeys) => {
         source: layerGroupId,
         paint: {
           'circle-color': '#333333',
-          'circle-radius': 5,
+          'circle-radius': 3,
         },
       };
       break;

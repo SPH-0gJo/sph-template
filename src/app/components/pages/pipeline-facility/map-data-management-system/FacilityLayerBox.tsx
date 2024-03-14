@@ -1,21 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'app/components/common-ui';
 import { InfoContent } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/InfoContents';
-// import { GovernorContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/GovernorContents';
-// import { InfoContent } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/InfoContents';
-// import { PipeContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/PipeContents';
-// import { TestBoxContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/TestBoxContents';
-// import { ValveContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/ValveContents';
 import { VirtualContents } from 'app/components/pages/pipeline-facility/map-data-management-system/contents/VirtualContents';
 import { OptionBox } from 'app/components/pages/pipeline-facility/map-data-management-system/OptionBox';
 import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { useLoadingStore } from 'app/stores/loading';
 import axios from 'axios';
-import { Feature } from 'geojson';
-import maplibregl, { LngLatBounds, Map as AppMap } from 'maplibre-gl';
+import { Feature, FeatureCollection } from 'geojson';
+import maplibregl, { Map as AppMap, Source } from 'maplibre-gl';
 import { DefaultStyleByType } from 'shared/constants/types/GisInfoType';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
+import * as turf from 'turf';
 
 interface LayerBoxProps {
   $visible: boolean;
@@ -112,31 +108,31 @@ const LayerGroupButtons = styled.div`
   gap: 0.25rem;
 `;
 const LayerGroupButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  color: var(--black);
-  font-size: 0.875rem;
-  font-weight: var(--text-weight-bold);
-  border: 0;
-  border-radius: 0.375rem;
-  background-color: var(--white);
-
-  em {
-    font-size: 1.125rem;
-  }
-
-  &.selected {
-    color: var(--white);
-    background-color: var(--light-secondary-origin);
-  }
-
-  &:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
     color: var(--black);
-    background: var(--light-secondary-a16);
-  }
+    font-size: 0.875rem;
+    font-weight: var(--text-weight-bold);
+    border: 0;
+    border-radius: 0.375rem;
+    background-color: var(--white);
+
+    em {
+        font-size: 1.125rem;
+    }
+
+    &.selected {
+        color: var(--white);
+        background-color: var(--light-secondary-origin);
+    }
+
+    &:hover {
+        color: var(--black);
+        background: var(--light-secondary-a16);
+
 `;
 
 interface GSFLayerBoxData {
@@ -147,114 +143,166 @@ interface GSFLayerBoxProps {
   data: GSFLayerBoxData;
 }
 
+interface ExtendedSource extends Source {
+  _data: FeatureCollection;
+}
+
 export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
-  const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
-  // const [contentList, setContentList] = useState<Array<Feature>>([]);
+  const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys>('pl');
+  const [plList, setPlList] = useState<Array<Feature>>([]);
+  const [vvList, setVvList] = useState<Array<Feature>>([]);
+  const [tbList, setTbList] = useState<Array<Feature>>([]);
+  const [rgltList, setRgltList] = useState<Array<Feature>>([]);
   const [featureList, setFeatureList] = useState<Array<Feature>>([]);
   const [visible, setVisible] = useState(false);
   const [showInfo, setShowInfo] = useState(true);
-  const [currentZoomLevel, setZoomLevel] = useState<number | undefined>(0);
   const { gsfLayerGroups } = useGsfLayerStore();
   const { setLoading } = useLoadingStore();
-  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [selectLayer, setSelectLayer] = useState<number>(0);
+  const [firstLoad, setFirstLoad] = useState<boolean>(false);
+  const [drawFlag, setDrawFlag] = useState<boolean>(false);
+  const layerGorup: GeoDataKeys[] = ['pl', 'vv'];
+
+  const setList: { [key: string]: (list: Array<Feature>) => void } = {
+    pl: (list) => setPlList(list),
+    vv: (list) => setVvList(list),
+    tb: (list) => setTbList(list),
+    rglt: (list) => setRgltList(list),
+  };
+
+  const getList: { [key: string]: Array<Feature> } = {
+    pl: plList,
+    vv: vvList,
+    tb: tbList,
+    rglt: rgltList,
+  };
 
   useEffect(() => {
-    setLayerGroupId('pl');
-  }, []);
+    if (!firstLoad) return;
+    drawFlag && getDrawResult();
+    setSelectLayer(0);
+    // firstLoad && setFeatureList(getList[layerGroupId]);
+  }, [layerGroupId, firstLoad, drawFlag]);
 
   useEffect(() => {
-    if (props.data.appMap && firstEvent) {
-      props.data.appMap?.on('zoom', () => {
-        const zoomLevel: number = props.data.appMap?.getZoom() as number;
-        setZoomLevel(parseInt(zoomLevel.toString()));
+    if (!props.data.appMap) return;
+    const requests = layerGorup.map((layer) => getFeatures(layer));
+
+    setLoading(true);
+
+    Promise.all(requests)
+      .then((res) => {
+        res.forEach((obj) => {
+          obj && setList[`${Object.keys(obj)[0]}`](obj[`${Object.keys(obj)[0]}`].features);
+        });
+        setShowInfo(false);
+        setLoading(false);
+        setFirstLoad(true);
+      })
+      .catch(() => {
+        setShowInfo(false);
+        setLoading(false);
+        setFirstLoad(true);
       });
-      setFirstEvent(false);
-    }
   }, [props.data.appMap]);
 
-  useEffect(() => {
-    getFeatures();
-  }, [layerGroupId]);
-  const getFeatures = async () => {
-    setLoading(true);
-    setSelectLayer(-1);
-
-    if (currentZoomLevel == undefined || currentZoomLevel < 13) {
-      setShowInfo(true);
-      setLoading(false);
-      return;
-    }
-    setShowInfo(false);
-
-    const bounds: LngLatBounds | undefined = props.data.appMap?.getBounds();
-    if (!bounds) return;
-
-    const ne = bounds.getNorthEast(); // 북동쪽 좌표
-    const sw = bounds.getSouthWest(); // 남서쪽 좌표
-    const bbox = `${sw.lat},${sw.lng},${ne.lat},${ne.lng}`;
-
-    let forUrlId = 'pipes';
-    switch (layerGroupId) {
-      case 'pl':
-        forUrlId = 'pipes';
-        break;
-      case 'vv':
-        forUrlId = 'valves';
-        break;
-      case 'tb':
-        forUrlId = 'tb';
-        break;
-      case 'rglt':
-        forUrlId = 'rglt';
-        break;
-    }
-
-    ['pl', 'vv', 'tb', 'rglt'].forEach((type: string) => {
-      props.data.appMap?.getSource(type) &&
-        props.data.appMap?.removeLayer(`${type}_ly`) &&
-        props.data.appMap?.removeSource(type);
+  const getDrawResult = () => {
+    const source = props.data.appMap?.getSource(layerGroupId) as ExtendedSource;
+    const searchWithin = turf.polygon([
+      [
+        [127.12452249389491, 36.831057796119964],
+        [127.1466025184672, 36.823399114454986],
+        [127.13924251027646, 36.80819730671908],
+        [127.09493526096645, 36.816328881755],
+        [127.12452249389491, 36.831057796119964],
+      ],
+    ]);
+    layerGorup.forEach((layerNm) => {
+      props.data.appMap?.getSource(`${layerNm}_intersect`) &&
+        props.data.appMap?.removeLayer(`${layerNm}_intersect_ly`) &&
+        props.data.appMap?.removeSource(`${layerNm}_intersect`);
     });
-
-    const url = `/geolab/api/v1/${forUrlId}?bbox=${bbox}`;
-    try {
-      await axios.get(url).then((res) => {
-        const data = JSON.parse(res.data.geojson_data);
-
-        if (!data.features) {
-          setFeatureList([]);
-          return;
+    const intersections = source._data.features
+      .map((feature) => {
+        const intersected = turf.intersect(feature, searchWithin);
+        if (intersected) {
+          intersected.properties = feature.properties;
+          return intersected;
         }
-        if (!layerGroupId) return;
-        props.data.appMap?.addSource(layerGroupId, { type: 'geojson', data: data });
-        props.data.appMap?.addLayer(DefaultStyleByType(layerGroupId));
-        props.data.appMap?.on('click', `${layerGroupId}_ly`, (e) => {
-          e.preventDefault();
+      })
+      .filter(Boolean);
 
-          if (e.features) {
-            changeColor(e.features[0], layerGroupId);
-          }
-        });
-        setFeatureList(data.features);
+    if (intersections) {
+      const newLayerId = `${layerGroupId}_intersect`;
+      props.data.appMap?.addSource(newLayerId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: intersections },
       });
-      setLoading(false);
+      if (layerGroupId === 'pl') {
+        props.data.appMap?.addLayer({
+          id: `${newLayerId}_ly`,
+          type: 'line',
+          source: newLayerId,
+          paint: {
+            'line-color': 'yellow',
+          },
+        });
+      } else {
+        props.data.appMap?.addLayer({
+          id: `${newLayerId}_ly`,
+          type: 'circle',
+          source: newLayerId,
+          paint: {
+            'circle-color': 'yellow',
+            'circle-radius': 3,
+          },
+        });
+      }
+      setFeatureList(intersections as Array<Feature>);
+    }
+  };
+
+  const getFeatures = async (getType: GeoDataKeys) => {
+    setSelectLayer(-1);
+    const urlId: { [key: string]: string } = {
+      pl: 'pipes',
+      vv: 'valves',
+      tb: 'testbox',
+      rglt: 'rglb',
+    };
+    const url = `/geolab/api/v1/${urlId[getType]}/all`;
+    try {
+      const response = await axios.get(url); // 응답을 기다림
+      const data = JSON.parse(response.data.geojson_data);
+
+      props.data.appMap?.addSource(getType, { type: 'geojson', data: data });
+      props.data.appMap?.addLayer(DefaultStyleByType(getType));
+
+      const returnObj: { [key: string]: FeatureCollection } = {};
+      returnObj[`${getType}`] = data;
+      return returnObj;
     } catch (error) {
-      setLoading(false);
       console.error('에러', error);
     }
   };
 
   const changeColor = (feature: Feature, layerGroupId: GeoDataKeys) => {
-    const id = layerGroupId === 'pl' ? 'pipe_id' : 'vv' ? 'vv_no' : '';
-    const propertyName = layerGroupId === 'pl' ? 'line-color' : 'vv' ? 'circle-color' : '';
+    const id: { [key: string]: string } = {
+      pl: 'pipe_id',
+      vv: 'vv_no',
+    };
+    const propertyName: { [key: string]: string } = {
+      pl: 'line-color',
+      vv: 'circle-color',
+    };
     if (!feature.properties) return;
-    props.data.appMap?.setPaintProperty(`${layerGroupId}_ly`, propertyName, [
+    props.data.appMap?.setPaintProperty(`${layerGroupId}_ly`, propertyName[layerGroupId], [
       'case',
-      ['==', ['get', id], feature.properties[`${id}`]],
+      ['==', ['get', id[layerGroupId]], feature.properties[`${id[layerGroupId]}`]],
       '#EE6D6DFF',
       '#808080',
     ]);
-    setSelectLayer(feature.properties[`${id}`]);
+    setSelectLayer(feature.properties[`${id[layerGroupId]}`]);
     zoomToLayer(feature, layerGroupId);
   };
 
@@ -307,7 +355,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     <>
       <SearchWrapper>
         <SearchInput></SearchInput>
-        <Button onClick={getFeatures}> 검색</Button>
+        <Button onClick={() => setDrawFlag(!drawFlag)}> 검색</Button>
       </SearchWrapper>
 
       <LayerBoxWrapper $visible={visible}>
@@ -333,20 +381,8 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           <em className={`icon-chevron-${visible ? 'left' : 'right'}-large`} onClick={() => setVisible(!visible)} />
         </LayerBoxHeader>
         <ContentWrapper>
-          <LayerBoxTitle>
-            {!showInfo && (
-              <>
-                <span>리스트</span>
-                <span>{featureList.length}개</span>
-              </>
-            )}
-          </LayerBoxTitle>
-          {/* {!visible && !showInfo && layerGroupId === 'pl' && <PipeContents contentList={contentList} />}*/}
-          {/* {!visible && !showInfo && layerGroupId === 'vv' && <ValveContents contentList={contentList} />}*/}
-          {/* {!visible && !showInfo && layerGroupId === 'tb' && <TestBoxContents contentList={contentList} />}*/}
-          {/* {!visible && !showInfo && layerGroupId === 'rglt' && <GovernorContents contentList={contentList} />}*/}
           {!visible && showInfo ? (
-            <InfoContent zoomLevel={currentZoomLevel} />
+            <InfoContent />
           ) : (
             <VirtualContents
               featureList={featureList}
@@ -357,10 +393,7 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
           )}
         </ContentWrapper>
       </LayerBoxWrapper>
-      <OptionBox layerGroupId={layerGroupId} appMap={props.data.appMap} />
-      <LoadButton onClick={getFeatures}>
-        <h6>현재 지도 재검색</h6>
-      </LoadButton>
+      {/* <OptionBox layerGroupId={layerGroupId} appMap={props.data.appMap} />*/}
     </>
   );
 };

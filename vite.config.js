@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/geolab/api/v1': {
-        target: 'http://localhost:5000/api',
+        target: 'https://geolab.sphinfo.co.kr/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/geolab\/api\/v1/, ''),
       },
