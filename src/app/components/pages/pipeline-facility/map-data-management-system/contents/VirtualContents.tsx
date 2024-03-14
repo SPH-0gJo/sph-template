@@ -119,6 +119,10 @@ export const VirtualContents = (props: VirtualContentsProps) => {
   };
   return (
     <Container>
+      <div>
+        <span>리스트 : </span>
+        <span> {featureList.length}</span>
+      </div>
       <CustomHeader>
         <TypeHeader layerGroupId={layerGroupId} />
       </CustomHeader>
