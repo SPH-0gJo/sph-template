@@ -84,6 +84,12 @@ export const VirtualContents = (props: VirtualContentsProps) => {
         case 'vv':
           id = featureList[i].properties?.vv_no;
           break;
+        case 'tb':
+          id = featureList[i].properties?.tb_mngno;
+          break;
+        case 'rglt':
+          id = featureList[i].properties?.rglt_mngno;
+          break;
       }
       if (id) {
         if (id.toString() === selectLayer.toString()) {
