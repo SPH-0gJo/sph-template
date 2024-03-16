@@ -8,7 +8,6 @@ import { Map as AppMap } from 'maplibre-gl';
 import styled from 'styled-components';
 
 const ToolboxContainer = styled.div`
-  height: 50rem;
   position: fixed;
   right: 1rem;
   top: 6.525rem;
@@ -36,7 +35,6 @@ const ToolboxTip = styled.div<StyledProps>`
   gap: 0.625rem;
   border-radius: 0.375rem;
   background-color: var(--light-secondary-dark);
-
   ::after {
     content: '';
     position: absolute;

@@ -1,5 +1,4 @@
 import { PaintTypes } from 'app/stores/gas-layers/types';
-import { CircleSize } from 'shared/constants/varibales';
 import { create } from 'zustand';
 
 interface ValveStylerStateTypes {
@@ -7,80 +6,20 @@ interface ValveStylerStateTypes {
   minzoomLevels: { [index: string]: number };
 }
 
-export const useValveStylerStore = create<ValveStylerStateTypes>()((set) => ({
+export const useValveStylerStore = create<ValveStylerStateTypes>()(() => ({
   paints: {
-    '2310': {
-      'circle-color': '#ff3300',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2311': {
-      'circle-color': '#ff8000',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2312': {
-      'circle-color': '#ffbb00',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2313': {
-      'circle-color': '#fff200',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2320': {
-      'circle-color': '#62ff00',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2321': {
-      'circle-color': '#00ffb3',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2322': {
-      'circle-color': '#008cff',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2323': {
-      'circle-color': '#0004ff',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2330': {
-      'circle-color': '#8800ff',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2331': {
-      'circle-color': '#ff00d4',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2332': {
-      'circle-color': '#ff0073',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
-    '2333': {
-      'circle-color': '#ff00d4',
-      'circle-radius': CircleSize,
-      'circle-stroke-color': '#292929',
-      'circle-stroke-width': 2,
-    },
+    '2310': { 'icon-color': '#ff3300' },
+    '2311': { 'icon-color': '#ff8000' },
+    '2312': { 'icon-color': '#ffbb00' },
+    '2313': { 'icon-color': '#fff200' },
+    '2320': { 'icon-color': '#62ff00' },
+    '2321': { 'icon-color': '#00ffb3' },
+    '2322': { 'icon-color': '#008cff' },
+    '2323': { 'icon-color': '#0004ff' },
+    '2330': { 'icon-color': '#8800ff' },
+    '2331': { 'icon-color': '#ff00d4' },
+    '2332': { 'icon-color': '#ff0073' },
+    '2333': { 'icon-color': '#ff00d4' },
   },
   minzoomLevels: {
     '2310': 7,
@@ -104,11 +43,16 @@ export const generateValveLayerOption = (key: string, source: string) => {
   const paint = paints[key];
   const minzoom = minzoomLevels[key];
   const filter = ['==', 'GIS_VV_TYP', key];
-  const layerType = 'circle';
   const sourceLayer = 'gsf_vv_mt';
   return {
     id: `gsf_vv_mt_${key}`,
-    type: layerType,
+    type: 'symbol',
+    layout: {
+      'icon-image': 'valve-icon',
+      'icon-size': 0.7,
+      'icon-rotate': ['get', 'DRTN_ANGL'],
+      'icon-allow-overlap': true,
+    },
     paint,
     minzoom,
     source,

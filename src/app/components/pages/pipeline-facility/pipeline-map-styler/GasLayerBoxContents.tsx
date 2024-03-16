@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { GasLayer, GeoDataKeys, useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
+import { GasLayer, GeoDataKeys, useGasLayerGroupStore } from 'app/stores/gas-layers/gas.layer.groups';
 // import { usePipelineStylerStore } from 'app/stores/pipeline.styler';
 import { Map as AppMap } from 'maplibre-gl';
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ interface GSFLayerBoxContentProps {
 }
 
 export const GasLayerBoxContents = (props: GSFLayerBoxContentProps) => {
-  const { gasLayerGroups, layerStyleEditorId, setLayerStyleEditorId, upsertItem } = useGasLayerGropuStore();
+  const { gasLayerGroups, layerStyleEditorId, setLayerStyleEditorId, upsertItem } = useGasLayerGroupStore();
   // const { layerGroup:\\ pipelineLayerGroup } = usePipelineStylerStore();
   const { appMap, layerGroupId } = props.data;
 
@@ -109,7 +109,6 @@ export const GasLayerBoxContents = (props: GSFLayerBoxContentProps) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   const { sourceLayerId } = layer;
-                  // if (!style || !sourceLayerId) return;
                   setLayerStyleEditorId(sourceLayerId);
                 }}
               >

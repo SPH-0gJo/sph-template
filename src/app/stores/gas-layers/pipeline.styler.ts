@@ -5,6 +5,10 @@ interface PipelineStylerStateTypes {
   paints: { [index: string]: PaintTypes };
   minzoomLevels: { [index: string]: number };
   layout: LayoutTypes;
+  setZoomLevel: ({ zoomLevelId, zoomLevel }: { [index: string]: string | number }) => void;
+  setLineWidthOfPaint: ({ paintId, width }: { [index: string]: string | number }) => void;
+  setLineDashOfPaint: ({ paintId, dashed }: { [index: string]: string | boolean }) => void;
+  setLineColorOfPaint: ({ paintId, color }: { [index: string]: string | boolean }) => void;
 }
 
 export const usePipelineStylerStore = create<PipelineStylerStateTypes>()((set) => ({
@@ -37,6 +41,34 @@ export const usePipelineStylerStore = create<PipelineStylerStateTypes>()((set) =
     '2033': 7,
   },
   layout: { 'line-join': 'round', 'line-cap': 'round' },
+  setZoomLevel: ({ zoomLevelId, zoomLevel }) => {
+    const zoomCheck = Number(zoomLevel) < 22 && Number(zoomLevel) > 7;
+    zoomCheck && set((state) => ({ minzoomLevels: { ...state.minzoomLevels, [zoomLevelId]: Number(zoomLevel) } }));
+  },
+  setLineWidthOfPaint: ({ paintId, width }) => {
+    set((state) => {
+      const paint = state.paints[paintId];
+      paint['line-width'] = Number(width);
+      return { paints: { ...state.paints, [paintId]: paint } };
+    });
+  },
+  setLineDashOfPaint: ({ paintId, dashed }) => {
+    set((state) => {
+      const id = String(paintId);
+      const paint = state.paints[id];
+      if (dashed) paint['line-dasharray'] = [2, 2];
+      else delete paint['line-dasharray'];
+      return { paints: { ...state.paints, [id]: paint } };
+    });
+  },
+  setLineColorOfPaint: ({ paintId, color }) => {
+    set((state) => {
+      const id = String(paintId);
+      const paint = state.paints[id];
+      paint['line-color'] = String(color);
+      return { paints: { ...state.paints, [id]: paint } };
+    });
+  },
 }));
 
 /* eslint-disable */
