@@ -113,7 +113,7 @@ export const MapToolbox = (props: MapToolboxProps) => {
     <ToolboxContainer ref={toolboxContainer}>
       <BaseMapButtons />
       <ChangeMap data={{ appMap }} />
-      <ThematicButtons />
+      <ThematicButtons data={{ appMap }} />
       <MeasureButtons data={{ appMap }} />
       <ZoomButtons data={{ appMap }} />
       {calculationBoxPosition?.length && (

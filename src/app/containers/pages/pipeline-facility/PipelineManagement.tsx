@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react';
 import { AppHeader } from 'app/components/layout/AppHeader';
-import { GSFLayerData } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerData';
 import { MapViewer } from 'app/components/pages/pipeline-facility/pipeline-map-styler/MapViewer';
 import { useBreadcrumbStore } from 'app/stores/breadcrumb';
-import { useGsfLayerStore } from 'app/stores/gsfLayers';
 import { PageContainer } from 'shared/styles/styled/common';
 
 export const PipelineManagement = () => {
   const { setBreadcrumb } = useBreadcrumbStore();
-  const { layerDataTableId } = useGsfLayerStore();
   useEffect(() => {
-    setBreadcrumb(['Main', '시설물 관리', '배관시설물 관리']);
+    setBreadcrumb(['Main', '배관 시설물', '지도 스타일 도구']);
   }, []);
   return (
     <PageContainer>
       <AppHeader />
       <MapViewer />
-      {layerDataTableId && <GSFLayerData />}
     </PageContainer>
   );
 };

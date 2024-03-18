@@ -1,13 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { GeolabNaverRoadView } from 'app/components/common/map/GeolabNaverRoadView';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
-import { Button } from 'app/components/common-ui';
-import { GSFLayerBox } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GSFLayerBox';
-import { useGsfLayerStore } from 'app/stores/gsfLayers';
-import { useNaverRoadViewStore } from 'app/stores/map/naverRoadView';
-import { useMapMeasureStore } from 'app/stores/mapMeasure';
+import { GasLayerBox } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerBox';
+import { useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
-import { Map as AppMap, MapMouseEvent } from 'maplibre-gl';
+import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
 import { LayerStyle } from 'shared/fixtures/pipeline';
 import { addVectorTiles } from 'shared/modules/gis/pipeline.vector.tiles';
@@ -15,16 +11,6 @@ import { initMap } from 'shared/modules/map.utils';
 import styled from 'styled-components';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
-
-const NaverRoadViewFooter = styled.div`
-  width: 100%;
-  height: 4rem;
-  display: flex;
-  padding: 0.75rem 1.2rem;
-  button {
-    margin-left: auto;
-  }
-`;
 
 const MapContainer = styled.div`
   width: 100%;
@@ -38,33 +24,11 @@ const MapViewerWrapper = styled.div`
   cursor: crosshair;
 `;
 
-const NaverRoadViewContainer = styled.div`
-  position: absolute;
-  top: 6.525rem;
-  right: 4.525rem;
-  border: 0.15rem solid var(--light-surface-level-2);
-  background-color: var(--white);
-  visibility: hidden;
-  &.visible {
-    visibility: visible;
-  }
-`;
-
 export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
   const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
-  const { naverRoadViewMap, naverRoadViewCoords, setNaverRoadViewCoords, setNaverRoadViewMap } =
-    useNaverRoadViewStore();
-  const { setLayerGroup } = useGsfLayerStore();
-  const { measureType, distanceSource, areaSource, setDistanceSource, setDistanceLayer, setAreaSource, setAreaLayer } =
-    useMapMeasureStore();
-  const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
-
-  const handler = (e: MapMouseEvent) => {
-    const { lng, lat } = e.lngLat;
-    setNaverRoadViewCoords({ lng, lat });
-  };
+  const { gasLayerGroups, layerStyleEditorId, setLayerGroup } = useGasLayerGropuStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -79,10 +43,6 @@ export const MapViewer = () => {
       ]);
     });
     return () => {
-      setDistanceSource(null);
-      setDistanceLayer(null);
-      setAreaSource(null);
-      setAreaLayer(null);
       setStyleOption(vectorTileBaseMaps[0].style);
       map.current?.remove();
     };
@@ -94,38 +54,23 @@ export const MapViewer = () => {
     map.current.once('styledata', () => map.current && addVectorTiles(map.current));
   }, [style]);
 
-  useEffect(() => {
-    if (naverRoadViewMap) map.current?.on('click', handler);
-    else map.current?.off('click', handler);
-  }, [naverRoadViewMap]);
-
-  useEffect(() => {
-    if (!gsfLayerGroups || !map.current || !layerStyleEditorId) return;
-    const layer = gsfLayerGroups.get(layerStyleEditorId);
-    const { style } = layer!;
-    if (!style) return;
-    const paintProperties = Object.keys(style);
-    paintProperties.forEach(
-      (propertyName) =>
-        map.current?.setPaintProperty(layerStyleEditorId, propertyName, style[propertyName as keyof LayerStyle]),
-    );
-  }, [gsfLayerGroups, layerStyleEditorId]);
+  // useEffect(() => {
+  //   if (!gasLayerGroups || !map.current || !layerStyleEditorId) return;
+  //   const layer = gasLayerGroups.get(layerStyleEditorId);
+  //   const { style } = layer!;
+  //   if (!style) return;
+  //   const paintProperties = Object.keys(style);
+  //   paintProperties.forEach(
+  //     (propertyName) =>
+  //       map.current?.setPaintProperty(layerStyleEditorId, propertyName, style[propertyName as keyof LayerStyle]),
+  //   );
+  // }, [gasLayerGroups, layerStyleEditorId]);
 
   return (
     <MapContainer>
       <MapViewerWrapper ref={mapContainer} />
       <MapToolbox data={{ appMap: map.current }} />
-      <GSFLayerBox data={{ appMap: map.current }} />
-      {!naverRoadViewMap || (
-        <NaverRoadViewContainer className={`${naverRoadViewCoords ? '' : 'visible'}`}>
-          <GeolabNaverRoadView />
-          <NaverRoadViewFooter>
-            <Button color='dark' size='md' onClick={() => setNaverRoadViewMap()}>
-              닫기
-            </Button>
-          </NaverRoadViewFooter>
-        </NaverRoadViewContainer>
-      )}
+      <GasLayerBox data={{ appMap: map.current }} />
     </MapContainer>
   );
 };
