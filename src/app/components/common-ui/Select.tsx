@@ -13,10 +13,10 @@ const SelectWrapper = styled.div`
 `;
 
 const SelectLabel = styled.label`
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: normal;
-  color: var(--white);
+  color: var(--black);
   letter-spacing: -0.0075rem;
 `;
 

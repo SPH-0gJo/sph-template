@@ -1,3 +1,5 @@
+import { App } from 'app/containers/App';
+import { generateGovernorLayerOption, useGovernorStylerStore } from 'app/stores/gas-layers/governor.styler';
 import { generatePipelineLayerOption, usePipelineStylerStore } from 'app/stores/gas-layers/pipeline.styler';
 import { generateTestboxLayerOption, useTestboxStylerStore } from 'app/stores/gas-layers/testbox.styler';
 import { generateValveLayerOption, useValveStylerStore } from 'app/stores/gas-layers/valve.styler';
@@ -17,18 +19,31 @@ export function addVectorTiles(map: AppMap) {
     map.addLayer(option as LineLayerSpecification);
   });
 
-  const valvePaints = useValveStylerStore.getState().paints;
-  Object.keys(valvePaints).forEach((key) => {
-    const option = generateValveLayerOption(key, sourceId);
-    map.addLayer(option as CircleLayerSpecification);
+  map.loadImage('/assets/images/valve.png', (error, image) => {
+    if (error || !image) throw error;
+    map.addImage('valve-icon', image, { sdf: true });
+    const valvePaints = useValveStylerStore.getState().paints;
+    Object.keys(valvePaints).forEach((key) => {
+      const option = generateValveLayerOption(key, sourceId);
+      map.addLayer(option as SymbolLayerSpecification);
+    });
   });
 
   const testboxLayouts = useTestboxStylerStore.getState().layouts;
   Object.keys(testboxLayouts).forEach((key) => {
     const options = generateTestboxLayerOption(key, sourceId);
     map.addLayer(options[1] as SymbolLayerSpecification);
-    map.addLayer(options[0] as SymbolLayerSpecification);
+    map.addLayer(options[0] as CircleLayerSpecification);
   });
+
+  const governorLayouts = useGovernorStylerStore.getState().layouts;
+  governorLayouts &&
+    Object.keys(governorLayouts).forEach((key) => {
+      const options = generateGovernorLayerOption(key, sourceId);
+      if (!options) return;
+      map.addLayer(options[1] as SymbolLayerSpecification);
+      map.addLayer(options[0] as CircleLayerSpecification);
+    });
 
   map.addLayer({
     id: 'gsf_pl_mt_labels',
@@ -44,58 +59,6 @@ export function addVectorTiles(map: AppMap) {
       'text-justify': 'auto',
     },
   });
-
-  // tbs.forEach((e) => {
-  //   const { code, color } = e;
-  //   map.addLayer({
-  //     id: `gsf_tb_mt_${code}`,
-  //     type: 'circle',
-  //     source: 'geolab-layers',
-  //     'source-layer': 'gsf_tb_mt',
-  //     // minzoom: 13,
-  //     paint: { 'circle-color': color, 'circle-radius': CircleSize },
-  //   });
-  // });
-
-  // rglt.forEach((e) => {
-  //   const { code, color } = e;
-  //   map.addLayer({
-  //     id: `gsf_rglt_mt_${code}`,
-  //     type: 'circle',
-  //     source: 'geolab-layers',
-  //     'source-layer': 'gsf_rglt_mt',
-  //     // minzoom: 13,
-  //     paint: { 'circle-color': color, 'circle-radius': CircleSize },
-  //   });
-  // });
-
-  // map.addLayer({
-  //   id: 'gsf_vv_mt_labels',
-  //   type: 'symbol',
-  //   source: 'geolab-layers',
-  //   'source-layer': 'gsf_vv_mt',
-  //   minzoom: 16,
-  //   layout: {
-  //     'text-field': ['get', 'GIS_VV_TYP'],
-  //     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-  //     'text-radial-offset': 0.5,
-  //     'text-justify': 'auto',
-  //   },
-  // });
-
-  // map.addLayer({
-  //   id: 'gsf_tb_mt_labels',
-  //   type: 'symbol',
-  //   source: 'geolab-layers',
-  //   'source-layer': 'gsf_tb_mt',
-  //   minzoom: 16,
-  //   layout: {
-  //     'text-field': ['get', 'GIS_VV_TYP'],
-  //     'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-  //     'text-radial-offset': 0.5,
-  //     'text-justify': 'auto',
-  //   },
-  // });
 }
 
 export function removeVectorTiles(map: AppMap) {

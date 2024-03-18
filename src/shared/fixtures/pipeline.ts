@@ -205,9 +205,8 @@ export const pipelines = [
 ];
 
 export const pipelineStrokeStyleOptions = [
-  { key: '1', label: 'solid', value: null },
-  { key: '2', label: 'dashed', value: [2.5, 2.5] },
-  { key: '3', label: 'dotted', value: [1.5, 1.5] },
+  { key: '1', label: 'solid', value: 'false' },
+  { key: '2', label: 'dashed', value: 'true' },
 ];
 
 export const rglt = [

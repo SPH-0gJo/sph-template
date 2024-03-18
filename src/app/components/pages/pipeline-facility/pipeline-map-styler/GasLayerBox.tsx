@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { GasLayerBoxContents } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerBoxContents';
-import { GasLayerStyleEditor } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerStyleEditor';
-import { useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
+import { PipelineLayerStyleEditor } from 'app/components/pages/pipeline-facility/pipeline-map-styler/style-editor/PipelineLayerStyleEditor';
+import { useGasLayerGroupStore } from 'app/stores/gas-layers/gas.layer.groups';
 import { Map as AppMap } from 'maplibre-gl';
 import { GeoDataKeys } from 'shared/fixtures/pipeline';
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ export const GasLayerBox = (props: GSFLayerBoxProps) => {
   const [layerGroupId, setLayerGroupId] = useState<GeoDataKeys | undefined>();
   const [visible, setVisible] = useState(false);
   // const { gsfLayerGroups, layerStyleEditorId } = useGsfLayerStore();
-  const { gasLayerGroups, layerStyleEditorId } = useGasLayerGropuStore();
+  const { gasLayerGroups, layerStyleEditorId } = useGasLayerGroupStore();
   useEffect(() => {
     setLayerGroupId('pl');
   }, []);
@@ -122,7 +122,7 @@ export const GasLayerBox = (props: GSFLayerBoxProps) => {
         </LayerBoxHeader>
         {!visible && <GasLayerBoxContents data={{ appMap: props.data.appMap, layerGroupId }} />}
       </LayerBoxWrapper>
-      {layerStyleEditorId && <GasLayerStyleEditor />}
+      {layerStyleEditorId && <PipelineLayerStyleEditor data={{ appMap: props.data.appMap }} />}
     </>
   );
 };

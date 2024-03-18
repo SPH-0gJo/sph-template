@@ -43,6 +43,8 @@ interface UIStyleOptions {
   inputType?: string;
   value?: string | number;
   setInputValue: (value: string | number) => void;
+  min?: number;
+  max?: number;
 }
 
 export const InputField = (props: UIStyleOptions) => {

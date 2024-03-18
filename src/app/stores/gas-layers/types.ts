@@ -7,6 +7,7 @@ export interface LayoutTypes {
 }
 
 export interface PaintTypes {
+  'icon-color'?: string;
   'line-color'?: string;
   'line-width'?: number;
   'line-dasharray'?: Array<number>;
@@ -14,4 +15,10 @@ export interface PaintTypes {
   'circle-radius'?: number;
   'circle-stroke-color'?: string;
   'circle-stroke-width'?: number;
+}
+
+export interface StylerStateTypes {
+  minzoomLevels?: { [index: string]: number };
+  layouts?: { [index: string]: LayoutTypes };
+  paints?: { [index: string]: PaintTypes };
 }

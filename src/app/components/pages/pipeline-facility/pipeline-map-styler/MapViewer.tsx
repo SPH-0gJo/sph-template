@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { MapToolbox } from 'app/components/common/map/toolbox/MapToolbox';
 import { GasLayerBox } from 'app/components/pages/pipeline-facility/pipeline-map-styler/GasLayerBox';
-import { useGasLayerGropuStore } from 'app/stores/gas-layers/gas.layer.groups';
+import { GasLayerLegend } from 'app/components/pages/pipeline-facility/pipeline-map-styler/lengend/GasLayerLegend';
+import { useGasLayerGroupStore } from 'app/stores/gas-layers/gas.layer.groups';
 import { useMapOptionsStore } from 'app/stores/mapOptions';
 import { Map as AppMap } from 'maplibre-gl';
 import { vectorTileBaseMaps } from 'shared/constants/baseMaps';
@@ -28,7 +29,7 @@ export const MapViewer = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<AppMap | null>(null);
   const { style, zoomLevel: zoom, setStyleOption } = useMapOptionsStore();
-  const { gasLayerGroups, layerStyleEditorId, setLayerGroup } = useGasLayerGropuStore();
+  const { gasLayerGroups, layerStyleEditorId, setLayerGroup } = useGasLayerGroupStore();
 
   useEffect(() => {
     if (map.current || !mapContainer) return;
@@ -71,6 +72,7 @@ export const MapViewer = () => {
       <MapViewerWrapper ref={mapContainer} />
       <MapToolbox data={{ appMap: map.current }} />
       <GasLayerBox data={{ appMap: map.current }} />
+      <GasLayerLegend />
     </MapContainer>
   );
 };
