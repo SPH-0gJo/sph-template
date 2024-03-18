@@ -267,8 +267,8 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     const urlId: { [key: string]: string } = {
       pl: 'pipes',
       vv: 'valves',
-      tb: 'testbox',
-      rglt: 'rglb',
+      tb: 'test-boxs',
+      rglt: 'governors',
     };
     const url = `/geolab/api/v1/${urlId[getType]}/all`;
     try {
@@ -290,10 +290,14 @@ export const FacilityLayerBox = (props: GSFLayerBoxProps) => {
     const id: { [key: string]: string } = {
       pl: 'pipe_id',
       vv: 'vv_no',
+      tb: 'tb_mngno',
+      rglt: 'rglt_mngno',
     };
     const propertyName: { [key: string]: string } = {
       pl: 'line-color',
       vv: 'circle-color',
+      tb: 'circle-color',
+      rglt: 'circle-color',
     };
     if (!feature.properties) return;
     props.data.appMap?.setPaintProperty(`${layerGroupId}_ly`, propertyName[layerGroupId], [

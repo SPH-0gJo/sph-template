@@ -350,7 +350,7 @@ export const OptionBox = (props: OptionBoxProps) => {
       <OptionHeader>상세 옵션</OptionHeader>
       <ButtonWrapper>
         <DrawButton
-          key={'region'}
+          key='region'
           className={drawingType === 'region' ? 'selected' : ''}
           onClick={() => {
             setDrawingType('region');
@@ -359,7 +359,7 @@ export const OptionBox = (props: OptionBoxProps) => {
           영역 그리기
         </DrawButton>
         <DrawButton
-          key={'radius'}
+          key='radius'
           className={drawingType === 'radius' ? 'selected' : ''}
           onClick={() => {
             setDrawingType('radius');
